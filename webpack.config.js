@@ -2,10 +2,10 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: path.join(__dirname, './client/src/index.jsx'),
+  entry: path.join(__dirname, './client', 'src', 'Index.jsx'),
   output: {
     filename: 'bumble.js',
-    path: path.join(__dirname, './client/dist'),
+    path: path.join(__dirname, './client', 'dist'),
   },
   watch: true,
   module: {
