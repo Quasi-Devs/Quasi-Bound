@@ -1,14 +1,21 @@
 const { Router } = require('express');
 const router = Router();
 const passport = require('passport');
+const db = require('../db/index');
 
 router.get('/', passport.authenticate('discord'));
-router.get(
-  '/redirect',
-  passport.authenticate('discord', {
-    failureRedirect: '/forbidden',
-    successRedirect: '/home',
-  })
-);
+router.get('/redirect', passport.authenticate('discord'), (req, res) => {
+  db.query(
+    `INSERT INTO "user" (name_user, id_link) VALUES ('${req.user.username}', ${req.user.id});`,
+    (err, results) => {
+      if (err) {
+        console.info(err);
+      } else {
+        console.info('RESULTS', results);
+        res.redirect('/home');
+      }
+    }
+  );
+});
 
 module.exports = router;

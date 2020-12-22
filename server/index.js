@@ -15,16 +15,18 @@ const discordStrategy = require('./auth/discordStrategy');
 
 app.use(
   session({
-    secret: 'some random secret',
+    secret: process.env.DISCORD_CLIENT_SECRET,
     cookie: {
       maxAge: 60000 * 60 * 24,
     },
     saveUninitialized: false,
+    resave: true,
   })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(express.json());
 app.use(express.static(dirPath));
 app.use('/auth', discordRoute);

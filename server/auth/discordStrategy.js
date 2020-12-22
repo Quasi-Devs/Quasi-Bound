@@ -1,13 +1,12 @@
 const DiscordStrategy = require('passport-discord').Strategy;
 const passport = require('passport');
-const pool = require('../db/index');
 
 /**
  * Creates a new user instance as Req.user.
  */
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(null, user.id);
 });
 
 /**
