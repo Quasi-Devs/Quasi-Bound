@@ -52,24 +52,21 @@ function ArWing() {
   );
 }
 
-const ThreeDEnv = () => {
-  const text = '3D environment';
-  return (
-    <div>
-      {text}
-      <div>
-        <Canvas>
-          <OrbitControls />
-          <directionalLight intensity={0.5} />
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 15, 10]} angle={0.9} />
-          <Suspense fallback={<Loading />}>
-            <ArWing />
-          </Suspense>
-        </Canvas>
-      </div>
+const ThreeDEnv = () => (
+  <div>
+    <div style={{ height: window.innerHeight * 0.73 }}>
+      <Canvas>
+        <color attach="background" args={['gray']} />
+        <OrbitControls />
+        <directionalLight intensity={0.5} />
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 15, 10]} angle={0.9} />
+        <Suspense fallback={<Loading />}>
+          <ArWing />
+        </Suspense>
+      </Canvas>
     </div>
-  );
-};
+  </div>
+);
 
 export default ThreeDEnv;
