@@ -10,7 +10,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 1%;
-    width: 12%;
+    width: 10%;
     height: 10%;
     /* border: 3px solid blue; */
 }
@@ -24,15 +24,24 @@
 .cards {
     display: flex;
     flex-wrap: wrap;
-    width: 33%;
+    width: 50%;
     margin-left: 15%;
-    margin-right: 25%;
+    margin-right: 5%;
     /* border: 3px solid blue; */
 }
+
+.hover {
+    border: 4px solid red;
+    position: relative;
+    height: 480px;
+    width: 240px;
+    bottom: 75%;
+}
+
 .main {
     display: flex;
     flex-wrap: wrap;
     margin-top: 1%;
-    width: 80%;
+    width: 85%;
     /* border: 5px solid #ac4f22; */
 }

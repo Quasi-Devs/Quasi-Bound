@@ -23,7 +23,7 @@ function Loading() {
   );
 }
 
-function ArWing() {
+function Table() {
   const texture = new THREE.TextureLoader().load(img);
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -36,12 +36,12 @@ function ArWing() {
   const { nodes } = useLoader(GLTFLoader, table);
   // useFrame will run outside of react in animation frames to optimize updates.
   useFrame(() => {
-    group.current.rotation.x = 5.09;
+    group.current.rotation.x = 5.5;
   });
   return (
     // Add a ref to the group. This gives us a hook
     // to manipulate the properties of this geometry in the useFrame callback.
-    <group ref={group} position={[-12, -20, -10]}>
+    <group ref={group} position={[-12, -17, -23]}>
       <mesh visible geometry={nodes.mesh_1.geometry}>
         <meshPhongMaterial attach="material" map={texture2} />
       </mesh>
@@ -60,9 +60,9 @@ const ThreeDEnv = () => (
         <OrbitControls />
         <directionalLight intensity={0.5} />
         <ambientLight intensity={0.5} />
-        <spotLight position={[10, 15, 10]} angle={0.9} />
+        <spotLight position={[20, 20, 10]} angle={0.9} />
         <Suspense fallback={<Loading />}>
-          <ArWing />
+          <Table />
         </Suspense>
       </Canvas>
     </div>
