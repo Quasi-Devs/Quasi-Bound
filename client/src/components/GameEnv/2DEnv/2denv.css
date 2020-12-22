@@ -1,0 +1,15 @@
+.ResourcePoints {
+    border: 3px solid black;
+    border-radius: 30px;
+    position: relative;
+    height: 20px;
+    width: 20px;
+}
+
+.Resourceholder {
+    display: flex;
+    flex-wrap: wrap;
+    width: 13%;
+    height: 10%;
+    /* border: 3px solid blue; */
+}
