@@ -1,0 +1,380 @@
+{
+    "accessors": [
+      {
+        "bufferView": 2,
+        "componentType": 5126,
+        "count": 65532,
+        "max": [
+          23.673322677612305,
+          23.679803848266602,
+          20.054477691650391
+        ],
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "type": "VEC3"
+      },
+      {
+        "bufferView": 2,
+        "byteOffset": 786384,
+        "componentType": 5126,
+        "count": 65532,
+        "max": [
+          1,
+          1,
+          1
+        ],
+        "min": [
+          -1,
+          -1,
+          -1
+        ],
+        "type": "VEC3"
+      },
+      {
+        "bufferView": 3,
+        "componentType": 5126,
+        "count": 65532,
+        "max": [
+          1,
+          1,
+          0.99997001886367798,
+          1
+        ],
+        "min": [
+          -1,
+          -1,
+          -0.9999958872795105,
+          -1
+        ],
+        "type": "VEC4"
+      },
+      {
+        "bufferView": 1,
+        "componentType": 5126,
+        "count": 65532,
+        "max": [
+          0.99800002574920654,
+          0.99238598346710205
+        ],
+        "min": [
+          0.0020000000949949026,
+          0.0020000000949949026
+        ],
+        "type": "VEC2"
+      },
+      {
+        "bufferView": 0,
+        "componentType": 5125,
+        "count": 165510,
+        "max": [
+          65531
+        ],
+        "min": [
+          0
+        ],
+        "type": "SCALAR"
+      },
+      {
+        "bufferView": 2,
+        "byteOffset": 1572768,
+        "componentType": 5126,
+        "count": 33429,
+        "max": [
+          23.647449493408203,
+          23.649669647216797,
+          20.054477691650391
+        ],
+        "min": [
+          0.027913093566894531,
+          0.030132293701171875,
+          0.40717315673828125
+        ],
+        "type": "VEC3"
+      },
+      {
+        "bufferView": 2,
+        "byteOffset": 1973916,
+        "componentType": 5126,
+        "count": 33429,
+        "max": [
+          1,
+          1,
+          1
+        ],
+        "min": [
+          -1,
+          -1,
+          -1
+        ],
+        "type": "VEC3"
+      },
+      {
+        "bufferView": 3,
+        "byteOffset": 1048512,
+        "componentType": 5126,
+        "count": 33429,
+        "max": [
+          1,
+          1,
+          0.99967348575592041,
+          1
+        ],
+        "min": [
+          -1,
+          -1,
+          -0.99970841407775879,
+          -1
+        ],
+        "type": "VEC4"
+      },
+      {
+        "bufferView": 1,
+        "byteOffset": 524256,
+        "componentType": 5126,
+        "count": 33429,
+        "max": [
+          0.99763697385787964,
+          0.96564501523971558
+        ],
+        "min": [
+          0.016287999227643013,
+          0.01650100015103817
+        ],
+        "type": "VEC2"
+      },
+      {
+        "bufferView": 0,
+        "byteOffset": 662040,
+        "componentType": 5125,
+        "count": 53316,
+        "max": [
+          33428
+        ],
+        "min": [
+          0
+        ],
+        "type": "SCALAR"
+      }
+    ],
+    "asset": {
+      "extras": {
+        "author": "Francesco Coldesina (https://sketchfab.com/topfrank2013)",
+        "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+        "source": "https://sketchfab.com/models/e0c4de506dac4c05897eba02932b0c27",
+        "title": "Egyptian Table"
+      },
+      "generator": "Sketchfab-3.19.6",
+      "version": "2.0"
+    },
+    "bufferViews": [
+      {
+        "buffer": 0,
+        "byteLength": 875304,
+        "byteOffset": 0,
+        "name": "floatBufferViews",
+        "target": 34963
+      },
+      {
+        "buffer": 0,
+        "byteLength": 791688,
+        "byteOffset": 875304,
+        "byteStride": 8,
+        "name": "floatBufferViews",
+        "target": 34962
+      },
+      {
+        "buffer": 0,
+        "byteLength": 2375064,
+        "byteOffset": 1666992,
+        "byteStride": 12,
+        "name": "floatBufferViews",
+        "target": 34962
+      },
+      {
+        "buffer": 0,
+        "byteLength": 1583376,
+        "byteOffset": 4042056,
+        "byteStride": 16,
+        "name": "floatBufferViews",
+        "target": 34962
+      }
+    ],
+    "buffers": [
+      {
+        "byteLength": 5625432,
+        "uri": "scene.bin"
+      }
+    ],
+    "images": [
+      {
+        "uri": "textures/wire_228214153_normal.png"
+      },
+      {
+        "uri": "textures/wire_228214153_metallicRoughness.png"
+      },
+      {
+        "uri": "textures/wire_228214153_baseColor.jpeg"
+      }
+    ],
+    "materials": [
+      {
+        "doubleSided": true,
+        "emissiveFactor": [
+          0,
+          0,
+          0
+        ],
+        "name": "wire_228214153",
+        "normalTexture": {
+          "index": 0,
+          "scale": 1,
+          "texCoord": 0
+        },
+        "pbrMetallicRoughness": {
+          "baseColorFactor": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "baseColorTexture": {
+            "index": 2,
+            "texCoord": 0
+          },
+          "metallicFactor": 0.46999999999999997,
+          "metallicRoughnessTexture": {
+            "index": 1,
+            "texCoord": 0
+          },
+          "roughnessFactor": 1
+        }
+      }
+    ],
+    "meshes": [
+      {
+        "primitives": [
+          {
+            "attributes": {
+              "NORMAL": 1,
+              "POSITION": 0,
+              "TANGENT": 2,
+              "TEXCOORD_0": 3
+            },
+            "indices": 4,
+            "material": 0,
+            "mode": 4
+          }
+        ]
+      },
+      {
+        "primitives": [
+          {
+            "attributes": {
+              "NORMAL": 6,
+              "POSITION": 5,
+              "TANGENT": 7,
+              "TEXCOORD_0": 8
+            },
+            "indices": 9,
+            "material": 0,
+            "mode": 4
+          }
+        ]
+      }
+    ],
+    "nodes": [
+      {
+        "children": [
+          1
+        ],
+        "name": "RootNode (gltf orientation matrix)",
+        "rotation": [
+          -0.70710678118654746,
+          -0,
+          -0,
+          0.70710678118654757
+        ]
+      },
+      {
+        "children": [
+          2
+        ],
+        "name": "RootNode (model correction matrix)"
+      },
+      {
+        "children": [
+          3
+        ],
+        "matrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          -11.837665557861328,
+          -11.827106475830078,
+          -11.285443305969238,
+          1
+        ],
+        "name": "Egy1.obj.cleaner.gles"
+      },
+      {
+        "children": [
+          4,
+          5
+        ],
+        "name": ""
+      },
+      {
+        "mesh": 0,
+        "name": ""
+      },
+      {
+        "mesh": 1,
+        "name": ""
+      }
+    ],
+    "samplers": [
+      {
+        "magFilter": 9729,
+        "minFilter": 9987,
+        "wrapS": 10497,
+        "wrapT": 10497
+      }
+    ],
+    "scene": 0,
+    "scenes": [
+      {
+        "name": "OSG_Scene",
+        "nodes": [
+          0
+        ]
+      }
+    ],
+    "textures": [
+      {
+        "sampler": 0,
+        "source": 0
+      },
+      {
+        "sampler": 0,
+        "source": 1
+      },
+      {
+        "sampler": 0,
+        "source": 2
+      }
+    ]
+  }
+  
+  
