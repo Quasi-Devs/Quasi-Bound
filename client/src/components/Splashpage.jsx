@@ -3,7 +3,9 @@ import React from 'react';
 const SplashPage = () => {
   const text = 'splash';
   return (
-    <div>{text}</div>
+    <div>
+      {text}
+    </div>
   );
 };
 

@@ -47,7 +47,7 @@
     "gsap": "^3.5.1",
     "http": "0.0.1-security",
     "husky": "^4.3.6",
-    "ml5": "^0.6.0",
+    "ml5": "^1.0.0",
     "nodemon": "^2.0.6",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",

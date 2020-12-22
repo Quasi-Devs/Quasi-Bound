@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import Navbar from './Navbar';
+
 import SplashPage from './Splashpage';
 import Homepage from './Homepage/Homepage';
 import Rules from './Homepage/Rules';
@@ -11,33 +13,36 @@ import GameEnv from './GameEnv/GameEnv';
 
 const App = () => {
   const user = 'user';
-
+  // console.info(window.location);
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          <SplashPage user={user} />
-        </Route>
-        <Route path="/home">
-          <Homepage />
-        </Route>
-        <Route path="/rules">
-          <Rules />
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/deck">
-          <Deck />
-        </Route>
-        <Route path="/playhub">
-          <PlayHub />
-        </Route>
-        <Route path="/game">
-          <GameEnv />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+    <div>
+      {window.location.pathname !== '/game' && <Navbar />}
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/">
+            <SplashPage user={user} />
+          </Route>
+          <Route path="/home">
+            <Homepage />
+          </Route>
+          <Route path="/rules">
+            <Rules />
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/deck">
+            <Deck />
+          </Route>
+          <Route path="/playhub">
+            <PlayHub />
+          </Route>
+          <Route path="/game">
+            <GameEnv />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 };
 
