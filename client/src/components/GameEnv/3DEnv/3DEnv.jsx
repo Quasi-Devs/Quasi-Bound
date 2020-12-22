@@ -3,6 +3,8 @@ import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
+import PropTypes from 'prop-types';
+import card from './cards/scene.gltf';
 import table from './models/scene.gltf';
 import img from './models/textures/wire_228214153_baseColor.jpeg';
 import img2 from './models/textures/wire_228214153_normal.png';
@@ -52,6 +54,27 @@ function Table() {
   );
 }
 
+function Cards({ position }) {
+  const group = useRef();
+  const { nodes } = useLoader(GLTFLoader, card);
+  // useFrame will run outside of react in animation frames to optimize updates.
+  useFrame(() => {
+    group.current.rotation.x = 0.9;
+  });
+  return (
+    // Add a ref to the group. This gives us a hook to
+    // manipulate the properties of this geometry in the useFrame callback.
+    <group ref={group} position={position}>
+      <mesh visible geometry={nodes.mesh_0.geometry} scale={new THREE.Vector3(0.02, 0.02, 0.02)}>
+        <meshPhongMaterial attach="material" color="gold" />
+      </mesh>
+    </group>
+  );
+}
+Cards.propTypes = {
+  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+};
+
 const ThreeDEnv = () => (
   <div>
     <div style={{ height: window.innerHeight * 0.73 }}>
@@ -63,6 +86,14 @@ const ThreeDEnv = () => (
         <spotLight position={[20, 20, 10]} angle={0.9} />
         <Suspense fallback={<Loading />}>
           <Table />
+          <Cards position={[6, 2, -13]} />
+          <Cards position={[1, 2, -13]} />
+          <Cards position={[-4, 2, -13]} />
+          <Cards position={[-9, 2, -13]} />
+          <Cards position={[-9, 10, -21]} />
+          <Cards position={[-4, 10, -21]} />
+          <Cards position={[1, 10, -21]} />
+          <Cards position={[6, 10, -21]} />
         </Suspense>
       </Canvas>
     </div>
