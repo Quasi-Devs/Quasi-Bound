@@ -3,6 +3,7 @@ import React from 'react';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => ({
   profileButton: {
@@ -34,8 +35,11 @@ const Navbar = ({ user = { session: 'd' } }) => {
         <div>{text}</div>
         <Button variant="contained" className={classes.button} color="primary" type="button">Google Translate</Button>
         <Button variant="contained" className={classes.button} color="primary" type="button">Play</Button>
-        {!user.session ? (<Button variant="contained" color="primary" type="button" className={classes.profileButton}>Login</Button>)
-          : (<Button variant="contained" color="primary" type="button" className={classes.profileButton} onClick={() => { window.location.href = '/profile'; }}>Profile</Button>)}
+        {!user.session ? (
+          <Link to="/auth"><Button variant="contained" color="primary" type="button" className={classes.profileButton}>Login</Button></Link>
+        ) : (
+          <Link to="/profile" className={classes.profileButton}><Button variant="contained" color="primary" type="button">Profile</Button></Link>
+        )}
       </Toolbar>
     </AppBar>
   );
