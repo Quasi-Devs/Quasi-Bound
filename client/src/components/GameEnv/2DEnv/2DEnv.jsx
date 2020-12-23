@@ -1,14 +1,29 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-param-reassign */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from './card';
 import './2denv.css';
 
 const TwoDEnv = ({ slots, setSlots }) => {
-  const resource = [true, true, true, true, true, true, true, false, false, false, false, false];
+  const [resource, setResource] = useState([
+    true, false, false, false, false, false, false, false, false, false, false, false]);
+  const [count, setCount] = useState(0);
   const cardInHand = [{}, {}, {}, {}, {}];
+
+  const handleResource = () => {
+    setCount(count + 1);
+    const counter = count + 1;
+    resource.map((val, i) => {
+      if (i <= counter) {
+        resource[i] = true;
+      }
+    });
+    setResource([...resource]);
+  };
+
   return (
     <div className="main">
       <div className="Resourceholder">
@@ -32,7 +47,7 @@ const TwoDEnv = ({ slots, setSlots }) => {
         {cardInHand.map((val, i) => <Card info={val} key={`${String(i)}`} />)}
       </div>
       <button type="submit">Surrender</button>
-      <button type="submit">End Turn</button>
+      <button type="submit" onClick={handleResource}>End Turn</button>
     </div>
   );
 };
