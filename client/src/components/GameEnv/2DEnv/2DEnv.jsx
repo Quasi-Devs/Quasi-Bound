@@ -1,7 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-param-reassign */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from './card';
@@ -20,6 +16,7 @@ const TwoDEnv = ({ slots, setSlots }) => {
       if (i <= counter) {
         resource[i] = true;
       }
+      return false;
     });
     setResource([...resource]);
   };
@@ -32,9 +29,11 @@ const TwoDEnv = ({ slots, setSlots }) => {
       <div className="placements">
         {slots.map((val, i) => (
           <div
+            aria-hidden="true"
             onClick={() => {
-              slots[i] = !val;
-              setSlots([...slots]);
+              const arr = slots;
+              arr[i] = !val;
+              setSlots([...arr]);
             }}
             className={val ? 'slots' : 'placed'}
             key={`${String(i)}`}

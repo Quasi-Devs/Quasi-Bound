@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
@@ -73,14 +72,16 @@ function Cards({ position, slot }) {
 
   prop.position[2] = -10;
 
-  if (slot) {
-    position = [0, 0, 100];
-  }
+  let posit;
 
+  if (slot) {
+    posit = [0, 0, 100];
+  }
+  posit = posit || position;
   return (
     // Add a ref to the group. This gives us a hook to
     // manipulate the properties of this geometry in the useFrame callback.
-    <group ref={group} position={clicked ? prop.position : position}>
+    <group ref={group} position={clicked ? prop.position : posit}>
       <mesh
         visible
         geometry={nodes.mesh_0.geometry}
