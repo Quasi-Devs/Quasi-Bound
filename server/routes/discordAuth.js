@@ -17,7 +17,7 @@ router.get(
           res.redirect('/');
           console.info(err);
         } else {
-          res.redirect('/home');
+          res.redirect('/rules');
         }
       }
     );
