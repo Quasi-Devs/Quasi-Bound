@@ -13,7 +13,7 @@ import './3denv.css';
 
 function Loading() {
   return (
-    <mesh rotation={[0, 0, 0]}>
+    <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
       <sphereGeometry attach="geometry" args={[1, 16, 16]} />
       <meshStandardMaterial
         attach="material"
@@ -108,6 +108,7 @@ const ThreeDEnv = ({ slots }) => (
         <spotLight position={[20, 20, 10]} angle={0.9} />
         <Suspense fallback={<Loading />}>
           <Table />
+          <Loading />
           <Cards position={[6, 2, -13]} slot={slots[3]} />
           <Cards position={[1, 2, -13]} slot={slots[2]} />
           <Cards position={[-4, 2, -13]} slot={slots[1]} />
@@ -118,8 +119,8 @@ const ThreeDEnv = ({ slots }) => (
           <Cards position={[6, 10, -21]} />
         </Suspense>
       </Canvas>
-      <span className="you">30</span>
-      <span className="enemy">30</span>
+      <span className="you">250</span>
+      <span className="enemy">250</span>
     </div>
   </div>
 );
