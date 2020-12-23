@@ -1,9 +1,10 @@
 require('./db/index');
 const express = require('express');
-const { Router } = require('express');
+// const { Router } = require('express');
 const session = require('express-session');
 const passport = require('passport');
-const router = Router();
+
+// const router = Router();
 
 const path = require('path');
 
@@ -11,7 +12,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const discordRoute = require('./routes/discordAuth');
-const discordStrategy = require('./auth/discordStrategy');
+// const discordStrategy = require('./auth/discordStrategy');
+require('./auth/discordStrategy');
 
 app.use(
   session({
@@ -21,7 +23,7 @@ app.use(
     },
     saveUninitialized: false,
     resave: true,
-  })
+  }),
 );
 
 app.use(passport.initialize());
