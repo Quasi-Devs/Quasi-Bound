@@ -15,7 +15,6 @@ router.get(
       (err, results) => {
         if (err) {
           res.redirect('/');
-          console.info(err);
         } else {
           res.redirect('/rules');
         }
