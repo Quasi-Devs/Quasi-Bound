@@ -32,7 +32,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif|wav|mp3|eot|ttf|woff|woff2)$/,
+        test: /\.(png|svg|jpg|gif|bin|jpeg|wav|mp3|eot|ttf|woff|woff2)$/,
         exclude: /node_modules/,
         use: [
           'file-loader',

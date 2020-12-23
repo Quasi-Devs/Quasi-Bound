@@ -1,0 +1,38 @@
+.ResourcePoints {
+    border: 3px solid black;
+    border-radius: 30px;
+    position: relative;
+    height: 20px;
+    width: 20px;
+}
+
+.Resourceholder {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1%;
+    width: 12%;
+    height: 10%;
+    /* border: 3px solid blue; */
+}
+
+.card {
+    border: 3px solid black;
+    height: 120px;
+    width: 60px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    width: 33%;
+    margin-left: 15%;
+    margin-right: 25%;
+    /* border: 3px solid blue; */
+}
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1%;
+    width: 80%;
+    /* border: 5px solid #ac4f22; */
+}
