@@ -9,6 +9,7 @@ import card from './cards/scene.gltf';
 import table from './models/scene.gltf';
 import img from './models/textures/wire_228214153_baseColor.jpeg';
 import img2 from './models/textures/wire_228214153_normal.png';
+import './3denv.css';
 
 function Loading() {
   return (
@@ -117,6 +118,8 @@ const ThreeDEnv = ({ slots }) => (
           <Cards position={[6, 10, -21]} />
         </Suspense>
       </Canvas>
+      <span className="you">30</span>
+      <span className="enemy">30</span>
     </div>
   </div>
 );
