@@ -53,7 +53,7 @@ const Rules = () => {
       </Grid>
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         className="agreeAndProceed"
         onClick={() => {
           history.push('/home');
