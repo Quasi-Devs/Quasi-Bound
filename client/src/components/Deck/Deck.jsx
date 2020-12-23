@@ -1,9 +1,13 @@
 import React from 'react';
+import SidebarDrawer from '../Homepage/Drawer';
 
 const Deck = () => {
   const text = 'deck';
   return (
-    <div>{text}</div>
+    <div>
+      <SidebarDrawer />
+      {text}
+    </div>
   );
 };
 
