@@ -95,7 +95,7 @@ const Profile = () => {
           </h4>
         </Card>
         <div className={classes.imgContainer}>
-          <img src="https://lh3.googleusercontent.com/ogw/ADGmqu9MRmV9th8CboJblJP0PiUDHGVVMKHE5tnQV3sqZg=s192-c-mo" alt="" />
+          <img src="https://lh3.googleusercontent.com/ogw/ADGmqu9MRmV9th8CboJblJP0PiUDHGVVMKHE5tnQV3sqZg=s192-c-mo" alt="thumbnail" />
         </div>
         <div>
           <Card>
