@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -57,15 +57,30 @@ function Table() {
 function Cards({ position }) {
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, card);
+  const [clicked, setClicker] = useState(false);
   // useFrame will run outside of react in animation frames to optimize updates.
   useFrame(() => {
     group.current.rotation.x = 0.9;
   });
+
+  const handleClick = () => setClicker(!clicked);
+
+  const prop = {
+    position: [...position],
+  };
+
+  prop.position[2] = -10;
+
   return (
     // Add a ref to the group. This gives us a hook to
     // manipulate the properties of this geometry in the useFrame callback.
-    <group ref={group} position={position}>
-      <mesh visible geometry={nodes.mesh_0.geometry} scale={new THREE.Vector3(0.02, 0.02, 0.02)}>
+    <group ref={group} position={clicked ? prop.position : position}>
+      <mesh
+        visible
+        geometry={nodes.mesh_0.geometry}
+        scale={clicked ? new THREE.Vector3(0.04, 0.04, 0.04) : new THREE.Vector3(0.02, 0.02, 0.02)}
+        onClick={handleClick}
+      >
         <meshPhongMaterial attach="material" color="gold" />
       </mesh>
     </group>
