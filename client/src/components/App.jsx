@@ -39,7 +39,6 @@ const App = () => {
           <Route path="/game">
             <GameEnv />
           </Route>
-          {/* <Route path="/deck/createCard" component={CreateCard} /> */}
         </Switch>
       </BrowserRouter>
     </div>

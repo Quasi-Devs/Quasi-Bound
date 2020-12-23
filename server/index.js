@@ -22,7 +22,7 @@ app.post('/upload', (req, res) => {
   form.on('file', (field, file) => {
     console.info(file.type.slice(0, 5));
   });
-  form.on('end', () => res.json());
+  form.on('end', () => res.json('hello'));
   form.parse(req);
 });
 

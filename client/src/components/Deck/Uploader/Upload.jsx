@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 // import axios from 'axios';
 import Dropzone from './Dropzone';
 import Progress from './Progress';
 import 'regenerator-runtime/runtime';
 
-const Upload = () => {
+const Upload = ({ setCardImage }) => {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState({});
@@ -18,6 +19,7 @@ const Upload = () => {
 
     req.upload.addEventListener('progress', (event) => {
       if (event.lengthComputable) {
+        console.info(event);
         const copy = { ...uploadProgress };
         copy[file.name] = {
           state: 'pending',
@@ -34,6 +36,7 @@ const Upload = () => {
         percentage: 100,
       };
       setUploadProgress(copy);
+      console.info(req.response);
       resolve(req.response);
     });
 
@@ -49,8 +52,8 @@ const Upload = () => {
 
     const formData = new FormData();
     formData.append('file', file, file.name);
-
     req.open('POST', 'http://localhost:8080/upload');
+    console.info(formData);
     req.send(formData);
   });
 
@@ -122,6 +125,10 @@ const Upload = () => {
       <div className="actions">{renderActions()}</div>
     </div>
   );
+};
+
+Upload.propTypes = {
+  setCardImage: PropTypes.func.isRequired,
 };
 
 export default Upload;
