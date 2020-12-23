@@ -1,10 +1,13 @@
 import React from 'react';
+import Upload from './Uploader/Upload';
+import './createCard.css';
 
-const CreateCard = () => {
-  const text = 'create card';
-  return (
-    <div>{text}</div>
-  );
-};
+const CreateCard = () => (
+  <div className="create">
+    <div className="uploader">
+      <Upload />
+    </div>
+  </div>
+);
 
 export default CreateCard;
