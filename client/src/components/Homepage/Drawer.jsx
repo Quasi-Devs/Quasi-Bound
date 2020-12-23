@@ -12,6 +12,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HomeIcon from '@material-ui/icons/Home';
 
 import { useHistory } from 'react-router-dom';
 
@@ -42,6 +43,7 @@ const SidebarDrawer = () => {
   const [drawer, setDrawer] = useState(false);
   const history = useHistory();
   const drawerItems = [
+    ['Home', '/home'],
     ['Guide', '/rules'],
     ['Profile', '/profile'],
     ['Deck Builder', '/deck'],
@@ -51,6 +53,7 @@ const SidebarDrawer = () => {
 
   const handleIcons = (page) => {
     const icons = [
+      ['Home', <HomeIcon className={clsx(classes.icon)} color="primary" />],
       ['Guide', <ListAltIcon className={clsx(classes.icon)} color="primary" />],
       [
         'Profile',

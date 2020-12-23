@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import('./Rules.css');
 import { Typography, Button, Card, Grid, Container } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -21,10 +21,11 @@ const Rules = () => {
   const text = 'rules';
   const history = useHistory();
   const classes = styles;
+  const [showDrawer, setShowDrawer] = useState(false);
 
   return (
     <div>
-      <SidebarDrawer />
+      {showDrawer ? <SidebarDrawer /> : null}
       <Grid container direction="column" alignItems="center">
         <Typography variant="h1">Rules</Typography>
         <Grid
@@ -57,7 +58,7 @@ const Rules = () => {
         <Button
           variant="contained"
           color="secondary"
-          className="agreeAndProceed"
+          className="acceptAndProceed"
           onClick={() => {
             history.push('/home');
           }}
