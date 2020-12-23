@@ -21,11 +21,13 @@ const Rules = () => {
   const text = 'rules';
   const history = useHistory();
   const classes = styles;
-  const [showDrawer, setShowDrawer] = useState(false);
+  const [showDrawer, setShowDrawer] = useState();
+  const [accepted, setAccepted] = useState(false);
+  console.log(accepted);
 
   return (
     <div>
-      {showDrawer ? <SidebarDrawer /> : null}
+      <SidebarDrawer />
       <Grid container direction="column" alignItems="center">
         <Typography variant="h1">Rules</Typography>
         <Grid
@@ -55,16 +57,21 @@ const Rules = () => {
             Attribute count: 0-1
           </Grid>
         </Grid>
-        <Button
-          variant="contained"
-          color="secondary"
-          className="acceptAndProceed"
-          onClick={() => {
-            history.push('/home');
-          }}
-        >
-          Accept & Proceed
-        </Button>
+        {accepted ? null : (
+          <Button
+            variant="contained"
+            color="secondary"
+            className="acceptAndProceed"
+            onClick={() => {
+              setAccepted(true);
+
+              setShowDrawer(true);
+              history.push('/home');
+            }}
+          >
+            Accept & Proceed
+          </Button>
+        )}
       </Grid>
     </div>
   );

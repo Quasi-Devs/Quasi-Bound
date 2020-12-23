@@ -1,5 +1,13 @@
 import React from 'react';
-import { Typography, Button, Card, Grid, Container } from '@material-ui/core';
+import {
+  Typography,
+  Button,
+  Card,
+  Grid,
+  Container,
+  Divider,
+  Box,
+} from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import './Homepage.css';
@@ -16,22 +24,37 @@ const useStyles = makeStyles({
     border: '1px solid gray',
     borderRadius: '5px',
     textAlign: 'center',
+    boxShadow: '3px 3px 3px 6px lightgrey',
   },
   rightDiv: {
-    height: '500px',
+    position: 'relative',
+    top: '5%',
+    height: '450px',
     display: 'inline',
-    width: '50%',
+    width: '67%',
     float: 'right',
-    borderLeft: '3px solid gray',
+    marginRight: '10px',
+    border: '2px solid gray',
+    backgroundColor: 'white',
+    boxShadow: '3px 3px 1px 1px black',
   },
   leftDiv: {
-    height: '500px',
+    position: 'relative',
+    top: '5%',
+    height: '450px',
     display: 'inline',
-    width: '49%',
+    width: '30%',
     float: 'left',
+    border: '2px solid gray',
+    marginLeft: '10px',
+    backgroundColor: 'white',
+    boxShadow: '3px 3px 1px 1px black',
   },
   container: {
     textAlign: 'center',
+  },
+  header: {
+    borderBottom: '1px solid gray',
   },
 });
 
@@ -45,11 +68,12 @@ const Homepage = () => {
       <SidebarDrawer />
       <Typography variant="h2">{greeting}</Typography>
       <div className={clsx(classes.mainDiv)}>
-        <div>
-          <h1 className={clsx(classes.leftDiv)}>Discord Live Chat</h1>
+        <div className={clsx(classes.leftDiv)}>
+          <h1 className={clsx(classes.header)}>Discord Live Chat</h1>
         </div>
-        <div>
-          <h1 className={clsx(classes.rightDiv)}>My Stats</h1>
+        <Box borderLeft={1} />
+        <div className={clsx(classes.rightDiv)}>
+          <h1 className={clsx(classes.header)}>My Stats</h1>
         </div>
       </div>
     </div>
