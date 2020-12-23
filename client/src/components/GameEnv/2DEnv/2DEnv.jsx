@@ -21,7 +21,7 @@ const TwoDEnv = ({ slots, setSlots }) => {
               slots[i] = !val;
               setSlots([...slots]);
             }}
-            className={val ? 'placed' : 'slots'}
+            className={val ? 'slots' : 'placed'}
             key={`${String(i)}`}
           >
             {}

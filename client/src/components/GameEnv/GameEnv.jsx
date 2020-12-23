@@ -3,10 +3,10 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 
 const GameEnv = () => {
-  const [slots, setSlots] = useState([false, false, false, false]);
+  const [slots, setSlots] = useState([true, true, true, true]);
   return (
     <div>
-      <ThreeDEnv slots={setSlots} />
+      <ThreeDEnv slots={slots} />
       <TwoDEnv slots={slots} setSlots={setSlots} />
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
@@ -54,7 +55,7 @@ function Table() {
   );
 }
 
-function Cards({ position }) {
+function Cards({ position, slot }) {
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, card);
   const [clicked, setClicker] = useState(false);
@@ -70,6 +71,10 @@ function Cards({ position }) {
   };
 
   prop.position[2] = -10;
+
+  if (slot) {
+    position = [0, 0, 100];
+  }
 
   return (
     // Add a ref to the group. This gives us a hook to
@@ -88,6 +93,7 @@ function Cards({ position }) {
 }
 Cards.propTypes = {
   position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  slot: PropTypes.bool.isRequired,
 };
 
 const ThreeDEnv = ({ slots }) => (
@@ -101,9 +107,9 @@ const ThreeDEnv = ({ slots }) => (
         <spotLight position={[20, 20, 10]} angle={0.9} />
         <Suspense fallback={<Loading />}>
           <Table />
-          <Cards position={[6, 2, -13]} />
-          <Cards position={[1, 2, -13]} />
-          <Cards position={[-4, 2, -13]} />
+          <Cards position={[6, 2, -13]} slot={slots[3]} />
+          <Cards position={[1, 2, -13]} slot={slots[2]} />
+          <Cards position={[-4, 2, -13]} slot={slots[1]} />
           <Cards position={[-9, 2, -13]} slot={slots[0]} />
           <Cards position={[-9, 10, -21]} />
           <Cards position={[-4, 10, -21]} />
