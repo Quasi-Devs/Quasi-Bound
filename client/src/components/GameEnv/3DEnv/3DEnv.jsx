@@ -90,7 +90,7 @@ Cards.propTypes = {
   position: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
-const ThreeDEnv = () => (
+const ThreeDEnv = ({ slots }) => (
   <div>
     <div style={{ height: window.innerHeight * 0.73 }}>
       <Canvas>
@@ -104,7 +104,7 @@ const ThreeDEnv = () => (
           <Cards position={[6, 2, -13]} />
           <Cards position={[1, 2, -13]} />
           <Cards position={[-4, 2, -13]} />
-          <Cards position={[-9, 2, -13]} />
+          <Cards position={[-9, 2, -13]} slot={slots[0]} />
           <Cards position={[-9, 10, -21]} />
           <Cards position={[-4, 10, -21]} />
           <Cards position={[1, 10, -21]} />
@@ -114,5 +114,8 @@ const ThreeDEnv = () => (
     </div>
   </div>
 );
+ThreeDEnv.propTypes = {
+  slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
+};
 
 export default ThreeDEnv;
