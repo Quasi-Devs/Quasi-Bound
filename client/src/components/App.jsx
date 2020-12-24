@@ -16,8 +16,8 @@ const App = () => {
   // console.info(window.location);
   return (
     <div>
-      {window.location.pathname !== '/game' && <Navbar />}
       <BrowserRouter>
+        {window.location.pathname !== '/game' && <Navbar />}
         <Switch>
           <Route exact path="/">
             <SplashPage user={user} />

@@ -77,7 +77,8 @@ const Homepage = () => {
           height="450"
           width="450"
           className={clsx(classes.leftDiv)}
-        ></iframe>
+          title="iframe"
+        />
         <Box borderLeft={1} />
         <div className={clsx(classes.rightDiv)}>
           <h1 className={clsx(classes.header)}>My Stats</h1>
