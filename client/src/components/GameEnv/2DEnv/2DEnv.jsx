@@ -23,6 +23,8 @@ const TwoDEnv = ({ slots, setSlots }) => {
 
   return (
     <div className="main">
+      <div className="deck">deck</div>
+      <div className="discard">discard</div>
       <div className="Resourceholder">
         {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
       </div>

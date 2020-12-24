@@ -64,6 +64,26 @@
     margin-right: 3px;
 }
 
+.deck {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    border: 3px solid black;
+    height: 120px;
+    left: 2.6%;
+    width: 60px;
+}
+
+.discard {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    border: 3px solid black;
+    height: 120px;
+    left: 8.5%;
+    width: 60px;
+}
+
 .main {
     display: flex;
     flex-wrap: wrap;

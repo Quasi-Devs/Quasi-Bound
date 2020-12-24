@@ -60,8 +60,15 @@ function Cards({ position, slot }) {
   const { nodes } = useLoader(GLTFLoader, card);
   const [clicked, setClicker] = useState(false);
   // useFrame will run outside of react in animation frames to optimize updates.
-  useFrame(() => {
-    group.current.rotation.x = 0.9;
+  useFrame(({ mouse }) => {
+    if (clicked) {
+      group.current.rotation.x = 1.5;
+      group.current.position.z = (mouse.y + 4) * -2;
+      group.current.position.y = (mouse.y + 4) * 2;
+      group.current.position.x = (mouse.x - 0.2) * 20;
+    } else {
+      group.current.rotation.x = 0.9;
+    }
   });
 
   const handleClick = () => setClicker(!clicked);
@@ -120,8 +127,8 @@ const ThreeDEnv = ({ slots }) => (
           <Cards position={[6, 10, -21]} />
         </Suspense>
       </Canvas>
-      <span className="you">250</span>
-      <span className="enemy">250</span>
+      <span className="you">you: 250</span>
+      <span className="enemy">enemy: 250</span>
     </div>
   </div>
 );
