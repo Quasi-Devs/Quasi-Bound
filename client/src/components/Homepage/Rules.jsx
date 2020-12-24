@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import('./Rules.css');
-import { Typography, Button, Card, Grid, Container } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import { Typography, Button, Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import SidebarDrawer from './Drawer';
 import { rules } from './rules.json';
+
+require('./Rules.css');
 
 const styles = {
   root: {
@@ -19,10 +21,7 @@ const styles = {
 };
 
 const Rules = () => {
-  const text = 'rules';
   const history = useHistory();
-  const classes = styles;
-  const [showDrawer, setShowDrawer] = useState();
   const [accepted, setAccepted] = useState(false);
 
   return (
@@ -36,8 +35,8 @@ const Rules = () => {
           alignItems="center"
           className="mainContainer"
         >
-          {rules.map((rule, i) => (
-            <Grid item className="gridItem" key={i}>
+          {rules.map((rule) => (
+            <Grid item className="gridItem" key={rule}>
               {rule}
             </Grid>
           ))}
@@ -49,8 +48,6 @@ const Rules = () => {
             className="acceptAndProceed"
             onClick={() => {
               setAccepted(true);
-
-              setShowDrawer(true);
               history.push('/home');
             }}
           >

@@ -71,14 +71,18 @@ const SidebarDrawer = () => {
 
     return icons.reduce((acc, item) => {
       if (item[0] === page) {
-        acc = item[1];
+        acc.push(item[1]);
       }
       return acc;
     }, []);
   };
 
   const listDrawerItems = () => (
-    <div className={clsx(classes.list)} onClick={() => setDrawer(false)}>
+    <List
+      className={clsx(classes.list)}
+      onClick={() => setDrawer(false)}
+      role="button"
+    >
       <List>
         {[...drawerMap].map((item) => (
           <div key={item[0]}>
@@ -99,21 +103,21 @@ const SidebarDrawer = () => {
       <Typography className={clsx(classes.copyright)}>
         Copyright 2020 Quasi Bound
       </Typography>
-    </div>
+    </List>
   );
 
   return (
-    <React.Fragment>
+    <div>
       <Button
         className={clsx(classes.drawerButton)}
         onClick={() => setDrawer(true)}
       >
-        {'Open Drawer'}
+        Open Drawer
       </Button>
-      <Drawer anchor={'right'} open={drawer} onClose={() => setDrawer(false)}>
+      <Drawer anchor="right" open={drawer} onClose={() => setDrawer(false)}>
         {listDrawerItems()}
       </Drawer>
-    </React.Fragment>
+    </div>
   );
 };
 

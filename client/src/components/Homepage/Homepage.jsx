@@ -1,18 +1,9 @@
 import React from 'react';
-import {
-  Typography,
-  Button,
-  Card,
-  Grid,
-  Container,
-  Divider,
-  Box,
-} from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { Typography, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import './Homepage.css';
-import SidebarDrawer from './Drawer';
 import clsx from 'clsx';
+import SidebarDrawer from './Drawer';
 
 const useStyles = makeStyles({
   mainDiv: {
@@ -58,7 +49,6 @@ const useStyles = makeStyles({
   },
   discord: {
     position: 'relative',
-    // top: '4px',
   },
 });
 
