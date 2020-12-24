@@ -4,6 +4,7 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'regenerator-runtime/runtime';
 
+import './upload.css';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
@@ -17,7 +18,6 @@ const Upload = () => {
       <span className="title">Upload Files</span>
       <div className="content">
         <div>
-          {/* <Dropzone onFiles={onFilesAdded} disabled={uploading || successfulUpload} /> */}
           <FilePond
             files={files}
             onupdatefiles={setFiles}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Upload from './Uploader/Upload';
+import Upload from './Upload';
 import './createCard.css';
 
 const CreateCard = () => {
