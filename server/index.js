@@ -26,7 +26,7 @@ app.post('/upload', (req, res) => {
   const form = new IncomingForm();
 
   form.on('file', (field, file) => {
-    console.info(file.type.slice(0, 5));
+    console.info(file.path);
   });
   form.on('end', () => res.json('hello'));
   form.parse(req);

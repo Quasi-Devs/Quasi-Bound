@@ -6,7 +6,7 @@ const CreateCard = () => {
   const [cardImage, setCardImage] = useState('https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/HB4AT3D3IMI6TMPTWIZ74WAR54.jpg');
 
   return (
-    <div className="create">
+    <div className="createCard">
       <div className="uploader">
         <Upload setCardImage={setCardImage} />
       </div>

@@ -1,5 +1,5 @@
 /* createCard component*/
-.create {
+.createCard {
   text-align: center;
   background-color: rgb(206, 213, 223);
   height: 58vw;
@@ -32,9 +32,6 @@
 }
 
 .content {
-  display: flex;
-  flex-direction: row;
-  padding-top: 16px;
   box-sizing: border-box;
   width: 100%;
 }
