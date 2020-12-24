@@ -56,6 +56,10 @@ const useStyles = makeStyles({
   header: {
     borderBottom: '1px solid gray',
   },
+  discord: {
+    position: 'relative',
+    // top: '4px',
+  },
 });
 
 const Homepage = () => {
@@ -68,9 +72,12 @@ const Homepage = () => {
       <SidebarDrawer />
       <Typography variant="h2">{greeting}</Typography>
       <div className={clsx(classes.mainDiv)}>
-        <div className={clsx(classes.leftDiv)}>
-          <h1 className={clsx(classes.header)}>Discord Live Chat</h1>
-        </div>
+        <iframe
+          src="https://e.widgetbot.io/channels/791403283356975145/791403283356975149"
+          height="450"
+          width="450"
+          className={clsx(classes.leftDiv)}
+        ></iframe>
         <Box borderLeft={1} />
         <div className={clsx(classes.rightDiv)}>
           <h1 className={clsx(classes.header)}>My Stats</h1>
