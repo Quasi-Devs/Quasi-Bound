@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from './card';
 import './2denv.css';
 
-const TwoDEnv = ({ slots, setSlots }) => {
+const TwoDEnv = ({ slots, setSlots, exampleData }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
   const [count, setCount] = useState(0);
-  const cardInHand = [{}, {}, {}, {}, {}];
+  const [deck, setDeck] = useState(exampleData);
+  const [cardInHand, setCardInHand] = useState([deck[0], deck[1], deck[2], deck[3], deck[4]]);
 
   const handleResource = () => {
+    setCardInHand(cardInHand);
+    setDeck(deck);
     setCount(count + 1);
     const counter = count + 1;
     resource.map((val, i) => {
@@ -20,6 +23,8 @@ const TwoDEnv = ({ slots, setSlots }) => {
     });
     setResource([...resource]);
   };
+
+  useEffect(() => deck.splice(0, 5), []);
 
   return (
     <div className="main">
@@ -56,6 +61,7 @@ const TwoDEnv = ({ slots, setSlots }) => {
 TwoDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   setSlots: PropTypes.func.isRequired,
+  exampleData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TwoDEnv;
