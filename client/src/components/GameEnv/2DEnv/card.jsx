@@ -2,31 +2,51 @@ import React, { useState } from 'react';
 import PropType from 'prop-types';
 import './2denv.css';
 
-const Card = ({ info }) => {
+const Card = ({
+  info, setClick, resourceCount, setTaken, i, setCardIndex,
+}) => {
   const [hover, setHover] = useState(false);
   const handleHover = () => setHover(!hover);
-  // console.log(info);
   return (
     <div aria-hidden="true" className={hover ? 'hover' : 'card'} onClick={handleHover}>
-      <div className={hover ? null : 'card_title'}>{info.title}</div>
-      <div className={hover ? null : 'card_resource'}>{info.point_resource}</div>
+      <div className={hover ? 'hover_title' : 'card_title'}>{info.title}</div>
+      <div className={hover ? 'hover_resource' : 'card_resource'}>{hover ? `cost: ${info.point_resource}` : info.point_resource}</div>
       <img className={hover ? 'hover_img' : 'card_img'} src={info.thumbnail} alt="thumbnail" />
-      <div className={hover ? null : 'card_stats'}>
+      <div className={hover ? 'hover_stats' : 'card_stats'}>
         <div>
-          A:
-          {info.point_attack}
+          {
+          hover ? `ATTACK: ${info.point_attack}`
+            : `A:${info.point_attack}`
+          }
         </div>
         <div>
-          H:
-          {info.point_health}
+          {
+            hover ? `HEALTH: ${info.point_health}`
+              : `H:${info.point_health}`
+          }
         </div>
         <div>
-          D:
-          {info.point_armor}
+          {
+            hover ? `DEFENSE: ${info.point_armor}` : `D:${info.point_armor}`
+          }
         </div>
       </div>
-      <div className={hover ? null : 'cardClass'}>{info.is_character ? 'Character' : 'Spell' }</div>
-      <div className={hover ? null : 'cardDesc'}>{info.description}</div>
+      <div className={hover ? 'hover_stats' : 'cardClass'}>{info.is_character ? 'Character' : 'Spell' }</div>
+      <div className={hover ? 'hover_stats' : 'cardDesc'}>{info.description}</div>
+      {hover ? (
+        <button
+          onClick={() => {
+            if (resourceCount >= info.point_resource) {
+              setTaken(info.point_resource);
+              setCardIndex(i);
+              setClick(true);
+            }
+          }}
+          type="submit"
+        >
+          {(resourceCount >= info.point_resource) ? 'ATTACK' : 'NOT ENOUGH RESOURCE'}
+        </button>
+      ) : null}
     </div>
   );
 };
@@ -41,6 +61,11 @@ Card.propTypes = {
     is_character: PropType.bool,
     description: PropType.string,
   }).isRequired,
+  setClick: PropType.func.isRequired,
+  resourceCount: PropType.number.isRequired,
+  setTaken: PropType.func.isRequired,
+  i: PropType.number.isRequired,
+  setCardIndex: PropType.func.isRequired,
 };
 
 export default Card;

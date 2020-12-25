@@ -95,6 +95,21 @@
     width: 240px;
 }
 
+.hover_title{
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.hover_resource {
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.hover_stats {
+    font-weight: bolder;
+    font-size: 18px;
+}
+
 .placements {
     display: flex;
     flex-wrap: wrap;
@@ -126,6 +141,8 @@
     height: 120px;
     left: 2.6%;
     width: 60px;
+    font-weight: bolder;
+    font-size: 12px;
 }
 
 .discard {
