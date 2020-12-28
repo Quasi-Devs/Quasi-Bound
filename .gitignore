@@ -101,3 +101,5 @@ bumble.js
 
 # TernJS port file
 .tern-port
+
+client/dist
