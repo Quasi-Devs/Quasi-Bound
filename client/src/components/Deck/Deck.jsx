@@ -1,4 +1,5 @@
 import React from 'react';
+import SidebarDrawer from '../Homepage/Drawer';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import { Container, Link, Button } from '@material-ui/core';
@@ -10,6 +11,7 @@ import Search from './Search';
 
 const Deck = ({ match }) => (
   <div className="deck">
+    <SidebarDrawer />
     <Route path={`${match.path}/cards`} component={CardsDisplay} />
     <Route path={`${match.path}/createCard`} component={CreateCard} />
     <Route path={`${match.path}/search`} component={Search} />

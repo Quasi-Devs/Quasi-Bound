@@ -1,0 +1,30 @@
+.mainContainer {
+  background-color: #5a6ad4;
+  width: 80%;
+  height: auto;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.gridItem {
+  /* border: 3px solid gray; */
+  border-radius: 5px;
+  padding: 5px;
+  margin: 13px;
+  background-color: white;
+  width: 90%;
+  transition: all 0.5s;
+  font-size: 25px;
+  border-bottom: 2px solid gray;
+}
+
+.gridItem:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.agreeAndProceed {
+  margin: 20px;
+  float: right;
+}
