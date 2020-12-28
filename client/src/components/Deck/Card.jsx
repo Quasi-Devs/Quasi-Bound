@@ -2,21 +2,21 @@ import React from 'react';
 import PropType from 'prop-types';
 import './card.css';
 
-const Card = ({ card }) => {
-  const text = 'card';
-  return (
-    <div className="cardDisplay">
+const Card = ({ card }) => (
+  <div className="cardDisplay">
+    <div className="cardHeader">
       <div className="cardTitle">{card.title}</div>
-      <img className="cardThumbnail" src={card.thumbnail} alt="" />
-      <div className="cardStats">
-        <div className="stat">{card.point_health}</div>
-        <div className="stat">{card.point_attack}</div>
-        <div className="stat">{card.point_armor}</div>
-      </div>
-      <div>{card.description}</div>
+      <div className="cardResource">{card.point_resource}</div>
     </div>
-  );
-};
+    <img className="cardThumbnail" src={card.thumbnail} alt="" />
+    <div className="cardStats">
+      <div className="stat">{card.point_health}</div>
+      <div className="stat">{card.point_attack}</div>
+      <div className="stat">{card.point_armor}</div>
+    </div>
+    <div>{card.description}</div>
+  </div>
+);
 
 Card.propTypes = {
   card: PropType.shape({

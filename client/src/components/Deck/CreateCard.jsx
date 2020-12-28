@@ -8,7 +8,7 @@ const CreateCard = () => {
   return (
     <div className="createCard">
       <div className="uploader">
-        <Upload setCardImage={setCardImage} />
+        <Upload setCardImage={setCardImage} cardImage={cardImage} />
       </div>
       {cardImage !== '' && <img src={cardImage} alt="" width="300" />}
     </div>
