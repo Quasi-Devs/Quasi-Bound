@@ -1,0 +1,19 @@
+/* upload component */
+.upload {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+  text-align: left;
+  overflow: hidden;
+}
+
+.content {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.title {
+  margin-bottom: 32px;
+  color: #555;
+}

@@ -7,10 +7,11 @@ import ml5 from 'ml5';
 import axios from 'axios';
 import 'regenerator-runtime/runtime';
 
+import './upload.css';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import Prob from '../../../../helpers/probabilityHelpers';
-import statCollector from '../../../../helpers/statCollector';
+import Prob from '../../../helpers/probabilityHelpers';
+import statCollector from '../../../helpers/statCollector';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 

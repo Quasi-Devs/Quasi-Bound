@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './createCard.css';
 import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Upload from './Uploader/Upload';
+import Upload from './Upload';
 
 const useStyles = makeStyles(() => ({
 
