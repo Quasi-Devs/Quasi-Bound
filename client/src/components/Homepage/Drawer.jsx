@@ -83,23 +83,21 @@ const SidebarDrawer = () => {
       onClick={() => setDrawer(false)}
       role="button"
     >
-      <List>
-        {[...drawerMap].map((item) => (
-          <div key={item[0]}>
-            <Divider />
-            <ListItem
-              button
-              key={item[0]}
-              onClick={() => {
-                history.push(item[1]);
-              }}
-            >
-              {handleIcons(item[0])}
-              <ListItemText primary={item[0]} />
-            </ListItem>
-          </div>
-        ))}
-      </List>
+      {[...drawerMap].map((item) => (
+        <div key={item[0] + item[0]}>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              history.push(item[1]);
+            }}
+          >
+            {handleIcons(item[0])}
+            <ListItemText primary={item[0]} />
+          </ListItem>
+        </div>
+      ))}
+
       <Typography className={clsx(classes.copyright)}>
         Copyright 2020 Quasi Bound
       </Typography>
