@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 import Card from './card';
 import './2denv.css';
 
@@ -7,7 +8,7 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
   const [count, setCount] = useState(0);
-  const [deck, setDeck] = useState(exampleData);
+  const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [cardInHand, setCardInHand] = useState([deck[0], deck[1], deck[2], deck[3], deck[4]]);
   const [cardIndex, setCardIndex] = useState(0);
   const [clicked, setClick] = useState(false);
