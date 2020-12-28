@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Upload from './Uploader/Upload';
+import './createCard.css';
 
 const CreateCard = () => {
-  const text = 'create card';
+  const [cardImage, setCardImage] = useState('https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/HB4AT3D3IMI6TMPTWIZ74WAR54.jpg');
+
   return (
-    <div>{text}</div>
+    <div className="createCard">
+      <div className="uploader">
+        <Upload setCardImage={setCardImage} />
+      </div>
+      {cardImage !== '' && <img src={cardImage} alt="" width="300" />}
+    </div>
   );
 };
 
