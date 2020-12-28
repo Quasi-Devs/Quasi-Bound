@@ -28,13 +28,8 @@ function Loading() {
 
 function Table() {
   const texture = new THREE.TextureLoader().load(img);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(1.0, 0.6);
   const texture2 = new THREE.TextureLoader().load(img2);
-  texture2.wrapS = THREE.RepeatWrapping;
-  texture2.wrapT = THREE.RepeatWrapping;
-  texture2.repeat.set(1.0, 0.6);
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, table);
   // useFrame will run outside of react in animation frames to optimize updates.
@@ -60,8 +55,15 @@ function Cards({ position, slot }) {
   const { nodes } = useLoader(GLTFLoader, card);
   const [clicked, setClicker] = useState(false);
   // useFrame will run outside of react in animation frames to optimize updates.
-  useFrame(() => {
-    group.current.rotation.x = 0.9;
+  useFrame(({ mouse }) => {
+    if (clicked) {
+      group.current.rotation.x = 1.5;
+      group.current.position.z = (mouse.y + 4) * -2;
+      group.current.position.y = (mouse.y + 4) * 2;
+      group.current.position.x = (mouse.x - 0.2) * 20;
+    } else {
+      group.current.rotation.x = 0.9;
+    }
   });
 
   const handleClick = () => setClicker(!clicked);
@@ -120,8 +122,8 @@ const ThreeDEnv = ({ slots }) => (
           <Cards position={[6, 10, -21]} />
         </Suspense>
       </Canvas>
-      <span className="you">250</span>
-      <span className="enemy">250</span>
+      <span className="you">you: 250</span>
+      <span className="enemy">enemy: 250</span>
     </div>
   </div>
 );

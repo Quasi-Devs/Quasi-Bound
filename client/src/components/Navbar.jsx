@@ -38,7 +38,7 @@ const Navbar = ({ user = { session: 'd' } }) => {
         {!user.session ? (
           <Link to="/auth"><Button variant="contained" color="primary" type="button" className={classes.profileButton}>Login</Button></Link>
         ) : (
-          <Link to="/profile" className={classes.profileButton}><Button variant="contained" color="primary" type="button">Profile</Button></Link>
+          <Link to="/profile"><Button variant="contained" color="primary" type="button" className={classes.profileButton}>Profile</Button></Link>
         )}
       </Toolbar>
     </AppBar>

@@ -23,6 +23,55 @@
     width: 60px;
 }
 
+.card_title {
+    height: 10%;
+    width: 70%;
+    /* border: 3px solid blue; */
+    overflow: hidden;
+    font-size: 9px;
+    font-weight: bolder;
+}
+
+.card_resource {
+    height: 10%;
+    width: 20%;
+    margin-left: 8%;
+    font-weight: bolder;
+}
+
+.card_img {
+    border-radius: 30px;
+    /* border: 3px solid black; */
+    position: relative;
+    height: 50px;
+    width: 30px;
+    bottom: 20%
+}
+
+.card_stats {
+    display: table-column;
+    width: 20px;
+    /* border: 3px solid blue; */
+    font-size: 12px;
+    position: relative;
+    bottom: 20%;
+    left: 5%
+}
+
+.cardClass {
+    position: absolute;
+    bottom: 10%;
+}
+
+.cardDesc {
+    height: 25px;
+    width: 55px;
+    /* border: 3px solid blue; */
+    position: absolute;
+    overflow: hidden;
+    bottom: 5%;
+}
+
 .cards {
     display: flex;
     flex-wrap: wrap;
@@ -39,6 +88,26 @@
     width: 240px;
     background-color: yellow;
     bottom: 75%;
+}
+
+.hover_img {
+    height: 200px;
+    width: 240px;
+}
+
+.hover_title{
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.hover_resource {
+    font-weight: bolder;
+    font-size: 18px;
+}
+
+.hover_stats {
+    font-weight: bolder;
+    font-size: 18px;
 }
 
 .placements {
@@ -62,6 +131,28 @@
     background-color: red;
     width: 20px;
     margin-right: 3px;
+}
+
+.deck {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    border: 3px solid black;
+    height: 120px;
+    left: 2.6%;
+    width: 60px;
+    font-weight: bolder;
+    font-size: 12px;
+}
+
+.discard {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    border: 3px solid black;
+    height: 120px;
+    left: 8.5%;
+    width: 60px;
 }
 
 .main {
