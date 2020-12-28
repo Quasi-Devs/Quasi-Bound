@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Grid } from '@material-ui/core';
+import cards from '../../../../cardSampleData.json';
+import Card from './Card';
+import './search.css';
 
 const Search = () => {
-  const text = 'search';
+  const [allCards, setAllCards] = useState(cards);
+
   return (
-    <div>{text}</div>
+    <Grid container direction="row" justify="space-evenly" alignItems="center">
+      {allCards.map((card, i) => <Card key={card + i} card={card} />)}
+    </Grid>
   );
 };
 

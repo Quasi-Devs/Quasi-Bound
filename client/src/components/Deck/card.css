@@ -1,0 +1,15 @@
+.cardDisplay {
+  border: solid 1px black;
+  width: 150px;
+  height: 300px;
+}
+
+.cardThumbnail {
+  width: 100%;
+  height: 200px;
+}
+
+.cardStats {
+  display: flex;
+  justify-content: space-evenly;
+}
