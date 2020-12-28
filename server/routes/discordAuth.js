@@ -19,9 +19,9 @@ router.get(
         } else {
           res.redirect('/rules');
         }
-      }
+      },
     );
-  }
+  },
 );
 
 module.exports = router;

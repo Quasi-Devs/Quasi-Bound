@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Upload from './Uploader/Upload';
+import Upload from './Upload';
 import './createCard.css';
 
 const CreateCard = () => {
@@ -8,7 +8,7 @@ const CreateCard = () => {
   return (
     <div className="createCard">
       <div className="uploader">
-        <Upload setCardImage={setCardImage} />
+        <Upload setCardImage={setCardImage} cardImage={cardImage} />
       </div>
       {cardImage !== '' && <img src={cardImage} alt="" width="300" />}
     </div>

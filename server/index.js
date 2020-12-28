@@ -2,11 +2,11 @@ require('./db/index');
 const express = require('express');
 const cors = require('cors');
 const { IncomingForm } = require('formidable');
-const { Router } = require('express');
+// const { Router } = require('express');
 const session = require('express-session');
 const passport = require('passport');
 
-const router = Router();
+// const router = Router();
 
 const path = require('path');
 
@@ -33,7 +33,8 @@ app.post('/upload', (req, res) => {
 });
 
 const discordRoute = require('./routes/discordAuth');
-const discordStrategy = require('./auth/discordStrategy');
+// const discordStrategy = require('./auth/discordStrategy');
+require('./auth/discordStrategy');
 
 app.use(
   session({
