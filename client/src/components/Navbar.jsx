@@ -34,7 +34,7 @@ const Navbar = ({ user = { session: 'd' } }) => {
       <Toolbar className={classes.container}>
         <div>{text}</div>
         <Button variant="contained" className={classes.button} color="primary" type="button">Google Translate</Button>
-        <Button variant="contained" className={classes.button} color="primary" type="button">Play</Button>
+        <Link to="/playhub" className={classes.button}><Button variant="contained" color="primary" type="button">Play</Button></Link>
         {!user.session ? (
           <Link to="/auth"><Button variant="contained" color="primary" type="button" className={classes.profileButton}>Login</Button></Link>
         ) : (
