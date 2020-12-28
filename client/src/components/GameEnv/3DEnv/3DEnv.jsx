@@ -28,13 +28,8 @@ function Loading() {
 
 function Table() {
   const texture = new THREE.TextureLoader().load(img);
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(1.0, 0.6);
   const texture2 = new THREE.TextureLoader().load(img2);
-  texture2.wrapS = THREE.RepeatWrapping;
-  texture2.wrapT = THREE.RepeatWrapping;
-  texture2.repeat.set(1.0, 0.6);
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, table);
   // useFrame will run outside of react in animation frames to optimize updates.
