@@ -318,9 +318,9 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     if (fNf.label === 'Fly') {
       description += '\n Fly.';
     }
-    card.point_attack = attack;
-    card.point_health = health;
-    card.point_armor = armor;
+    card.attack = attack;
+    card.health = health;
+    card.armor = armor;
   } else {
     if (isParadise) {
       if (typeParadise.includes('health')) {
@@ -370,11 +370,11 @@ const setup = async (thumbnail, ml5, Prob, title) => {
   }
   card.title = title;
   card.thumbnail = thumbnail;
-  card.size = tySmMLgGiTi;
-  card.point_resource = Object.keys(resourcePoints)[Object.values(
+  card.size = tySmMLgGiTi.label;
+  card.rp = Object.keys(resourcePoints)[Object.values(
     resourcePoints,
   ).indexOf(totalPoints)];
-  card.is_character = cA.label === 'character';
+  card.isCharacter = cA.label === 'character';
   card.description = description;
   return card;
 };
