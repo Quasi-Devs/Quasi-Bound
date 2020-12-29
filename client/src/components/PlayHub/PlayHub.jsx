@@ -1,8 +1,8 @@
-/* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './playhub.css';
 import { Link, Redirect } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
+import { io } from 'socket.io-client';
 
 const socket = io();
 
@@ -12,8 +12,7 @@ const PlayHub = () => {
   const [socketId, setSocketId] = useState(null);
   const [GoOn, setGoOn] = useState(false);
   const handleModal = () => setOpen(!Open);
-  useEffect(() => socket.emit('Id'), []);
-  socket.on('SocketId', (id) => setSocketId(id));
+  socket.on('connect', () => setSocketId(socket.id));
   socket.on(`${socketId}`, () => {
     setGoOn(true);
   });

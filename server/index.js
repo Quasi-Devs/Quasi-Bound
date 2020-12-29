@@ -61,9 +61,6 @@ app.get('*', (req, res) => {
 
 const players = [];
 io.on('connection', (socket) => {
-  socket.on('Id', () => {
-    socket.emit('SocketId', socket.id);
-  });
   socket.on('Queue', () => {
     players.push(socket.id);
     if (players.length % 2 === 0 && players.length) {
