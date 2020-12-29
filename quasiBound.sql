@@ -36,7 +36,8 @@ CREATE TABLE "card" (
   "point_attack" int,
   "point_defence" int,
   "point_armor" int,
-  "is_character" boolean
+  "is_character" boolean,
+  "size" varchar
 );
 
 CREATE TABLE "card_attribute" (
