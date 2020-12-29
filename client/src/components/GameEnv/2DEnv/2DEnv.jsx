@@ -55,9 +55,9 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
           <div
             aria-hidden="true"
             onClick={() => {
-              if (clicked && val) {
+              if (clicked && !val) {
                 const arr = slots;
-                arr[i] = !val;
+                arr[i] = clicked;
                 setSlots([...arr]);
                 setClick(false);
                 cardInHand.splice(cardIndex, 1);
@@ -68,7 +68,7 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
                 setClick(false);
               }
             }}
-            className={val ? 'slots' : 'placed'}
+            className={val ? 'placed' : 'slots'}
             key={`${String(i)}`}
           >
             {}

@@ -5,11 +5,12 @@ import exampleData from '../../../example';
 
 // console.log(exampleData);
 const GameEnv = () => {
-  const [slots, setSlots] = useState([true, true, true, true]);
+  const [yourSlots, setYourSlots] = useState([false, false, false, false]);
+  const [enemySlots] = useState([false, false, false, false]);
   return (
     <div>
-      <ThreeDEnv slots={slots} />
-      <TwoDEnv slots={slots} setSlots={setSlots} exampleData={exampleData} />
+      <ThreeDEnv slots={[...yourSlots, ...enemySlots]} />
+      <TwoDEnv slots={yourSlots} setSlots={setYourSlots} exampleData={exampleData} />
     </div>
   );
 };

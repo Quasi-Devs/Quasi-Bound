@@ -39,7 +39,7 @@ const Card = ({
             if (resourceCount >= info.point_resource) {
               setTaken(info.point_resource);
               setCardIndex(i);
-              setClick(true);
+              setClick(info);
             }
           }}
           type="submit"

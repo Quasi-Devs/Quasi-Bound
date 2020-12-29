@@ -76,7 +76,7 @@ function Cards({ position, slot }) {
 
   let posit;
 
-  if (slot) {
+  if (!slot) {
     posit = [0, 0, 100];
   }
   posit = posit || position;
@@ -116,10 +116,10 @@ const ThreeDEnv = ({ slots }) => (
           <Cards position={[1, 2, -13]} slot={slots[2]} />
           <Cards position={[-4, 2, -13]} slot={slots[1]} />
           <Cards position={[-9, 2, -13]} slot={slots[0]} />
-          <Cards position={[-9, 10, -21]} />
-          <Cards position={[-4, 10, -21]} />
-          <Cards position={[1, 10, -21]} />
-          <Cards position={[6, 10, -21]} />
+          <Cards position={[-9, 10, -21]} slot={slots[4]} />
+          <Cards position={[-4, 10, -21]} slot={slots[5]} />
+          <Cards position={[1, 10, -21]} slot={slots[6]} />
+          <Cards position={[6, 10, -21]} slot={slots[7]} />
         </Suspense>
       </Canvas>
       <span className="you">you: 250</span>
