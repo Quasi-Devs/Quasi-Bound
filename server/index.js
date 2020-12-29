@@ -5,12 +5,15 @@ const { IncomingForm } = require('formidable');
 // const { Router } = require('express');
 const session = require('express-session');
 const passport = require('passport');
-
+const http = require('http');
+const socketio = require('socket.io');
 // const router = Router();
 
 const path = require('path');
 
 const app = express();
+const sever = http.createServer(app);
+const io = socketio(sever);
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const corsOptions = {
@@ -56,6 +59,26 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
-app.listen(PORT, () => {
+const players = [];
+io.on('connection', (socket) => {
+  socket.on('Id', () => {
+    socket.emit('SocketId', socket.id);
+  });
+  socket.on('Queue', () => {
+    players.push(socket.id);
+    if (players.length % 2 === 0 && players.length) {
+      io.emit(`${players.shift()}`);
+      io.emit(`${players.shift()}`);
+    }
+  });
+  socket.on('DeQueue', () => {
+    const index = players.indexOf(socket.id);
+    if (index > -1) {
+      players.splice(index, 1);
+    }
+  });
+});
+
+sever.listen(PORT, () => {
   console.info(`http://localhost:${PORT}`);
 });
