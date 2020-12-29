@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Navbar = ({ user = { session: 'd' } }) => {
+const Navbar = ({ user = { session: '' } }) => {
   const classes = useStyles();
   const text = 'navbar';
   return (

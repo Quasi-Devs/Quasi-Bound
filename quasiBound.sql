@@ -58,6 +58,12 @@ CREATE TABLE "leaderboard" (
   "id_user" int
 );
 
+CREATE TABLE "game" (
+  "id" SERIAL PRIMARY KEY,
+  "id_player" int,
+  "id_opponent" int
+);
+
 ALTER TABLE "card_attribute" ADD FOREIGN KEY ("id_card") REFERENCES "card" ("id");
 
 ALTER TABLE "deck_card" ADD FOREIGN KEY ("id_deck") REFERENCES "deck" ("id");
