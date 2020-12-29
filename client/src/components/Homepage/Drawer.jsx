@@ -13,6 +13,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
+import axios from 'axios';
 
 import { useHistory } from 'react-router-dom';
 
@@ -89,6 +90,12 @@ const SidebarDrawer = () => {
           <ListItem
             button
             onClick={() => {
+              if (item[0] === 'Log Out') {
+                axios.get('/data/logout')
+                  .then(() => {
+                    window.location.reload();
+                  });
+              }
               history.push(item[1]);
             }}
           >

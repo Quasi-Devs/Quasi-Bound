@@ -25,10 +25,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Navbar = ({ user = { session: '' } }) => {
+const Navbar = ({ user }) => {
+  console.info(user);
   const classes = useStyles();
   const text = 'navbar';
-
   const history = useHistory();
 
   return (
@@ -60,13 +60,13 @@ const Navbar = ({ user = { session: '' } }) => {
           color="primary"
           type="button"
           onClick={() => {
-            history.push('/game');
+            history.push('/playhub');
           }}
         >
           Play
         </Button>
-        {!user.session ? (
-          <Link to="/auth">
+        {!user ? (
+          <a href="/auth">
             <Button
               variant="contained"
               color="primary"
@@ -75,7 +75,7 @@ const Navbar = ({ user = { session: '' } }) => {
             >
               Login
             </Button>
-          </Link>
+          </a>
         ) : (
           <Link to="/profile" className={classes.profileButton}>
             <Button variant="contained" color="primary" type="button">

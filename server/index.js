@@ -7,7 +7,6 @@ const passport = require('passport');
 const http = require('http');
 const socketio = require('socket.io');
 // const router = Router();
-
 const path = require('path');
 
 const app = express();
