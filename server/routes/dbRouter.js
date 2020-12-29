@@ -13,9 +13,7 @@ dbRouter.get('/cards', async (req, res) => {
 });
 
 dbRouter.post('/cards', async (req, res) => {
-  console.info('test');
   await Card.createCard(req.body);
-  console.info('succsss!');
   res.sendStatus(201);
 });
 
