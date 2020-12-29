@@ -4,7 +4,7 @@ import { Typography, Button, Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import SidebarDrawer from './Drawer';
-import { rules } from './rules.json';
+import rules from './rules.json';
 
 require('./Rules.css');
 
@@ -35,7 +35,7 @@ const Rules = () => {
           alignItems="center"
           className="mainContainer"
         >
-          {rules.map((rule) => (
+          {rules.rules.map((rule) => (
             <Grid item className="gridItem" key={rule}>
               {rule}
             </Grid>

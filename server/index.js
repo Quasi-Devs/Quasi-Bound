@@ -1,12 +1,9 @@
 require('./db/index');
 const express = require('express');
 const cors = require('cors');
-const { IncomingForm } = require('formidable');
-// const { Router } = require('express');
 const session = require('express-session');
+const multer = require('multer');
 const passport = require('passport');
-
-// const router = Router();
 
 const path = require('path');
 
@@ -17,24 +14,28 @@ const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200,
 };
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
+
+app.disable('x-powered-by');
+app.use(multerMid.single('file'));
 
 app.use(express.json());
 app.use(express.static(dirPath));
 app.use(cors(corsOptions));
 
 app.post('/upload', (req, res) => {
-  const form = new IncomingForm();
-
-  form.on('file', (field, file) => {
-    console.info(file.path);
-  });
-  form.on('end', () => res.json('hello'));
-  form.parse(req);
+  const From = Buffer.from;
+  const b64 = new From(req.file.buffer).toString('base64');
+  const mimeType = 'img/png';
+  res.send(`data:${mimeType};base64,${b64}`);
 });
 
 const discordRoute = require('./routes/discordAuth');
-// const discordStrategy = require('./auth/discordStrategy');
-require('./auth/discordStrategy');
 
 app.use(
   session({
