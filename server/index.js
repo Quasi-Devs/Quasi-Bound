@@ -1,4 +1,3 @@
-require('./db/index');
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
@@ -36,6 +35,7 @@ app.post('/upload', (req, res) => {
 });
 
 const discordRoute = require('./routes/discordAuth');
+const dbRouter = require('./routes/dbRouter');
 
 app.use(
   session({
@@ -52,7 +52,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/auth', discordRoute);
-
+app.use('/data', dbRouter);
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
