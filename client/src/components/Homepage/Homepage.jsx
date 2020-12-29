@@ -68,6 +68,7 @@ const Homepage = () => {
           width="450"
           className={clsx(classes.leftDiv)}
           title="iframe"
+          mentions="true"
         />
         <Box borderLeft={1} />
         <div className={clsx(classes.rightDiv)}>
