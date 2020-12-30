@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { io } from 'socket.io-client';
 import _ from 'underscore';
 import Card from './card';
 import './2denv.css';
 
-const TwoDEnv = ({ slots, setSlots, exampleData }) => {
+const socket = io();
+const TwoDEnv = ({
+  slots, setSlots, exampleData, user,
+}) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
   const [count, setCount] = useState(0);
@@ -56,6 +60,7 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
               if (clicked && !val) {
                 const arr = slots;
                 arr[i] = clicked;
+                socket.emit('placed', user.id_enemy, [...arr]);
                 setSlots([...arr]);
                 setClick(false);
                 cardInHand.splice(cardIndex, 1);
@@ -86,6 +91,7 @@ TwoDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   setSlots: PropTypes.func.isRequired,
   exampleData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  user: PropTypes.element.isRequired,
 };
 
 export default TwoDEnv;

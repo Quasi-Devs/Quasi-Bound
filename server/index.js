@@ -67,6 +67,12 @@ app.get('*', (req, res) => {
 
 const players = [];
 io.on('connection', (socket) => {
+  socket.on('placed', (enemy, array) => {
+    io.emit(`${enemy}`, array);
+  });
+  socket.on('Name', (name, id) => {
+    io.emit(`${id}Name`, name);
+  });
   socket.on('Queue', (id) => {
     players.push(id);
     if (players.length % 2 === 0 && players.length) {
