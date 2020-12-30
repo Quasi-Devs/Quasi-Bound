@@ -15,19 +15,19 @@ const Card = ({
       <div className={hover ? 'hover_stats' : 'card_stats'}>
         <div>
           {
-          hover ? `ATTACK: ${info.point_attack}`
-            : `A:${info.point_attack}`
+          hover ? `ATTACK: ${info.point_attack || 0}`
+            : `A:${info.point_attack || 0}`
           }
         </div>
         <div>
           {
-            hover ? `HEALTH: ${info.point_health}`
-              : `H:${info.point_health}`
+            hover ? `HEALTH: ${info.point_health || 0}`
+              : `H:${info.point_health || 0}`
           }
         </div>
         <div>
           {
-            hover ? `DEFENSE: ${info.point_armor}` : `D:${info.point_armor}`
+            hover ? `DEFENSE: ${info.point_armor || 0}` : `D:${info.point_armor || 0}`
           }
         </div>
       </div>
@@ -39,7 +39,7 @@ const Card = ({
             if (resourceCount >= info.point_resource) {
               setTaken(info.point_resource);
               setCardIndex(i);
-              setClick(true);
+              setClick(info);
             }
           }}
           type="submit"

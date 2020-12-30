@@ -21,10 +21,8 @@ const Upload = ({
   const [files, setFiles] = useState([]);
 
   const uploadFile = async () => {
-    console.info(files[0].file.name);
     const form = new FormData();
     form.append('file', files[0].file, files[0].file.name);
-    // console.log(form);
     const { data: url } = await axios.post('/upload', form, { 'Content-Type': 'multipart/form-data' });
     setCardImage(url);
     const stats = await statCollector(url, ml5, Prob, title);

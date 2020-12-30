@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
 
 import Navbar from './Navbar';
 
@@ -13,11 +14,14 @@ import PlayHub from './PlayHub/PlayHub';
 import GameEnv from './GameEnv/GameEnv';
 
 const App = () => {
-  const user = 'user';
+  const [user, setUser] = useState(null);
+  const [nav, setNav] = useState(true);
+  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), []);
+  console.info('here', window.location.pathname, 'here');
   return (
     <div className="root">
       <BrowserRouter>
-        {window.location.pathname !== '/game' && <Navbar />}
+        {(window.location.pathname !== '/game' && nav) ? <Navbar user={user} /> : null}
         {window.location.pathname.slice(0, 5) === '/deck' && <DeckHeader />}
         <Switch>
           <Route exact path="/">
@@ -34,10 +38,10 @@ const App = () => {
           </Route>
           <Route path="/deck" component={Deck} />
           <Route path="/playhub">
-            <PlayHub />
+            <PlayHub user={user} />
           </Route>
           <Route path="/game">
-            <GameEnv />
+            <GameEnv setNav={setNav} />
           </Route>
         </Switch>
       </BrowserRouter>

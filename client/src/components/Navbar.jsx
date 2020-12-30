@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -26,10 +25,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Navbar = ({ user = { session: 'd' } }) => {
+const Navbar = ({ user }) => {
   const classes = useStyles();
   const text = 'navbar';
-
   const history = useHistory();
 
   return (
@@ -61,13 +59,13 @@ const Navbar = ({ user = { session: 'd' } }) => {
           color="primary"
           type="button"
           onClick={() => {
-            history.push('/game');
+            history.push('/playhub');
           }}
         >
           Play
         </Button>
-        {!user.session ? (
-          <Link to="/auth">
+        {!user ? (
+          <a href="/auth">
             <Button
               variant="contained"
               color="primary"
@@ -76,7 +74,7 @@ const Navbar = ({ user = { session: 'd' } }) => {
             >
               Login
             </Button>
-          </Link>
+          </a>
         ) : (
           <Link to="/profile" className={classes.profileButton}>
             <Button variant="contained" color="primary" type="button">

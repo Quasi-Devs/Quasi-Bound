@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { io } from 'socket.io-client';
 import _ from 'underscore';
 import Card from './card';
 import './2denv.css';
 
-const TwoDEnv = ({ slots, setSlots, exampleData }) => {
+const socket = io();
+const TwoDEnv = ({
+  slots, setSlots, exampleData, user,
+}) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
   const [count, setCount] = useState(0);
@@ -14,8 +18,6 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
   const [clicked, setClick] = useState(false);
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
-  // console.info(slots);
-
   const handleResource = (num, check) => {
     if (check) {
       setCount(num);
@@ -55,9 +57,10 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
           <div
             aria-hidden="true"
             onClick={() => {
-              if (clicked && val) {
+              if (clicked && !val) {
                 const arr = slots;
-                arr[i] = !val;
+                arr[i] = clicked;
+                socket.emit('placed', user.id_enemy, [...arr]);
                 setSlots([...arr]);
                 setClick(false);
                 cardInHand.splice(cardIndex, 1);
@@ -68,7 +71,7 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
                 setClick(false);
               }
             }}
-            className={val ? 'slots' : 'placed'}
+            className={val ? 'placed' : 'slots'}
             key={`${String(i)}`}
           >
             {}
@@ -88,6 +91,7 @@ TwoDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   setSlots: PropTypes.func.isRequired,
   exampleData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  user: PropTypes.element.isRequired,
 };
 
 export default TwoDEnv;
