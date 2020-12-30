@@ -26,6 +26,6 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       done(null, profile);
-    }
-  )
+    },
+  ),
 );
