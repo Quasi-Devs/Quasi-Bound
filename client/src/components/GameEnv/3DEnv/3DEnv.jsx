@@ -2,6 +2,7 @@ import React, { Suspense, useRef, useState } from 'react';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import card from './cards/scene.gltf';
@@ -10,6 +11,7 @@ import img from './models/textures/wire_228214153_baseColor.jpeg';
 import img2 from './models/textures/wire_228214153_normal.png';
 import './3denv.css';
 
+const socket = io();
 function Loading() {
   return (
     <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
@@ -76,7 +78,7 @@ function Cards({ position, slot }) {
 
   let posit;
 
-  if (slot) {
+  if (!slot) {
     posit = [0, 0, 100];
   }
   posit = posit || position;
@@ -100,35 +102,45 @@ Cards.propTypes = {
   slot: PropTypes.bool.isRequired,
 };
 
-const ThreeDEnv = ({ slots }) => (
-  <div>
-    <div style={{ height: window.innerHeight * 0.73 }}>
-      <Canvas>
-        <color attach="background" args={['gray']} />
-        <OrbitControls />
-        <directionalLight intensity={0.5} />
-        <ambientLight intensity={0.5} />
-        <spotLight position={[20, 20, 10]} angle={0.9} />
-        <Suspense fallback={<Loading />}>
-          <Table />
-          <Loading />
-          <Cards position={[6, 2, -13]} slot={slots[3]} />
-          <Cards position={[1, 2, -13]} slot={slots[2]} />
-          <Cards position={[-4, 2, -13]} slot={slots[1]} />
-          <Cards position={[-9, 2, -13]} slot={slots[0]} />
-          <Cards position={[-9, 10, -21]} />
-          <Cards position={[-4, 10, -21]} />
-          <Cards position={[1, 10, -21]} />
-          <Cards position={[6, 10, -21]} />
-        </Suspense>
-      </Canvas>
-      <span className="you">you: 250</span>
-      <span className="enemy">enemy: 250</span>
+const ThreeDEnv = ({ slots, user }) => {
+  const [enemyName, setEnemyName] = useState('enemy');
+  if (user) {
+    socket.emit('Name', user.name_user, user.id);
+    socket.on(`${user.id_enemy}Name`, (name) => {
+      setEnemyName(name);
+    });
+  }
+  return (
+    <div>
+      <div style={{ height: window.innerHeight * 0.73 }}>
+        <Canvas>
+          <color attach="background" args={['gray']} />
+          <OrbitControls />
+          <directionalLight intensity={0.5} />
+          <ambientLight intensity={0.5} />
+          <spotLight position={[20, 20, 10]} angle={0.9} />
+          <Suspense fallback={<Loading />}>
+            <Table />
+            <Loading />
+            <Cards position={[6, 2, -13]} slot={slots[3]} />
+            <Cards position={[1, 2, -13]} slot={slots[2]} />
+            <Cards position={[-4, 2, -13]} slot={slots[1]} />
+            <Cards position={[-9, 2, -13]} slot={slots[0]} />
+            <Cards position={[-9, 10, -21]} slot={slots[4]} />
+            <Cards position={[-4, 10, -21]} slot={slots[5]} />
+            <Cards position={[1, 10, -21]} slot={slots[6]} />
+            <Cards position={[6, 10, -21]} slot={slots[7]} />
+          </Suspense>
+        </Canvas>
+        <span className="you">{user ? `${user.name_user}: 250` : null}</span>
+        <span className="enemy">{`${enemyName}: 250`}</span>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 ThreeDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  user: PropTypes.element.isRequired,
 };
 
 export default ThreeDEnv;

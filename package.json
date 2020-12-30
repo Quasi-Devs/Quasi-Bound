@@ -69,6 +69,7 @@
     "react-three-fiber": "^5.3.10",
     "regenerator-runtime": "^0.13.7",
     "socket.io": "^3.0.4",
+    "socket.io-client": "^3.0.4",
     "three": "^0.123.0",
     "underscore": "^1.12.0",
     "use-asset": "^0.2.0",
