@@ -14,8 +14,6 @@ const TwoDEnv = ({ slots, setSlots, exampleData }) => {
   const [clicked, setClick] = useState(false);
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
-  // console.info(slots);
-
   const handleResource = (num, check) => {
     if (check) {
       setCount(num);

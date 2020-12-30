@@ -26,7 +26,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Navbar = ({ user }) => {
-  console.info(user);
   const classes = useStyles();
   const text = 'navbar';
   const history = useHistory();

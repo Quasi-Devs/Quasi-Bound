@@ -16,6 +16,7 @@ import GameEnv from './GameEnv/GameEnv';
 const App = () => {
   const [user, setUser] = useState(null);
   useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), []);
+  console.info('here', window.location.pathname, 'here');
   return (
     <div className="root">
       <BrowserRouter>

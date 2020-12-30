@@ -3,7 +3,6 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 
-// console.log(exampleData);
 const GameEnv = () => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots] = useState([false, false, false, false]);
