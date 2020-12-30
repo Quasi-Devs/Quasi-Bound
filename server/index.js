@@ -73,6 +73,9 @@ io.on('connection', (socket) => {
   socket.on('Name', (name, id) => {
     io.emit(`${id}Name`, name);
   });
+  socket.on('end', (id) => {
+    io.emit(`${id}Turn`);
+  });
   socket.on('Queue', (id) => {
     players.push(id);
     if (players.length % 2 === 0 && players.length) {

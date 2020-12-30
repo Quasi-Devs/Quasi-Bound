@@ -17,7 +17,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [nav, setNav] = useState(true);
   useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), []);
-  console.info('here', window.location.pathname, 'here');
   return (
     <div className="root">
       <BrowserRouter>
