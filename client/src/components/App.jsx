@@ -38,7 +38,7 @@ const App = () => {
           </Route>
           <Route path="/deck" component={Deck} />
           <Route path="/playhub">
-            <PlayHub />
+            <PlayHub user={user} />
           </Route>
           <Route path="/game">
             <GameEnv setNav={setNav} />

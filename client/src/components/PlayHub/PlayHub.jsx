@@ -3,19 +3,19 @@ import './playhub.css';
 import { Link, Redirect } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
 import { io } from 'socket.io-client';
+import PropTypes from 'prop-types';
 
 const socket = io();
-
-const PlayHub = () => {
+const PlayHub = ({ user }) => {
   const text = 'play hub';
   const [Open, setOpen] = useState(false);
-  const [socketId, setSocketId] = useState(null);
   const [GoOn, setGoOn] = useState(false);
   const handleModal = () => setOpen(!Open);
-  socket.on('connect', () => setSocketId(socket.id));
-  socket.on(`${socketId}`, () => {
-    setGoOn(true);
-  });
+  if (user) {
+    socket.on(`${user.id}`, () => {
+      setGoOn(true);
+    });
+  }
   return (
     <div className="main">
       {GoOn ? <Redirect to="/game" /> : null}
@@ -27,7 +27,7 @@ const PlayHub = () => {
           className="button"
           onClick={() => {
             handleModal();
-            socket.emit('Queue');
+            socket.emit('Queue', user.id);
           }}
         >
           Find Match
@@ -39,7 +39,7 @@ const PlayHub = () => {
               type="submit"
               onClick={() => {
                 handleModal();
-                socket.emit('DeQueue');
+                socket.emit('DeQueue', user.id);
               }}
             >
               Cancel
@@ -59,5 +59,7 @@ const PlayHub = () => {
     </div>
   );
 };
-
+PlayHub.propTypes = {
+  user: PropTypes.element.isRequired,
+};
 export default PlayHub;
