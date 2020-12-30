@@ -6,8 +6,9 @@ const multer = require('multer');
 const passport = require('passport');
 const http = require('http');
 const socketio = require('socket.io');
-// const router = Router();
 const path = require('path');
+const User = require('./db/models/user');
+// const router = Router();
 
 const app = express();
 const sever = http.createServer(app);
@@ -66,15 +67,21 @@ app.get('*', (req, res) => {
 
 const players = [];
 io.on('connection', (socket) => {
-  socket.on('Queue', () => {
-    players.push(socket.id);
+  socket.on('Queue', (id) => {
+    players.push(id);
     if (players.length % 2 === 0 && players.length) {
+      players.forEach((player) => {
+        if (player !== id) {
+          User.addEnemy(id, player);
+          User.addEnemy(player, id);
+        }
+      });
       io.emit(`${players.shift()}`);
       io.emit(`${players.shift()}`);
     }
   });
-  socket.on('DeQueue', () => {
-    const index = players.indexOf(socket.id);
+  socket.on('DeQueue', (id) => {
+    const index = players.indexOf(id);
     if (index > -1) {
       players.splice(index, 1);
     }
