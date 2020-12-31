@@ -15,19 +15,47 @@ const GameEnv = ({ setNav }) => {
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [handleEnd, setHandleEnd] = useState(false);
-  const [HP] = useState(250);
-  const [enemyHP] = useState(250);
+  const [HP, setHP] = useState(250);
+  const [enemyHP, setEnemyHP] = useState(250);
 
-  // working on removing 0HP cards not working
+  socket.once(`${user.id}Turn`, () => {
+    console.info('HIT');
+    setHandleEnd(true);
+    setTurn(true);
+  });
+
+  socket.on(`${user.id}`, (array, card) => {
+    // console.info('HIT');
+    setEnemySlots(array);
+    setYourSlots(card);
+  });
+
+  // handels end of turn calulations
   if (handleEnd && turn) {
     yourSlots.map((val, i) => {
-      if (val.point_health === 0) {
+      if (val) {
+        if (enemySlots[i]) {
+          if (val.point_attack) {
+            enemySlots[i].point_health -= val.point_attack;
+          }
+        } else {
+          setEnemyHP(enemyHP - val.point_attack);
+        }
+      }
+      if (!val.point_health) {
         yourSlots[i] = false;
       }
       return null;
     });
     enemySlots.map((val, i) => {
-      if (val.point_health === 0) {
+      if (val) {
+        if (yourSlots[i]) {
+          yourSlots[i].point_health -= val.point_attack;
+        } else {
+          setHP(HP - val.point_attack);
+        }
+      }
+      if (!val.point_health) {
         enemySlots[i] = false;
       }
       return null;
@@ -37,13 +65,6 @@ const GameEnv = ({ setNav }) => {
     setHandleEnd(false);
   }
 
-  socket.on(`${user.id}`, (array) => {
-    setEnemySlots(array);
-  });
-  socket.on(`${user.id}Turn`, () => {
-    setHandleEnd(true);
-    setTurn(!turn);
-  });
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
@@ -61,6 +82,7 @@ const GameEnv = ({ setNav }) => {
         user={user}
         setTurn={setTurn}
         turn={turn}
+        enemySlots={enemySlots}
       />
     </div>
   );

@@ -67,15 +67,19 @@ app.get('*', (req, res) => {
 
 const players = [];
 io.on('connection', (socket) => {
-  socket.on('placed', (enemy, array) => {
-    io.emit(`${enemy}`, array);
+  socket.on('placed', (enemy, array, card) => {
+    io.emit(`${enemy}`, array, card);
   });
+
   socket.on('Name', (name, id) => {
     io.emit(`${id}Name`, name);
   });
+
   socket.on('end', (id) => {
+    // console.info('here');
     io.emit(`${id}Turn`);
   });
+
   socket.on('Queue', (id) => {
     players.push(id);
     if (players.length % 2 === 0 && players.length) {

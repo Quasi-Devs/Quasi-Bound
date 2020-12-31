@@ -6,7 +6,7 @@ import './2denv.css';
 
 const socket = io();
 const TwoDEnv = ({
-  slots, setSlots, deck, user, setTurn, setDeck, turn,
+  slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots,
 }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
@@ -62,7 +62,7 @@ const TwoDEnv = ({
                   if (clicked && !val) {
                     const arr = slots;
                     arr[i] = clicked;
-                    socket.emit('placed', user.id_enemy, [...arr]);
+                    socket.emit('placed', user.id_enemy, [...arr], enemySlots);
                     setSlots([...arr]);
                     setClick(false);
                     cardInHand.splice(cardIndex, 1);
@@ -99,6 +99,7 @@ TwoDEnv.propTypes = {
   setTurn: PropTypes.element.isRequired,
   setDeck: PropTypes.element.isRequired,
   turn: PropTypes.element.isRequired,
+  enemySlots: PropTypes.element.isRequired,
 };
 
 export default TwoDEnv;
