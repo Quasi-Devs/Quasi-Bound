@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Card = require('../db/models/card');
+const Deck = require('../db/models/deck');
 const User = require('../db/models/user');
 
 const dbRouter = Router();
@@ -26,6 +27,26 @@ dbRouter.get('/logout', (req, res) => {
   res.clearCookie('QuasiBoundId');
   req.session.destroy();
   res.redirect('/');
+});
+
+dbRouter.post('/deck', async (req, res) => {
+  await Deck.createDeck(req.body);
+  res.sendStatus(201);
+});
+
+dbRouter.get('/deck/:id', async (req, res) => {
+  const decks = await Deck.getDecksByUser(req.params.id);
+  res.status(200).json(decks);
+});
+
+dbRouter.post('/addcard', async (req, res) => {
+  await Deck.addCardToDeck(req.body);
+  res.sendStatus(201);
+});
+
+dbRouter.get('/deckcards/:id', async (req, res) => {
+  const cards = await Deck.getCardsFromDeck(req.params.id);
+  res.status(200).send(cards);
 });
 
 module.exports = dbRouter;
