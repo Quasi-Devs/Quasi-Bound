@@ -19,57 +19,70 @@ const GameEnv = ({ setNav }) => {
   const [enemyHP, setEnemyHP] = useState(250);
 
   socket.once(`${user.id}Turn`, () => {
-    console.info('HIT');
     setHandleEnd(true);
     setTurn(true);
   });
 
+  socket.once(`${user.id}hp`, (hp, hp2) => {
+    if (hp !== null) {
+      setHP(hp);
+    }
+    if (hp2 !== null) {
+      setEnemyHP(hp2);
+    }
+  });
+
   socket.on(`${user.id}`, (array, card) => {
-    // console.info('HIT');
     setEnemySlots(array);
     setYourSlots(card);
   });
-
-  // handels end of turn calulations
-  if (handleEnd && turn) {
-    yourSlots.map((val, i) => {
-      if (val) {
-        if (enemySlots[i]) {
-          if (val.point_attack) {
-            enemySlots[i].point_health -= val.point_attack;
-          }
-        } else {
-          setEnemyHP(enemyHP - val.point_attack);
-        }
-      }
-      if (!val.point_health) {
-        yourSlots[i] = false;
-      }
-      return null;
-    });
-    enemySlots.map((val, i) => {
-      if (val) {
-        if (yourSlots[i]) {
-          yourSlots[i].point_health -= val.point_attack;
-        } else {
-          setHP(HP - val.point_attack);
-        }
-      }
-      if (!val.point_health) {
-        enemySlots[i] = false;
-      }
-      return null;
-    });
-    setEnemySlots([...enemySlots]);
-    setYourSlots([...yourSlots]);
-    setHandleEnd(false);
-  }
 
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
     setTurn(data.id > data.id_enemy);
   }), []);
+
+  useEffect(() => {
+    if (handleEnd && turn) {
+      yourSlots.map((val, i) => {
+        if (val) {
+          if (enemySlots[i]) {
+            if (val.point_attack) {
+              enemySlots[i].point_health -= val.point_attack;
+            }
+          } else if (val.point_attack) {
+            socket.emit('HP', user.id_enemy, enemyHP - val.point_attack, null);
+            setEnemyHP(enemyHP - val.point_attack);
+          }
+        }
+        return null;
+      });
+      enemySlots.map((val, i) => {
+        if (val) {
+          if (yourSlots[i]) {
+            if (val.point_attack) {
+              yourSlots[i].point_health -= val.point_attack;
+            }
+          } else if (val.point_attack) {
+            socket.emit('HP', user.id_enemy, null, HP - val.point_attack);
+            setHP(HP - val.point_attack);
+          }
+        }
+        if (!val.point_health || val.point_health <= 0) {
+          enemySlots[i] = false;
+        }
+        if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
+          yourSlots[i] = false;
+        }
+        return null;
+      });
+      console.info(enemyHP, HP);
+      setEnemySlots([...enemySlots]);
+      setYourSlots([...yourSlots]);
+      setHandleEnd(false);
+    }
+  }, [turn]);
 
   return (
     <div>
@@ -83,6 +96,8 @@ const GameEnv = ({ setNav }) => {
         setTurn={setTurn}
         turn={turn}
         enemySlots={enemySlots}
+        enemyHP={enemyHP}
+        HP={HP}
       />
     </div>
   );

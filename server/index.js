@@ -76,8 +76,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('end', (id) => {
-    // console.info('here');
     io.emit(`${id}Turn`);
+  });
+
+  socket.on('HP', (id, hp, Ehp) => {
+    io.emit(`${id}hp`, hp, Ehp);
   });
 
   socket.on('Queue', (id) => {
