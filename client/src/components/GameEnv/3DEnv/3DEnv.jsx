@@ -102,7 +102,9 @@ Cards.propTypes = {
   slot: PropTypes.bool.isRequired,
 };
 
-const ThreeDEnv = ({ slots, user }) => {
+const ThreeDEnv = ({
+  slots, user, enemyHP, HP,
+}) => {
   const [enemyName, setEnemyName] = useState('enemy');
   if (user) {
     socket.emit('Name', user.name_user, user.id);
@@ -132,8 +134,8 @@ const ThreeDEnv = ({ slots, user }) => {
             <Cards position={[6, 10, -21]} slot={slots[7]} />
           </Suspense>
         </Canvas>
-        <span className="you">{user ? `${user.name_user}: 250` : null}</span>
-        <span className="enemy">{`${enemyName}: 250`}</span>
+        <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+        <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
       </div>
     </div>
   );
@@ -141,6 +143,8 @@ const ThreeDEnv = ({ slots, user }) => {
 ThreeDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   user: PropTypes.element.isRequired,
+  enemyHP: PropTypes.element.isRequired,
+  HP: PropTypes.element.isRequired,
 };
 
 export default ThreeDEnv;
