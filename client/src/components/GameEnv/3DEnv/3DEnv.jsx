@@ -1,4 +1,8 @@
-import React, { Suspense, useRef, useState } from 'react';
+import React, {
+  Suspense, useRef, useState, useEffect,
+} from 'react';
+import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
+import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -10,6 +14,28 @@ import table from './models/scene.gltf';
 import img from './models/textures/wire_228214153_baseColor.jpeg';
 import img2 from './models/textures/wire_228214153_normal.png';
 import './3denv.css';
+
+function DOMObject({
+  dom, position, scale, rotation,
+}) {
+  const { scene } = useThreeCSS3D();
+  const ref = useRef(CSS3DObject);
+  // useFrameCSS3D(() => {
+  //   ref.current!.rotation.x = ref.current!.rotation.y += 0.01
+  // })
+  // useFrameCSS3D(() => {
+  //   ref.current!.rotation.x += 0.01
+  // })
+  useEffect(() => {
+    ref.current = new CSS3DObject(dom.current);
+    ref.current.position.copy(position);
+    ref.current.scale.copy(scale);
+    ref.current.rotation.copy(rotation);
+    scene.add(ref.current);
+    return () => scene.remove(ref.current);
+  }, [dom, scene, position, scale, rotation]);
+  return null;
+}
 
 const socket = io();
 function Loading() {
@@ -102,7 +128,9 @@ Cards.propTypes = {
   slot: PropTypes.bool.isRequired,
 };
 
-const ThreeDEnv = ({ slots, user }) => {
+const ThreeDEnv = ({
+  slots, user, enemyHP, HP,
+}) => {
   const [enemyName, setEnemyName] = useState('enemy');
   if (user) {
     socket.emit('Name', user.name_user, user.id);
@@ -110,37 +138,55 @@ const ThreeDEnv = ({ slots, user }) => {
       setEnemyName(name);
     });
   }
+  const ref = useRef(null);
+  const [cameraY] = useState(30);
+  const size = 100;
   return (
-    <div>
-      <div style={{ height: window.innerHeight * 0.73 }}>
-        <Canvas>
-          <color attach="background" args={['gray']} />
-          <OrbitControls />
-          <directionalLight intensity={0.5} />
-          <ambientLight intensity={0.5} />
-          <spotLight position={[20, 20, 10]} angle={0.9} />
-          <Suspense fallback={<Loading />}>
-            <Table />
-            <Loading />
-            <Cards position={[6, 2, -13]} slot={slots[3]} />
-            <Cards position={[1, 2, -13]} slot={slots[2]} />
-            <Cards position={[-4, 2, -13]} slot={slots[1]} />
-            <Cards position={[-9, 2, -13]} slot={slots[0]} />
-            <Cards position={[-9, 10, -21]} slot={slots[4]} />
-            <Cards position={[-4, 10, -21]} slot={slots[5]} />
-            <Cards position={[1, 10, -21]} slot={slots[6]} />
-            <Cards position={[6, 10, -21]} slot={slots[7]} />
-          </Suspense>
-        </Canvas>
-        <span className="you">{user ? `${user.name_user}: 250` : null}</span>
-        <span className="enemy">{`${enemyName}: 250`}</span>
+    <>
+      <div>
+        <div style={{ height: window.innerHeight * 0.73 }}>
+          <Canvas>
+            <color attach="background" args={['gray']} />
+            <OrbitControls />
+            <directionalLight intensity={0.5} />
+            <ambientLight intensity={0.5} />
+            <spotLight position={[20, 20, 10]} angle={0.9} />
+            <Suspense fallback={<Loading />}>
+              <Table />
+              <Loading />
+              <Cards position={[6, 2, -13]} slot={slots[3]} />
+              <Cards position={[1, 2, -13]} slot={slots[2]} />
+              <Cards position={[-4, 2, -13]} slot={slots[1]} />
+              <Cards position={[-9, 2, -13]} slot={slots[0]} />
+              <Cards position={[-9, 10, -21]} slot={slots[4]} />
+              <Cards position={[-4, 10, -21]} slot={slots[5]} />
+              <Cards position={[1, 10, -21]} slot={slots[6]} />
+              <Cards position={[6, 10, -21]} slot={slots[7]} />
+            </Suspense>
+          </Canvas>
+          <CanvasCSS3D style={{ position: 'absolute', top: '0' }} camera={{ position: [0, cameraY, 150] }}>
+            <DOMObject
+              dom={ref}
+              rotation={new THREE.Euler(Math.PI / 4, 0, 0)}
+              position={new THREE.Vector3(0, 0, 0)}
+              scale={new THREE.Vector3(1, 1, 1)}
+            />
+          </CanvasCSS3D>
+          <div style={{ background: 'green', width: `${size}px`, height: `${size}px` }} ref={ref}>
+            hello testing
+          </div>
+          <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+          <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 ThreeDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   user: PropTypes.element.isRequired,
+  enemyHP: PropTypes.element.isRequired,
+  HP: PropTypes.element.isRequired,
 };
 
 export default ThreeDEnv;
