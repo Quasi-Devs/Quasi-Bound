@@ -101,5 +101,5 @@ client/dist/
 
 # TernJS port file
 .tern-port
-
+config/
 client/dist
