@@ -2,35 +2,62 @@ import React, {
   Suspense, useRef, useState, useEffect,
 } from 'react';
 import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
-import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D } from 'react-three-fiber/css3d';
+import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { OrbitControls } from 'drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
-import card from './cards/scene.gltf';
 import table from './models/scene.gltf';
 import img from './models/textures/wire_228214153_baseColor.jpeg';
 import img2 from './models/textures/wire_228214153_normal.png';
 import './3denv.css';
+import '../2DEnv/2denv.css';
 
 function DOMObject({
-  dom, position, scale, rotation,
+  dom, position, scale, rotation, slot, clicked,
 }) {
   const { scene } = useThreeCSS3D();
   const ref = useRef(CSS3DObject);
-  // useFrameCSS3D(() => {
-  //   ref.current!.rotation.x = ref.current!.rotation.y += 0.01
-  // })
-  // useFrameCSS3D(() => {
-  //   ref.current!.rotation.x += 0.01
-  // })
+  const pos = position;
+  let rot = rotation;
+  CSSFrame(({ mouse }) => {
+    if (clicked) {
+      rot = [1.5, 0, 0];
+      ref.current.rotation.x = 0.1;
+      ref.current.position.x = (mouse.x - 0.2) * 500;
+      ref.current.position.y = (mouse.y + 4) * 100;
+      ref.current.position.z = (mouse.y + 4) * -100;
+    } else {
+      rot = [-0.9, 0, 0];
+    }
+  });
+  if (clicked) {
+    rot = [0.5, 0, 0];
+    pos[2] = (pos[2] + 4) / 2;
+    pos[1] = (pos[1] + 4) * 2;
+    pos[0] = (pos[0] - 0.2) / 4;
+  }
+  const prop = {
+    position: [...position],
+  };
+
+  prop.position[2] = -10;
+
+  let posit;
+
+  if (!slot) {
+    posit = [0, 0, 100];
+  }
+  posit = posit || position;
+  const newPos = new THREE.Vector3(posit[0] * 75, posit[1] * 10, posit[2] * 140);
+  const newRot = new THREE.Euler(rot[0], rot[1], rot[2]);
   useEffect(() => {
     ref.current = new CSS3DObject(dom.current);
-    ref.current.position.copy(position);
+    ref.current.position.copy(newPos);
     ref.current.scale.copy(scale);
-    ref.current.rotation.copy(rotation);
+    ref.current.rotation.copy(newRot);
     scene.add(ref.current);
     return () => scene.remove(ref.current);
   }, [dom, scene, position, scale, rotation]);
@@ -60,13 +87,10 @@ function Table() {
   const texture2 = new THREE.TextureLoader().load(img2);
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, table);
-  // useFrame will run outside of react in animation frames to optimize updates.
   useFrame(() => {
     group.current.rotation.x = 5.5;
   });
   return (
-    // Add a ref to the group. This gives us a hook
-    // to manipulate the properties of this geometry in the useFrame callback.
     <group ref={group} position={[-12, -17, -23]}>
       <mesh visible geometry={nodes.mesh_1.geometry}>
         <meshPhongMaterial attach="material" map={texture2} />
@@ -78,59 +102,10 @@ function Table() {
   );
 }
 
-function Cards({ position, slot }) {
-  const group = useRef();
-  const { nodes } = useLoader(GLTFLoader, card);
-  const [clicked, setClicker] = useState(false);
-  // useFrame will run outside of react in animation frames to optimize updates.
-  useFrame(({ mouse }) => {
-    if (clicked) {
-      group.current.rotation.x = 1.5;
-      group.current.position.z = (mouse.y + 4) * -2;
-      group.current.position.y = (mouse.y + 4) * 2;
-      group.current.position.x = (mouse.x - 0.2) * 20;
-    } else {
-      group.current.rotation.x = 0.9;
-    }
-  });
-
-  const handleClick = () => setClicker(!clicked);
-
-  const prop = {
-    position: [...position],
-  };
-
-  prop.position[2] = -10;
-
-  let posit;
-
-  if (!slot) {
-    posit = [0, 0, 100];
-  }
-  posit = posit || position;
-  return (
-    // Add a ref to the group. This gives us a hook to
-    // manipulate the properties of this geometry in the useFrame callback.
-    <group ref={group} position={clicked ? prop.position : posit}>
-      <mesh
-        visible
-        geometry={nodes.mesh_0.geometry}
-        scale={clicked ? new THREE.Vector3(0.04, 0.04, 0.04) : new THREE.Vector3(0.02, 0.02, 0.02)}
-        onClick={handleClick}
-      >
-        <meshPhongMaterial attach="material" color="gold" />
-      </mesh>
-    </group>
-  );
-}
-Cards.propTypes = {
-  position: PropTypes.arrayOf(PropTypes.number).isRequired,
-  slot: PropTypes.bool.isRequired,
-};
-
 const ThreeDEnv = ({
   slots, user, enemyHP, HP,
 }) => {
+  const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
   if (user) {
     socket.emit('Name', user.name_user, user.id);
@@ -138,9 +113,11 @@ const ThreeDEnv = ({
       setEnemyName(name);
     });
   }
-  const ref = useRef(null);
+  const refs = [useRef(null), useRef(null), useRef(null),
+    useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
   const [cameraY] = useState(30);
-  const size = 100;
+  const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
+    [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
   return (
     <>
       <div>
@@ -154,27 +131,71 @@ const ThreeDEnv = ({
             <Suspense fallback={<Loading />}>
               <Table />
               <Loading />
-              <Cards position={[6, 2, -13]} slot={slots[3]} />
-              <Cards position={[1, 2, -13]} slot={slots[2]} />
-              <Cards position={[-4, 2, -13]} slot={slots[1]} />
-              <Cards position={[-9, 2, -13]} slot={slots[0]} />
-              <Cards position={[-9, 10, -21]} slot={slots[4]} />
-              <Cards position={[-4, 10, -21]} slot={slots[5]} />
-              <Cards position={[1, 10, -21]} slot={slots[6]} />
-              <Cards position={[6, 10, -21]} slot={slots[7]} />
             </Suspense>
           </Canvas>
-          <CanvasCSS3D style={{ position: 'absolute', top: '0' }} camera={{ position: [0, cameraY, 150] }}>
-            <DOMObject
-              dom={ref}
-              rotation={new THREE.Euler(Math.PI / 4, 0, 0)}
-              position={new THREE.Vector3(0, 0, 0)}
-              scale={new THREE.Vector3(1, 1, 1)}
-            />
+          <CanvasCSS3D
+            style={{ position: 'absolute', top: '0', height: window.innerHeight * 0.73 }}
+            camera={{ position: [0, cameraY, 150] }}
+          >
+            {
+              slots.map((slot, i) => {
+                if (!clicks[i]) {
+                  clicks[i] = false;
+                }
+                return (
+                  <>
+                    <DOMObject
+                      dom={refs[i]}
+                      position={positions[i]}
+                      scale={new THREE.Vector3(1.3, 1.3, 1.3)}
+                      rotation={[-0.9, 0, 0]}
+                      slot={slot}
+                      clicked={clicks[i]}
+                    />
+                  </>
+                );
+              })
+            }
           </CanvasCSS3D>
-          <div style={{ background: 'green', width: `${size}px`, height: `${size}px` }} ref={ref}>
-            hello testing
-          </div>
+          {
+              slots.map((slot, i) => (
+                <div styles={{ width: '1px', height: '1px' }}>
+                  <div
+                    aria-hidden="true"
+                    className="hover"
+                    ref={refs[i]}
+                    onClick={() => {
+                      const replacement = clicks;
+                      replacement[i] = !replacement[i];
+                      setClick({ ...replacement });
+                    }}
+                  >
+                    <div className="hover_title">{slot.title}</div>
+                    <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
+                    <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
+                    <div className="hover_stats">
+                      <div>
+                        {
+                      `ATTACK: ${slot.point_attack || 0}`
+                      }
+                      </div>
+                      <div>
+                        {
+                        `HEALTH: ${slot.point_health || 0}`
+                      }
+                      </div>
+                      <div>
+                        {
+                        `DEFENSE: ${slot.point_armor || 0}`
+                      }
+                      </div>
+                    </div>
+                    <div className="hover_stats">{slot.is_character ? 'Character' : 'Spell' }</div>
+                    <div className="hover_stats">{slot.description}</div>
+                  </div>
+                </div>
+              ))
+            }
           <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
           <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
         </div>
