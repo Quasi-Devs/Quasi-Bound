@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Typography, Button, Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import SidebarDrawer from './Drawer';
 import rules from './rules.json';
 
 require('./Rules.css');
@@ -26,7 +25,6 @@ const Rules = () => {
 
   return (
     <div>
-      <SidebarDrawer />
       <Grid container direction="column" alignItems="center">
         <Typography variant="h1">Rules</Typography>
         <Grid

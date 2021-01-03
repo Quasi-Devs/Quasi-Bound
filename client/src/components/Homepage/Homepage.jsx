@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './Homepage.css';
 import clsx from 'clsx';
-import SidebarDrawer from './Drawer';
 
 const useStyles = makeStyles({
   mainDiv: {
@@ -52,14 +52,15 @@ const useStyles = makeStyles({
   },
 });
 
-const Homepage = () => {
+const Homepage = ({ user }) => {
   const classes = useStyles();
-
-  const name = 'Teamer Tibebu';
-  const greeting = `Welcome, ${name}`;
+  let greeting;
+  if (user !== null) {
+    greeting = `Welcome, ${user.name_user}`;
+  }
   return (
     <div className={clsx(classes.container)}>
-      <SidebarDrawer />
+      {/* <SidebarDrawer /> */}
       <Typography variant="h2">{greeting}</Typography>
       <div className={clsx(classes.mainDiv)}>
         <iframe
@@ -77,6 +78,12 @@ const Homepage = () => {
       </div>
     </div>
   );
+};
+
+Homepage.propTypes = {
+  user: PropTypes.shape({
+    name_user: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Homepage;

@@ -9,7 +9,6 @@ import Homepage from './Homepage/Homepage';
 import Rules from './Homepage/Rules';
 import Profile from './Profile/Profile';
 import Deck from './Deck/Deck';
-import DeckHeader from './Deck/DeckHeader';
 import PlayHub from './PlayHub/PlayHub';
 import GameEnv from './GameEnv/GameEnv';
 
@@ -21,13 +20,12 @@ const App = () => {
     <div className="root">
       <BrowserRouter>
         {(window.location.pathname !== '/game' && nav) ? <Navbar user={user} /> : null}
-        {window.location.pathname.slice(0, 5) === '/deck' && <DeckHeader />}
         <Switch>
           <Route exact path="/">
             <SplashPage user={user} />
           </Route>
           <Route path="/home">
-            <Homepage />
+            <Homepage user={user} />
           </Route>
           <Route path="/rules">
             <Rules />

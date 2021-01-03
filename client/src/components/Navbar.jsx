@@ -2,7 +2,8 @@ import React from 'react';
 import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import SidebarDrawer from './Homepage/Drawer';
 
 const useStyles = makeStyles(() => ({
   profileButton: {
@@ -64,6 +65,28 @@ const Navbar = ({ user }) => {
         >
           Play
         </Button>
+        {/* <Button
+          variant="contained"
+          className={classes.button}
+          color="primary"
+          type="button"
+          onClick={() => {
+            history.push('/rules');
+          }}
+        >
+          Guide
+        </Button> */}
+        <Button
+          variant="contained"
+          className={classes.button}
+          color="primary"
+          type="button"
+          onClick={() => {
+            history.push('/deck');
+          }}
+        >
+          Deck Builder
+        </Button>
         {!user ? (
           <a href="/auth">
             <Button
@@ -76,34 +99,8 @@ const Navbar = ({ user }) => {
             </Button>
           </a>
         ) : (
-          <Link to="/profile" className={classes.profileButton}>
-            <Button variant="contained" color="primary" type="button">
-              Profile
-            </Button>
-          </Link>
+          <SidebarDrawer name={classes.button} />
         )}
-        <Button
-          variant="contained"
-          className={classes.button}
-          color="primary"
-          type="button"
-          onClick={() => {
-            history.push('/rules');
-          }}
-        >
-          Guide
-        </Button>
-        <Button
-          variant="contained"
-          className={classes.button}
-          color="primary"
-          type="button"
-          onClick={() => {
-            history.push('/deck');
-          }}
-        >
-          Deck Builder
-        </Button>
       </Toolbar>
     </AppBar>
   );

@@ -13,6 +13,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
+import MenuIcon from '@material-ui/icons/Menu';
 import axios from 'axios';
 
 import { useHistory } from 'react-router-dom';
@@ -25,8 +26,9 @@ const useStyles = makeStyles({
     width: 'auto',
   },
   drawerButton: {
-    position: 'fixed',
-    right: 0,
+    position: 'absolute',
+    top: '0.875rem',
+    right: '0.5rem',
   },
   copyright: {
     position: 'absolute',
@@ -114,10 +116,13 @@ const SidebarDrawer = () => {
   return (
     <div>
       <Button
+        variant="contained"
+        color="primary"
+        type="button"
         className={clsx(classes.drawerButton)}
         onClick={() => setDrawer(true)}
       >
-        Open Drawer
+        <MenuIcon />
       </Button>
       <Drawer anchor="right" open={drawer} onClose={() => setDrawer(false)}>
         {listDrawerItems()}
