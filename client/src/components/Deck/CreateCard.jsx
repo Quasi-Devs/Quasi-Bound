@@ -41,8 +41,8 @@ const useStyles = makeStyles(() => ({
 
 const CreateCard = () => {
   const classes = useStyles();
-  const [cardImage, setCardImage] = useState('https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/HB4AT3D3IMI6TMPTWIZ74WAR54.jpg');
-  const [title, setTitle] = useState('d');
+  const [cardImage, setCardImage] = useState('');
+  const [title, setTitle] = useState('');
   const [stats, setStats] = useState({});
 
   const createCard = async () => {
