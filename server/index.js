@@ -65,7 +65,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
-const players = [];
+let players = null;
 
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
@@ -85,22 +85,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('Queue', (id) => {
-    if (!players[0]) {
-      players[0] = id;
+    if (!players) {
+      players = id;
     } else {
-      User.addEnemy(id, players[0]);
-      User.addEnemy(players[0], id);
-      io.emit(`${players[0]}`);
+      User.addEnemy(id, players);
+      User.addEnemy(players, id);
+      io.emit(`${players}`);
       io.emit(`${id}`);
-      players[0] = null;
+      players = null;
     }
   });
 
-  socket.on('DeQueue', (id) => {
-    const index = players.indexOf(id);
-    if (index > -1) {
-      players.splice(index, 1);
-    }
+  socket.on('DeQueue', () => {
+    players = null;
   });
 });
 

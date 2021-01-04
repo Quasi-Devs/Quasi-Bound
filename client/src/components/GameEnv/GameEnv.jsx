@@ -7,8 +7,8 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 
-const socket = io.connect('https://vertical-dryad-300701.uc.r.appspot.com', {
-   "transports": ['websocket']
+const socket = io.connect('', {
+  transports: ['websocket'],
 });
 const GameEnv = ({ setNav }) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
@@ -20,12 +20,12 @@ const GameEnv = ({ setNav }) => {
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
 
-  socket.once(`${user.id}Turn`, () => {
+  socket.on(`${user.id}Turn`, () => {
     setHandleEnd(true);
     setTurn(true);
   });
 
-  socket.once(`${user.id}hp`, (hp, hp2) => {
+  socket.on(`${user.id}hp`, (hp, hp2) => {
     if (hp !== null) {
       setHP(hp);
     }
@@ -79,7 +79,6 @@ const GameEnv = ({ setNav }) => {
         }
         return null;
       });
-      console.info(enemyHP, HP);
       setEnemySlots([...enemySlots]);
       setYourSlots([...yourSlots]);
       setHandleEnd(false);

@@ -64,8 +64,8 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect('https://vertical-dryad-300701.uc.r.appspot.com',{
-   "transports": ['websocket']
+const socket = io.connect('', {
+  transports: ['websocket'],
 });
 function Loading() {
   return (
@@ -118,11 +118,9 @@ const ThreeDEnv = ({
   socket.on(`${user.id_enemy}Name`, (name) => {
     setEnemyName(name);
   });
-    useEffect(() => {
-        if (user) {
-            socket.emit('Name', user.name_user, user.id);
-        }
-    }, [])
+  if (user) {
+    socket.emit('Name', user.name_user, user.id);
+  }
   return (
     <>
       <div>

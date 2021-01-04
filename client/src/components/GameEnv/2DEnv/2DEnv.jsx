@@ -4,8 +4,8 @@ import { io } from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 
-const socket = io.connect('https://vertical-dryad-300701.uc.r.appspot.com', {
-   "transports": ['websocket']
+const socket = io.connect('', {
+  transports: ['websocket'],
 });
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots,
