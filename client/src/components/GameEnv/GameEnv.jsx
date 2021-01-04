@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
+import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
@@ -13,12 +14,13 @@ const socket = io.connect('', {
 const GameEnv = ({ setNav }) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
+  const [done, setDone] = useState(false);
   if (user) {
     socket.on(`${user.id}Turn`, () => {
       setHandleEnd(true);
@@ -38,6 +40,10 @@ const GameEnv = ({ setNav }) => {
     });
   }
 
+  if ((HP <= 0 || enemyHP <= 0) && !done) {
+    setDone(true);
+  }
+
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
@@ -51,8 +57,8 @@ const GameEnv = ({ setNav }) => {
         yourSlots.map((val, i) => {
           if (val) {
             if (enemySlots[i]) {
-              if (val.point_attack) {
-                enemySlots[i].point_health -= val.point_attack;
+              if (val.point_attack && enemySlots[i].point_armor < val.point_attack) {
+                enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
               }
             } else if (val.point_attack) {
               hp -= val.point_attack;
@@ -66,8 +72,8 @@ const GameEnv = ({ setNav }) => {
         enemySlots.map((val, i) => {
           if (val) {
             if (yourSlots[i]) {
-              if (val.point_attack) {
-                yourSlots[i].point_health -= val.point_attack;
+              if (val.point_attack && yourSlots[i].point_armor < val.point_attack) {
+                yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
               }
             } else if (val.point_attack) {
               hp -= val.point_attack;
@@ -92,24 +98,32 @@ const GameEnv = ({ setNav }) => {
 
   return (
     <div>
-      <ThreeDEnv slots={[...yourSlots, ...enemySlots]} user={user} HP={HP} enemyHP={enemyHP} />
-      <TwoDEnv
-        slots={yourSlots}
-        setSlots={setYourSlots}
-        deck={deck}
-        setDeck={setDeck}
+      <ThreeDEnv
+        slots={[...yourSlots, ...enemySlots]}
         user={user}
-        setTurn={setTurn}
-        turn={turn}
-        enemySlots={enemySlots}
-        enemyHP={enemyHP}
         HP={HP}
+        enemyHP={enemyHP}
+        done={done}
       />
+      {!done ? (
+        <TwoDEnv
+          slots={yourSlots}
+          setSlots={setYourSlots}
+          deck={deck}
+          setDeck={setDeck}
+          user={user}
+          setTurn={setTurn}
+          turn={turn}
+          enemySlots={enemySlots}
+          enemyHP={enemyHP}
+          HP={HP}
+        />
+      ) : <Link to="/home"><button type="submit">Retrun To Menu</button></Link>}
     </div>
   );
 };
 GameEnv.propTypes = {
-  setNav: PropTypes.element.isRequired,
+  setNav: PropTypes.func.isRequired,
 };
 
 export default GameEnv;

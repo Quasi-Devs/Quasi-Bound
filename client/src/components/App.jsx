@@ -25,7 +25,7 @@ const App = () => {
             <SplashPage user={user} />
           </Route>
           <Route path="/home">
-            <Homepage user={user} />
+            <Homepage user={user} setNav={setNav} />
           </Route>
           <Route path="/rules">
             <Rules />
