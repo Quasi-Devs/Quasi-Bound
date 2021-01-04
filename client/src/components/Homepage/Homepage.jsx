@@ -64,12 +64,14 @@ const Homepage = ({ user }) => {
       <Typography variant="h2">{greeting}</Typography>
       <div className={clsx(classes.mainDiv)}>
         <iframe
-          src="https://e.widgetbot.io/channels/791403283356975145/791403283356975149"
-          height="450"
-          width="450"
+          title="heer"
+          src="https://discord.com/widget?id=791403283356975145&theme=dark/795335835682603018"
+          width="350"
+          height="500"
           className={clsx(classes.leftDiv)}
-          title="iframe"
-          mentions="true"
+          allowtransparency="true"
+          frameBorder="0"
+          sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
         />
         <Box borderLeft={1} />
         <div className={clsx(classes.rightDiv)}>

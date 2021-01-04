@@ -30,7 +30,6 @@ const Navbar = ({ user }) => {
   const classes = useStyles();
   const text = 'navbar';
   const history = useHistory();
-
   return (
     <AppBar position="sticky">
       <Toolbar className={classes.container}>

@@ -20,7 +20,11 @@ dbRouter.post('/cards', async (req, res) => {
 
 dbRouter.get('/user', async (req, res) => {
   const info = await User.getUser(req.cookies.QuasiBoundId);
-  res.json(info.rows[0]);
+  if (info.rows[0]) {
+    res.json(info.rows[0]);
+  } else {
+    res.json(null);
+  }
 });
 
 dbRouter.get('/logout', (req, res) => {
