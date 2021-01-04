@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box } from '@material-ui/core';
+import {
+  Typography, Box, Button,
+} from '@material-ui/core';
+import query from 'query-string';
 import { makeStyles } from '@material-ui/core/styles';
 import './Homepage.css';
+import TranslateIcon from '@material-ui/icons/Translate';
 import clsx from 'clsx';
 
 const useStyles = makeStyles({
@@ -54,14 +58,19 @@ const useStyles = makeStyles({
 
 const Homepage = ({ user }) => {
   const classes = useStyles();
+  const { newuser } = query.parse(window.location.search);
   let greeting;
   if (user !== null) {
     greeting = `Welcome, ${user.name_user}`;
   }
   return (
     <div className={clsx(classes.container)}>
-      {/* <SidebarDrawer /> */}
-      <Typography variant="h2">{greeting}</Typography>
+      <Typography variant="h2">
+        {greeting}
+        { newuser && (
+        <Button id="google_translate_element"><TranslateIcon /></Button>
+        )}
+      </Typography>
       <div className={clsx(classes.mainDiv)}>
         <iframe
           title="heer"
