@@ -64,7 +64,9 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect('https://vertical-dryad-300701.uc.r.appspot.com');
+const socket = io.connect('https://vertical-dryad-300701.uc.r.appspot.com',{
+   "transports": ['websocket']
+});
 function Loading() {
   return (
     <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
