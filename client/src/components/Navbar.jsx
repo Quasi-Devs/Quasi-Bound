@@ -106,7 +106,7 @@ const Navbar = ({ user }) => {
 };
 
 Navbar.propTypes = {
-  user: PropTypes.element.isRequired,
+  user: PropTypes.bool.isRequired,
 };
 
 export default Navbar;

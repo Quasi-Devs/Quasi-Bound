@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography, Box, Button,
@@ -56,9 +56,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Homepage = ({ user }) => {
+const Homepage = ({ user, setNav }) => {
   const classes = useStyles();
   const { newuser } = query.parse(window.location.search);
+  useEffect(() => setNav(true), []);
   let greeting;
   if (user !== null) {
     greeting = `Welcome, ${user.name_user}`;
@@ -74,7 +75,7 @@ const Homepage = ({ user }) => {
       <div className={clsx(classes.mainDiv)}>
         <iframe
           title="heer"
-          src="https://discord.com/widget?id=791403283356975145&theme=dark/795335835682603018"
+          src="https://e.widgetbot.io/channels/791403283356975145/795335835682603018"
           width="350"
           height="500"
           className={clsx(classes.leftDiv)}
@@ -92,9 +93,8 @@ const Homepage = ({ user }) => {
 };
 
 Homepage.propTypes = {
-  user: PropTypes.shape({
-    name_user: PropTypes.string.isRequired,
-  }).isRequired,
+  user: PropTypes.bool.isRequired,
+  setNav: PropTypes.func.isRequired,
 };
 
 export default Homepage;

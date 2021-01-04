@@ -5,7 +5,9 @@ import { Modal } from '@material-ui/core';
 import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
 
-const socket = io();
+const socket = io.connect('', {
+  transports: ['websocket'],
+});
 const PlayHub = ({ user }) => {
   const text = 'play hub';
   const [Open, setOpen] = useState(false);
@@ -60,6 +62,6 @@ const PlayHub = ({ user }) => {
   );
 };
 PlayHub.propTypes = {
-  user: PropTypes.element.isRequired,
+  user: PropTypes.bool.isRequired,
 };
 export default PlayHub;

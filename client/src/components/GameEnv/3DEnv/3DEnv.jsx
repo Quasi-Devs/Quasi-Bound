@@ -64,7 +64,9 @@ function DOMObject({
   return null;
 }
 
-const socket = io();
+const socket = io.connect('', {
+  transports: ['websocket'],
+});
 function Loading() {
   return (
     <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
@@ -103,21 +105,22 @@ function Table() {
 }
 
 const ThreeDEnv = ({
-  slots, user, enemyHP, HP,
+  slots, user, enemyHP, HP, done,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
+
+  const refs = [useRef(null), useRef(null), useRef(null),
+    useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
+  const [cameraY] = useState(30);
+  const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
+    [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
   if (user) {
     socket.emit('Name', user.name_user, user.id);
     socket.on(`${user.id_enemy}Name`, (name) => {
       setEnemyName(name);
     });
   }
-  const refs = [useRef(null), useRef(null), useRef(null),
-    useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
-  const [cameraY] = useState(30);
-  const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
-    [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
   return (
     <>
       <div>
@@ -197,6 +200,24 @@ const ThreeDEnv = ({
               ))
             }
           <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+          {(HP <= 0 && done) ? (
+            <>
+              {(HP <= 0 && enemyHP <= 0 && done) ? (
+                <>
+                  <span className="Done">Tie</span>
+                </>
+              ) : <span className="Done">Lose</span>}
+            </>
+          ) : null}
+          {(enemyHP <= 0 && done) ? (
+            <>
+              {(HP <= 0 && enemyHP <= 0 && done) ? (
+                <>
+                  <span className="Done">Tie</span>
+                </>
+              ) : <span className="Done">Win</span>}
+            </>
+          ) : null}
           <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
         </div>
       </div>
@@ -205,9 +226,10 @@ const ThreeDEnv = ({
 };
 ThreeDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  user: PropTypes.element.isRequired,
-  enemyHP: PropTypes.element.isRequired,
-  HP: PropTypes.element.isRequired,
+  user: PropTypes.bool.isRequired,
+  enemyHP: PropTypes.number.isRequired,
+  HP: PropTypes.number.isRequired,
+  done: PropTypes.bool.isRequired,
 };
 
 export default ThreeDEnv;

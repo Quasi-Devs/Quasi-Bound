@@ -12,7 +12,7 @@ const User = require('./db/models/user');
 
 const app = express();
 const sever = http.createServer(app);
-const io = socketio(sever);
+const io = socketio(sever, { wsEngine: 'ws' });
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const corsOptions = {
@@ -65,7 +65,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
 });
 
-const players = [];
+let players = null;
+
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
     io.emit(`${enemy}`, array, card);
@@ -84,23 +85,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('Queue', (id) => {
-    players.push(id);
-    if (players.length % 2 === 0 && players.length) {
-      players.forEach((player) => {
-        if (player !== id) {
-          User.addEnemy(id, player);
-          User.addEnemy(player, id);
-        }
-      });
-      io.emit(`${players.shift()}`);
-      io.emit(`${players.shift()}`);
+    if (!players) {
+      players = id;
+    } else {
+      User.addEnemy(id, players);
+      User.addEnemy(players, id);
+      io.emit(`${players}`);
+      io.emit(`${id}`);
+      players = null;
     }
   });
-  socket.on('DeQueue', (id) => {
-    const index = players.indexOf(id);
-    if (index > -1) {
-      players.splice(index, 1);
-    }
+
+  socket.on('DeQueue', () => {
+    players = null;
   });
 });
 
