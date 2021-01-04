@@ -2,9 +2,8 @@ span.you {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 700;
     position: absolute;
-    /* display: inline-block; */
     width: 200px;
-    /* transform: translate3d(0, -50%, 0); */
+    transform: translate3d(0, -50%, 0);
     font-size: 5em;
     line-height: 0.9em;
     pointer-events: none;
@@ -16,12 +15,24 @@ span.enemy {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 700;
     position: absolute;
-    /* display: inline-block; */
     width: 200px;
-    /* transform: translate3d(0, -50%, 0); */
+    transform: translate3d(0, -50%, 0);
     font-size: 5em;
     line-height: 0.9em;
     pointer-events: none;
     top: 180px;
     left: 77%;
+}
+
+span.Done {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    width: 200px;
+    transform: translate3d(0, -50%, 0);
+    font-size: 5em;
+    line-height: 0.9em;
+    pointer-events: none;
+    top: 30%;
+    left: 44%;
 }

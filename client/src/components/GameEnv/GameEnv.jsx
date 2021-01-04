@@ -3,39 +3,46 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
+import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 
-const socket = io();
+const socket = io.connect('', {
+  transports: ['websocket'],
+});
 const GameEnv = ({ setNav }) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
+  const [done, setDone] = useState(false);
+  if (user) {
+    socket.on(`${user.id}Turn`, () => {
+      setHandleEnd(true);
+      setTurn(true);
+    });
+    socket.on(`${user.id}hp`, (hp, hp2) => {
+      if (hp !== null) {
+        setHP(hp);
+      }
+      if (hp2 !== null) {
+        setEnemyHP(hp2);
+      }
+    });
+    socket.on(`${user.id}`, (array, card) => {
+      setEnemySlots(array);
+      setYourSlots(card);
+    });
+  }
 
-  socket.once(`${user.id}Turn`, () => {
-    setHandleEnd(true);
-    setTurn(true);
-  });
-
-  socket.once(`${user.id}hp`, (hp, hp2) => {
-    if (hp !== null) {
-      setHP(hp);
-    }
-    if (hp2 !== null) {
-      setEnemyHP(hp2);
-    }
-  });
-
-  socket.on(`${user.id}`, (array, card) => {
-    setEnemySlots(array);
-    setYourSlots(card);
-  });
+  if ((HP <= 0 || enemyHP <= 0) && !done) {
+    setDone(true);
+  }
 
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
@@ -44,66 +51,84 @@ const GameEnv = ({ setNav }) => {
   }), []);
 
   useEffect(() => {
-    if (handleEnd && turn) {
-      yourSlots.map((val, i) => {
-        if (val) {
-          if (enemySlots[i]) {
-            if (val.point_attack) {
-              enemySlots[i].point_health -= val.point_attack;
+    if (user) {
+      if (handleEnd && turn) {
+        let hp = enemyHP;
+        yourSlots.map((val, i) => {
+          if (val && val.turn === 0) {
+            if (enemySlots[i]) {
+              if (val.point_attack && enemySlots[i].point_armor < val.point_attack) {
+                enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
+              }
+            } else if (val.point_attack) {
+              hp -= val.point_attack;
             }
-          } else if (val.point_attack) {
-            socket.emit('HP', user.id_enemy, enemyHP - val.point_attack, null);
-            setEnemyHP(enemyHP - val.point_attack);
+          } else if (val) {
+            yourSlots[i].turn = 0;
           }
-        }
-        return null;
-      });
-      enemySlots.map((val, i) => {
-        if (val) {
-          if (yourSlots[i]) {
-            if (val.point_attack) {
-              yourSlots[i].point_health -= val.point_attack;
+          return null;
+        });
+        socket.emit('HP', user.id_enemy, hp, null);
+        setEnemyHP(hp);
+        hp = HP;
+        enemySlots.map((val, i) => {
+          if (val && val.turn === 0) {
+            if (yourSlots[i]) {
+              if (val.point_attack && yourSlots[i].point_armor < val.point_attack) {
+                yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
+              }
+            } else if (val.point_attack) {
+              hp -= val.point_attack;
             }
-          } else if (val.point_attack) {
-            socket.emit('HP', user.id_enemy, null, HP - val.point_attack);
-            setHP(HP - val.point_attack);
+          } else if (val) {
+            enemySlots[i].turn = 0;
           }
-        }
-        if (!val.point_health || val.point_health <= 0) {
-          enemySlots[i] = false;
-        }
-        if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
-          yourSlots[i] = false;
-        }
-        return null;
-      });
-      console.info(enemyHP, HP);
-      setEnemySlots([...enemySlots]);
-      setYourSlots([...yourSlots]);
-      setHandleEnd(false);
+          if (!val.point_health || val.point_health <= 0) {
+            enemySlots[i] = false;
+          }
+          if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
+            yourSlots[i] = false;
+          }
+          return null;
+        });
+        socket.emit('placed', user.id_enemy, [...yourSlots], [...enemySlots]);
+        socket.emit('HP', user.id_enemy, null, hp);
+        setHP(hp);
+        setEnemySlots([...enemySlots]);
+        setYourSlots([...yourSlots]);
+        setHandleEnd(false);
+      }
     }
   }, [turn]);
 
   return (
     <div>
-      <ThreeDEnv slots={[...yourSlots, ...enemySlots]} user={user} HP={HP} enemyHP={enemyHP} />
-      <TwoDEnv
-        slots={yourSlots}
-        setSlots={setYourSlots}
-        deck={deck}
-        setDeck={setDeck}
+      <ThreeDEnv
+        slots={[...yourSlots, ...enemySlots]}
         user={user}
-        setTurn={setTurn}
-        turn={turn}
-        enemySlots={enemySlots}
-        enemyHP={enemyHP}
         HP={HP}
+        enemyHP={enemyHP}
+        done={done}
       />
+      {!done ? (
+        <TwoDEnv
+          slots={yourSlots}
+          setSlots={setYourSlots}
+          deck={deck}
+          setDeck={setDeck}
+          user={user}
+          setTurn={setTurn}
+          turn={turn}
+          enemySlots={enemySlots}
+          enemyHP={enemyHP}
+          HP={HP}
+        />
+      ) : <Link to="/home"><button type="submit">Retrun To Menu</button></Link>}
     </div>
   );
 };
 GameEnv.propTypes = {
-  setNav: PropTypes.element.isRequired,
+  setNav: PropTypes.func.isRequired,
 };
 
 export default GameEnv;
