@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewModuleIcon from '@material-ui/icons/ViewModule';
+import img from './DeckIcon.png';
 
 const useStyles = makeStyles({
   header: {
@@ -26,6 +27,11 @@ const useStyles = makeStyles({
   links: {
     padding: '5px',
   },
+  deckIcon: {
+    width: '24px',
+    height: '24px',
+    filter: 'invert(12%) sepia(100%) saturate(5603%) hue-rotate(245deg) brightness(79%) contrast(147%)',
+  },
 });
 
 const DeckHeader = () => {
@@ -33,17 +39,23 @@ const DeckHeader = () => {
   const [trigger, setTrigger] = useState(true);
   const classes = useStyles();
   const paths = [
+    { path: '/deck', icon: <img className={classes.deckIcon} src={img} alt="" />, title: 'My Decks' },
     { path: '/deck/createCard', icon: <LibraryAddIcon />, title: 'Create Card' },
     { path: '/deck/search', icon: <SearchIcon />, title: 'Search for Cards' },
     { path: '/deck/cards', icon: <ViewModuleIcon />, title: 'My Cards' },
   ];
 
   useLayoutEffect(() => {
+    let headerSet = false;
     paths.forEach(({ path, title }) => {
       if (path === window.location.pathname) {
         setHeader(title);
+        headerSet = true;
       }
     });
+    if (!headerSet) {
+      setHeader('My Decks');
+    }
   }, [trigger]);
 
   return (

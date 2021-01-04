@@ -370,7 +370,7 @@ const setup = async (thumbnail, ml5, Prob, title) => {
   }
   card.title = title;
   card.thumbnail = thumbnail;
-  card.size = tySmMLgGiTi.label;
+  card.size = tySmMLgGiTi ? tySmMLgGiTi.label : null;
   card.rp = Object.keys(resourcePoints)[Object.values(
     resourcePoints,
   ).indexOf(totalPoints)];

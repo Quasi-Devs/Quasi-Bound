@@ -2,7 +2,7 @@
 .createCard {
   text-align: center;
   background-color: rgb(206, 213, 223);
-  height: 58vw;
+  height: 75vh;
   display: flex;
   flex-direction: row;
   align-items: center;

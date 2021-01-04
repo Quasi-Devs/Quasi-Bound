@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import SidebarDrawer from '../Homepage/Drawer';
 
 const useStyles = makeStyles(() => ({
   /**
@@ -76,7 +75,6 @@ const Profile = () => {
   const classes = useStyles();
   return (
     <div>
-      <SidebarDrawer />
       <div className={classes.profileContainer}>
         <Card className={classes.statsContainer}>
           <Card className={classes.cardHeader}>
