@@ -19,7 +19,7 @@ const TwoDEnv = ({
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
   const handleResource = (num, check) => {
-    if (check) {
+    if (check && user) {
       socket.emit('end', user.id_enemy);
       setTurn(false);
       setCount(num);
@@ -61,7 +61,7 @@ const TwoDEnv = ({
               <div
                 aria-hidden="true"
                 onClick={() => {
-                  if (clicked && !val) {
+                  if (clicked && !val && user) {
                     const arr = slots;
                     arr[i] = clicked;
                     socket.emit('placed', user.id_enemy, [...arr], enemySlots);

@@ -12,7 +12,7 @@ const User = require('./db/models/user');
 
 const app = express();
 const sever = http.createServer(app);
-const io = socketio(sever);
+const io = socketio(sever, { wsEngine: 'ws' });
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const corsOptions = {
