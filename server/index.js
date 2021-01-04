@@ -66,6 +66,7 @@ app.get('*', (req, res) => {
 });
 
 const players = [];
+
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
     io.emit(`${enemy}`, array, card);
@@ -84,18 +85,17 @@ io.on('connection', (socket) => {
   });
 
   socket.on('Queue', (id) => {
-    players.push(id);
-    if (players.length % 2 === 0 && players.length) {
-      players.forEach((player) => {
-        if (player !== id) {
-          User.addEnemy(id, player);
-          User.addEnemy(player, id);
-        }
-      });
-      io.emit(`${players.shift()}`);
-      io.emit(`${players.shift()}`);
+    if (!players[0]) {
+      players[0] = id;
+    } else {
+      User.addEnemy(id, players[0]);
+      User.addEnemy(players[0], id);
+      io.emit(`${players[0]}`);
+      io.emit(`${id}`);
+      players[0] = null;
     }
   });
+
   socket.on('DeQueue', (id) => {
     const index = players.indexOf(id);
     if (index > -1) {
