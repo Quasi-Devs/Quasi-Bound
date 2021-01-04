@@ -23,7 +23,7 @@ dbRouter.get('/user', async (req, res) => {
   if (info.rows[0]) {
     res.json(info.rows[0]);
   } else {
-    res.json('no current user');
+    res.json(null);
   }
 });
 

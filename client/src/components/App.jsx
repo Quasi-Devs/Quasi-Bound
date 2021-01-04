@@ -13,7 +13,7 @@ import PlayHub from './PlayHub/PlayHub';
 import GameEnv from './GameEnv/GameEnv';
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false);
   const [nav, setNav] = useState(true);
   useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), []);
   return (
