@@ -13,31 +13,30 @@ const socket = io.connect('', {
 const GameEnv = ({ setNav }) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
-
-  socket.on(`${user.id}Turn`, () => {
-    setHandleEnd(true);
-    setTurn(true);
-  });
-
-  socket.on(`${user.id}hp`, (hp, hp2) => {
-    if (hp !== null) {
-      setHP(hp);
-    }
-    if (hp2 !== null) {
-      setEnemyHP(hp2);
-    }
-  });
-
-  socket.on(`${user.id}`, (array, card) => {
-    setEnemySlots(array);
-    setYourSlots(card);
-  });
+  if (user) {
+    socket.on(`${user.id}Turn`, () => {
+      setHandleEnd(true);
+      setTurn(true);
+    });
+    socket.on(`${user.id}hp`, (hp, hp2) => {
+      if (hp !== null) {
+        setHP(hp);
+      }
+      if (hp2 !== null) {
+        setEnemyHP(hp2);
+      }
+    });
+    socket.on(`${user.id}`, (array, card) => {
+      setEnemySlots(array);
+      setYourSlots(card);
+    });
+  }
 
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
@@ -46,7 +45,7 @@ const GameEnv = ({ setNav }) => {
   }), []);
 
   useEffect(() => {
-    if (handleEnd && turn) {
+    if (handleEnd && turn && user) {
       yourSlots.map((val, i) => {
         if (val) {
           if (enemySlots[i]) {
