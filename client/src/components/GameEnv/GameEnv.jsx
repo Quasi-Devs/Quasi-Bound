@@ -45,46 +45,48 @@ const GameEnv = ({ setNav }) => {
   }), []);
 
   useEffect(() => {
-    if (handleEnd && turn && user) {
-      let hp = enemyHP;
-      yourSlots.map((val, i) => {
-        if (val) {
-          if (enemySlots[i]) {
-            if (val.point_attack) {
-              enemySlots[i].point_health -= val.point_attack;
+    if (user) {
+      if (handleEnd && turn) {
+        let hp = enemyHP;
+        yourSlots.map((val, i) => {
+          if (val) {
+            if (enemySlots[i]) {
+              if (val.point_attack) {
+                enemySlots[i].point_health -= val.point_attack;
+              }
+            } else if (val.point_attack) {
+              hp -= val.point_attack;
             }
-          } else if (val.point_attack) {
-            hp -= val.point_attack;
           }
-        }
-        return null;
-      });
-      socket.emit('HP', user.id_enemy, hp, null);
-      setEnemyHP(hp);
-      hp = HP;
-      enemySlots.map((val, i) => {
-        if (val) {
-          if (yourSlots[i]) {
-            if (val.point_attack) {
-              yourSlots[i].point_health -= val.point_attack;
+          return null;
+        });
+        socket.emit('HP', user.id_enemy, hp, null);
+        setEnemyHP(hp);
+        hp = HP;
+        enemySlots.map((val, i) => {
+          if (val) {
+            if (yourSlots[i]) {
+              if (val.point_attack) {
+                yourSlots[i].point_health -= val.point_attack;
+              }
+            } else if (val.point_attack) {
+              hp -= val.point_attack;
             }
-          } else if (val.point_attack) {
-            hp -= val.point_attack;
           }
-        }
-        if (!val.point_health || val.point_health <= 0) {
-          enemySlots[i] = false;
-        }
-        if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
-          yourSlots[i] = false;
-        }
-        return null;
-      });
-      socket.emit('HP', user.id_enemy, null, hp);
-      setHP(hp);
-      setEnemySlots([...enemySlots]);
-      setYourSlots([...yourSlots]);
-      setHandleEnd(false);
+          if (!val.point_health || val.point_health <= 0) {
+            enemySlots[i] = false;
+          }
+          if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
+            yourSlots[i] = false;
+          }
+          return null;
+        });
+        socket.emit('HP', user.id_enemy, null, hp);
+        setHP(hp);
+        setEnemySlots([...enemySlots]);
+        setYourSlots([...yourSlots]);
+        setHandleEnd(false);
+      }
     }
   }, [turn]);
 

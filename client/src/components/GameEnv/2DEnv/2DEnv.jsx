@@ -19,27 +19,29 @@ const TwoDEnv = ({
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
   const handleResource = (num, check) => {
-    if (check && user) {
-      socket.emit('end', user.id_enemy);
-      setTurn(false);
-      setCount(num);
-      deck.map(() => {
-        if (cardInHand.length < 5) {
-          cardInHand.push(deck.shift());
+    if (user) {
+      if (check) {
+        socket.emit('end', user.id_enemy);
+        setTurn(false);
+        setCount(num);
+        deck.map(() => {
+          if (cardInHand.length < 5) {
+            cardInHand.push(deck.shift());
+          }
+          return false;
+        });
+      }
+      resource.map((val, i) => {
+        if (i <= num) {
+          resource[i] = true;
+        } else {
+          resource[i] = false;
         }
         return false;
       });
+      setResource([...resource]);
+      setResourceCount(resource.join('').split('true').length - 1);
     }
-    resource.map((val, i) => {
-      if (i <= num) {
-        resource[i] = true;
-      } else {
-        resource[i] = false;
-      }
-      return false;
-    });
-    setResource([...resource]);
-    setResourceCount(resource.join('').split('true').length - 1);
   };
 
   useEffect(() => {
@@ -61,18 +63,20 @@ const TwoDEnv = ({
               <div
                 aria-hidden="true"
                 onClick={() => {
-                  if (clicked && !val && user) {
-                    const arr = slots;
-                    arr[i] = clicked;
-                    socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-                    setSlots([...arr]);
-                    setClick(false);
-                    cardInHand.splice(cardIndex, 1);
-                    setCardInHand(cardInHand);
-                    setResourceCount(resourceCount - taken);
-                    handleResource(resourceCount - taken - 1);
-                  } else {
-                    setClick(false);
+                  if (user) {
+                    if (clicked && !val) {
+                      const arr = slots;
+                      arr[i] = clicked;
+                      socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+                      setSlots([...arr]);
+                      setClick(false);
+                      cardInHand.splice(cardIndex, 1);
+                      setCardInHand(cardInHand);
+                      setResourceCount(resourceCount - taken);
+                      handleResource(resourceCount - taken - 1);
+                    } else {
+                      setClick(false);
+                    }
                   }
                 }}
                 className={val ? 'placed' : 'slots'}
