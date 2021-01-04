@@ -101,11 +101,11 @@ TwoDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   setSlots: PropTypes.func.isRequired,
   deck: PropTypes.arrayOf(PropTypes.object).isRequired,
-  user: PropTypes.element.isRequired,
-  setTurn: PropTypes.element.isRequired,
-  setDeck: PropTypes.element.isRequired,
-  turn: PropTypes.element.isRequired,
-  enemySlots: PropTypes.element.isRequired,
+  user: PropTypes.bool.isRequired,
+  setTurn: PropTypes.func.isRequired,
+  setDeck: PropTypes.func.isRequired,
+  turn: PropTypes.bool.isRequired,
+  enemySlots: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TwoDEnv;

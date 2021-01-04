@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,8 +52,9 @@ const useStyles = makeStyles({
   },
 });
 
-const Homepage = ({ user }) => {
+const Homepage = ({ user, setNav }) => {
   const classes = useStyles();
+  useEffect(() => setNav(true), []);
   let greeting;
   if (user !== null) {
     greeting = `Welcome, ${user.name_user}`;
@@ -83,9 +84,8 @@ const Homepage = ({ user }) => {
 };
 
 Homepage.propTypes = {
-  user: PropTypes.shape({
-    name_user: PropTypes.string.isRequired,
-  }).isRequired,
+  user: PropTypes.bool.isRequired,
+  setNav: PropTypes.func.isRequired,
 };
 
 export default Homepage;

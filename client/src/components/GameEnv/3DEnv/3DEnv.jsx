@@ -105,7 +105,7 @@ function Table() {
 }
 
 const ThreeDEnv = ({
-  slots, user, enemyHP, HP,
+  slots, user, enemyHP, HP, done,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
@@ -200,6 +200,24 @@ const ThreeDEnv = ({
               ))
             }
           <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+          {(HP <= 0 && done) ? (
+            <>
+              {(HP <= 0 && enemyHP <= 0 && done) ? (
+                <>
+                  <span className="Done">Tie</span>
+                </>
+              ) : <span className="Done">Lose</span>}
+            </>
+          ) : null}
+          {(enemyHP <= 0 && done) ? (
+            <>
+              {(HP <= 0 && enemyHP <= 0 && done) ? (
+                <>
+                  <span className="Done">Tie</span>
+                </>
+              ) : <span className="Done">Win</span>}
+            </>
+          ) : null}
           <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
         </div>
       </div>
@@ -208,9 +226,10 @@ const ThreeDEnv = ({
 };
 ThreeDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  user: PropTypes.element.isRequired,
-  enemyHP: PropTypes.element.isRequired,
-  HP: PropTypes.element.isRequired,
+  user: PropTypes.bool.isRequired,
+  enemyHP: PropTypes.number.isRequired,
+  HP: PropTypes.number.isRequired,
+  done: PropTypes.bool.isRequired,
 };
 
 export default ThreeDEnv;
