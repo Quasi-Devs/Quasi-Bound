@@ -1,3 +1,3 @@
- {
+{
   "rules": ["Each user will be given 1 resource at the beginning of their turn. Which will increment by 1 each turn.", "The maximum number of resources a user can have is 10.", "Each player will have a field in which they will be able to place a maximum of 5 cards on a field. A user will start with a deck of 30 cards, and 5 cards in their hand.", "The object of the game is to defeat the other user by bringing their health of 250 down to zero. The maximum health a card can have is 100 and for damage would be 100.", "Attribute count: 0-1"]
 }

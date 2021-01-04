@@ -72,6 +72,7 @@
     "socket.io-client": "^3.0.4",
     "three": "^0.123.0",
     "underscore": "^1.12.0",
+    "use-asset": "^0.2.0",
     "webpack": "^5.11.0",
     "webpack-cli": "^4.2.0"
   },
