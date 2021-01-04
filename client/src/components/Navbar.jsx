@@ -76,7 +76,7 @@ const Navbar = ({ user }) => {
         >
           Guide
         </Button> */}
-        <Button
+        {/* <Button
           variant="contained"
           className={classes.button}
           color="primary"
@@ -86,7 +86,7 @@ const Navbar = ({ user }) => {
           }}
         >
           Deck Builder
-        </Button>
+        </Button> */}
         {!user ? (
           <a href="/auth">
             <Button
