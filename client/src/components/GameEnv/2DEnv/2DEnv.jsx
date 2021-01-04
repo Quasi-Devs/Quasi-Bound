@@ -67,6 +67,11 @@ const TwoDEnv = ({
                     if (clicked && !val) {
                       const arr = slots;
                       arr[i] = clicked;
+                      if (arr[i].description.includes('Charge')) {
+                        arr[i].turn = 0;
+                      } else {
+                        arr[i].turn = 1;
+                      }
                       socket.emit('placed', user.id_enemy, [...arr], enemySlots);
                       setSlots([...arr]);
                       setClick(false);

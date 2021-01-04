@@ -66,7 +66,7 @@ const Homepage = ({ user, setNav }) => {
       <div className={clsx(classes.mainDiv)}>
         <iframe
           title="heer"
-          src="https://discord.com/widget?id=791403283356975145&theme=dark/795335835682603018"
+          src="https://e.widgetbot.io/channels/791403283356975145/795335835682603018"
           width="350"
           height="500"
           className={clsx(classes.leftDiv)}
