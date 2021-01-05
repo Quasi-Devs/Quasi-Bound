@@ -11,6 +11,7 @@ import Profile from './Profile/Profile';
 import Deck from './Deck/Deck';
 import PlayHub from './PlayHub/PlayHub';
 import GameEnv from './GameEnv/GameEnv';
+import Login from './Login';
 
 const App = () => {
   const [user, setUser] = useState(false);
@@ -39,6 +40,9 @@ const App = () => {
           </Route>
           <Route path="/game">
             <GameEnv setNav={setNav} />
+          </Route>
+          <Route path="/login">
+            <Login />
           </Route>
         </Switch>
       </BrowserRouter>

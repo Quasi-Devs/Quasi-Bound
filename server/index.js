@@ -8,7 +8,7 @@ const http = require('http');
 const socketio = require('socket.io');
 const path = require('path');
 const User = require('./db/models/user');
-// const router = Router();
+require('./auth/googleStrategy');
 
 const app = express();
 const sever = http.createServer(app);
@@ -44,6 +44,7 @@ app.post('/upload', (req, res) => {
 const discordRoute = require('./routes/discordAuth');
 require('./auth/discordStrategy');
 const dbRouter = require('./routes/dbRouter');
+const googleRoute = require('./routes/googleAuth');
 
 app.use(
   session({
@@ -59,6 +60,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/auth/google', googleRoute);
 app.use('/auth', discordRoute);
 app.use('/data', dbRouter);
 app.get('*', (req, res) => {

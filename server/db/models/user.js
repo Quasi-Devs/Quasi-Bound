@@ -1,7 +1,10 @@
 const db = require('../index');
 
 const getUser = async (id) => {
-  const userData = await db.query(`SELECT * FROM "user" WHERE id_link = '${id}'`);
+  let userData = await db.query(`SELECT * FROM "user" WHERE discord_link = '${id}'`);
+  if (!userData.rows[0]) {
+    userData = await db.query(`SELECT * FROM "user" WHERE google_link = '${id}'`);
+  }
   return userData;
 };
 
