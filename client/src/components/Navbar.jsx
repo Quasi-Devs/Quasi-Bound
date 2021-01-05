@@ -32,7 +32,12 @@ const Navbar = ({ user }) => {
   return (
     <AppBar position="sticky">
       <Toolbar className={classes.container}>
-        <button type="button" className={classes.button} id="google_translate_element" label="translate button" />
+        <button
+          type="button"
+          className={classes.button}
+          id="google_translate_element"
+          label="translate button"
+        />
         <Button
           variant="contained"
           className={classes.button}
