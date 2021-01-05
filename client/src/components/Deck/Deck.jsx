@@ -9,19 +9,23 @@ import CardsDisplay from './CardsDisplay';
 import CreateCard from './CreateCard';
 import Search from './Search';
 
-const Deck = ({ match }) => (
+const Deck = ({ user }) => (
   <div className="deckDisplay">
     {window.location.pathname.slice(0, 5) === '/deck' && <DeckHeader />}
-    <Route path={`${match.path}/cards`} component={CardsDisplay} />
-    <Route path={`${match.path}/createCard`} component={CreateCard} />
-    <Route path={`${match.path}/search`} component={Search} />
+    <Route path="/deck/cards">
+      <CardsDisplay />
+    </Route>
+    <Route path="/deck/createCard">
+      <CreateCard />
+    </Route>
+    <Route path="/deck/search">
+      <Search user={user} />
+    </Route>
   </div>
 );
 
 Deck.propTypes = {
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
+  user: PropTypes.shape().isRequired,
 };
 
 export default Deck;

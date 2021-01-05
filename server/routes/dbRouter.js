@@ -53,4 +53,9 @@ dbRouter.get('/deckcards/:id', async (req, res) => {
   res.status(200).send(cards);
 });
 
+dbRouter.post('/saveCard', async (req, res) => {
+  await Card.saveCard(req.body);
+  res.sendStatus(201);
+});
+
 module.exports = dbRouter;
