@@ -21,7 +21,12 @@ const getCards = async ({ key, value }) => {
   return cards;
 };
 
+const saveCard = async ({ userId, card }) => {
+  await db.query(`INSERT INTO "user_card" (id_user, id_card) VALUES (${userId}, ${card.id})`);
+};
+
 module.exports = {
   getCards,
   createCard,
+  saveCard,
 };

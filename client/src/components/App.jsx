@@ -34,7 +34,9 @@ const App = () => {
           <Route path="/profile">
             <Profile />
           </Route>
-          <Route path="/deck" component={Deck} />
+          <Route path="/deck">
+            <Deck user={user} />
+          </Route>
           <Route path="/playhub">
             <PlayHub user={user} />
           </Route>
