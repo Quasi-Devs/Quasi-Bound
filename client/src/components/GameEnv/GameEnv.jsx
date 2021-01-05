@@ -64,15 +64,12 @@ const GameEnv = ({ setNav }) => {
               let counter = true;
               for (let j = 0; j <= 3; j += 1) {
                 if (enemySlots[j]) {
-                  if (enemySlots[j].description.includes('Provoke')) {
-                    if (enemySlots[j].point_health > 0) {
-                      if (enemySlots[j].point_armor < val.point_attack) {
-                        enemySlots[j].point_health
-                        -= (val.point_attack - enemySlots[j].point_armor);
-                      }
-                      counter = false;
-                      break;
+                  if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
+                    if (enemySlots[j].point_armor < val.point_attack) {
+                      enemySlots[j].point_health -= (val.point_attack - enemySlots[j].point_armor);
                     }
+                    counter = false;
+                    break;
                   }
                 }
               }
@@ -98,15 +95,12 @@ const GameEnv = ({ setNav }) => {
               let counter = true;
               for (let j = 0; j <= 3; j += 1) {
                 if (yourSlots[j]) {
-                  if (yourSlots[j].description.includes('Provoke')) {
-                    if (yourSlots[j].point_health > 0) {
-                      if (val.point_attack && yourSlots[j].point_armor < val.point_attack) {
-                        yourSlots[j].point_health
-                        -= (val.point_attack - yourSlots[j].point_armor);
-                      }
-                      counter = false;
-                      break;
+                  if (yourSlots[j].description.includes('Provoke') && yourSlots[j].point_health > 0) {
+                    if (yourSlots[j].point_armor < val.point_attack) {
+                      yourSlots[j].point_health -= (val.point_attack - yourSlots[j].point_armor);
                     }
+                    counter = false;
+                    break;
                   }
                 }
               }
