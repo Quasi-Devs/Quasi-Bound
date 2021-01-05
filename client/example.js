@@ -37,7 +37,7 @@ module.exports = [
     point_health: 0,
     point_resource: '2',
     is_character: false,
-    description: 'Restore +5 Health to a character.',
+    description: 'Restore 5 Health to a character.',
   },
   {
     title: 'Yokan The Wandering Monster',

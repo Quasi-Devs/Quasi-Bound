@@ -61,7 +61,21 @@ const GameEnv = ({ setNav }) => {
                 enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
               }
             } else if (val.point_attack) {
-              hp -= val.point_attack;
+              let counter = true;
+              for (let j = 0; j <= 3; j += 1) {
+                if (enemySlots[j]) {
+                  if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
+                    if (enemySlots[j].point_armor < val.point_attack) {
+                      enemySlots[j].point_health -= (val.point_attack - enemySlots[j].point_armor);
+                    }
+                    counter = false;
+                    break;
+                  }
+                }
+              }
+              if (counter) {
+                hp -= val.point_attack;
+              }
             }
           } else if (val) {
             yourSlots[i].turn = 0;
@@ -78,7 +92,21 @@ const GameEnv = ({ setNav }) => {
                 yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
               }
             } else if (val.point_attack) {
-              hp -= val.point_attack;
+              let counter = true;
+              for (let j = 0; j <= 3; j += 1) {
+                if (yourSlots[j]) {
+                  if (yourSlots[j].description.includes('Provoke') && yourSlots[j].point_health > 0) {
+                    if (yourSlots[j].point_armor < val.point_attack) {
+                      yourSlots[j].point_health -= (val.point_attack - yourSlots[j].point_armor);
+                    }
+                    counter = false;
+                    break;
+                  }
+                }
+              }
+              if (counter) {
+                hp -= val.point_attack;
+              }
             }
           } else if (val) {
             enemySlots[i].turn = 0;
