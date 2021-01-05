@@ -28,12 +28,11 @@ const useStyles = makeStyles(() => ({
 
 const Navbar = ({ user }) => {
   const classes = useStyles();
-  const text = 'navbar';
   const history = useHistory();
   return (
     <AppBar position="sticky">
       <Toolbar className={classes.container}>
-        <div>{text}</div>
+        <button type="button" className={classes.button} id="google_translate_element" label="translate button" />
         <Button
           variant="contained"
           className={classes.button}
@@ -45,14 +44,14 @@ const Navbar = ({ user }) => {
         >
           Home
         </Button>
-        <Button
+        {/* <Button
           variant="contained"
           className={classes.button}
           color="primary"
           type="button"
         >
           Google Translate
-        </Button>
+        </Button> */}
         <Button
           variant="contained"
           className={classes.button}
