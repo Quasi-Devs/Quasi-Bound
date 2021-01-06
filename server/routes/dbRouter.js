@@ -27,6 +27,12 @@ dbRouter.get('/user', async (req, res) => {
   }
 });
 
+dbRouter.get('/addEnemy', async (req, res) => {
+  const info = await User.getUser(req.cookies.QuasiBoundId);
+  User.addEnemy(info.rows[0].id, null);
+  res.json('/game');
+});
+
 dbRouter.get('/logout', (req, res) => {
   res.clearCookie('QuasiBoundId');
   req.session.destroy();

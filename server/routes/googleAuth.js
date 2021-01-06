@@ -4,19 +4,26 @@ const router = Router();
 const passport = require('passport');
 const db = require('../db/index');
 
-router.get('/', passport.authenticate('discord'));
 router.get(
-  '/redirect',
-  passport.authenticate('discord', { failureRedirect: '/' }),
+  '/',
+  passport.authenticate(
+    'google',
+    { scope: ['https://www.googleapis.com/auth/plus.login'] },
+  ),
+);
+
+router.get(
+  '/callback',
+  passport.authenticate('google', { failureRedirect: '/logout' }),
   (req, res) => {
     res.cookie('QuasiBoundId', req.user.id);
-    res.cookie('Quasidiscord', req.user.id);
-    if (req.cookies.Quasigoogle) {
-      db.query(`SELECT * FROM "user" where google_link = '${req.cookies.Quasigoogle}';`)
+    res.cookie('Quasigoogle', req.user.id);
+    if (req.cookies.Quasidiscord) {
+      db.query(`SELECT * FROM "user" where discord_link = '${req.cookies.Quasidiscord}';`)
         .then(({ rows }) => {
-          if (!rows[0].discord_link) {
+          if (!rows[0].google_link) {
             db.query(
-              `UPDATE "user" SET discord_link = ${req.user.id} WHERE google_link = '${req.cookies.Quasigoogle}';`,
+              `UPDATE "user" SET google_link = ${req.user.id} WHERE discord_link = '${req.cookies.Quasidiscord}';`,
               (err) => {
                 if (err) {
                   res.redirect('/');
@@ -30,13 +37,14 @@ router.get(
           }
         });
     } else {
-      db.query(`SELECT * FROM "user" where discord_link = '${req.user.id}';`)
+      db.query(`SELECT * FROM "user" where google_link = '${req.user.id}';`)
         .then(({ rows }) => {
           if (rows.length === 0) {
             db.query(
-              `INSERT INTO "user" (name_user, discord_link) VALUES ('${req.user.username}', ${req.user.id});`,
+              `INSERT INTO "user" (name_user, google_link) VALUES ('${req.user.displayName}', '${req.user.id}');`,
               (err) => {
                 if (err) {
+                  console.info(err);
                   res.redirect('/');
                 } else {
                   res.redirect('/rules');
