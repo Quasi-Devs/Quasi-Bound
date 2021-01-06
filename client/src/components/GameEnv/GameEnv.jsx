@@ -21,6 +21,9 @@ const GameEnv = ({ setNav }) => {
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
+  // if (!turn) {
+  //   setTurn(true);
+  // }
   if (user) {
     socket.on(`${user.id}Turn`, () => {
       setHandleEnd(true);
