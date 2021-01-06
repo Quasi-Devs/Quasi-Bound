@@ -25,7 +25,7 @@ router.get(
             },
           );
         } else {
-          res.redirect('/home');
+          res.redirect('/home?newuser=true');
         }
       });
   },

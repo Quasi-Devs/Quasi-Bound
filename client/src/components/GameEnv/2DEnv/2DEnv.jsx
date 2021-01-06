@@ -79,8 +79,30 @@ const TwoDEnv = ({
                       setCardInHand(cardInHand);
                       setResourceCount(resourceCount - taken);
                       handleResource(resourceCount - taken - 1);
-                    } else {
-                      setClick(false);
+                    } else if (clicked) {
+                      // change to handle spell cards
+                      if (!clicked.is_character) {
+                        if (slots[i]) {
+                          const number = clicked.description.match(/\d+/g);
+                          const arr = slots;
+                          if (clicked.description.includes('Health')) {
+                            arr[i].point_health += Number(number);
+                          }
+                          if (clicked.description.includes('attack')) {
+                            arr[i].point_attack += Number(number);
+                          }
+                          if (clicked.description.includes('armor')) {
+                            arr[i].point_armor += Number(number);
+                          }
+                          socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+                          setSlots([...arr]);
+                          cardInHand.splice(cardIndex, 1);
+                          setCardInHand(cardInHand);
+                          setResourceCount(resourceCount - taken);
+                          handleResource(resourceCount - taken - 1);
+                          setClick(false);
+                        }
+                      }
                     }
                   }
                 }}
