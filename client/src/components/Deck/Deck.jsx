@@ -13,7 +13,7 @@ import MyDecks from './MyDecks';
 const Deck = ({ user }) => (
   <BrowserRouter className="deckDisplay">
     {window.location.pathname.slice(0, 5) === '/deck' && <DeckHeader />}
-    <Route path="/deck" render={() => <Redirect to="/deck/myDecks" />} />
+    <Route exact path="/deck" render={() => <Redirect to="/deck/myDecks" />} />
     <Route path="/deck/myDecks">
       <MyDecks user={user} />
     </Route>

@@ -20,7 +20,7 @@ const CardsDisplay = ({ user }) => {
 
   return (
     <div>
-      <Grid container direction="row" justify="space-around" alignItems="center" md={5}>
+      <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
         {myCards.map((card) => <Card key={card} card={card} />)}
       </Grid>
     </div>
