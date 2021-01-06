@@ -44,7 +44,7 @@ const Card = ({
           }}
           type="submit"
         >
-          {(resourceCount >= info.point_resource) ? 'ATTACK' : 'NOT ENOUGH RESOURCE'}
+          {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
         </button>
       ) : null}
     </div>

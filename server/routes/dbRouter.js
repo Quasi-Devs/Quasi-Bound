@@ -27,6 +27,12 @@ dbRouter.get('/user', async (req, res) => {
   }
 });
 
+dbRouter.get('/addEnemy', async (req, res) => {
+  const info = await User.getUser(req.cookies.QuasiBoundId);
+  User.addEnemy(info.rows[0].id, null);
+  res.json('/game');
+});
+
 dbRouter.get('/logout', (req, res) => {
   res.clearCookie('QuasiBoundId');
   req.session.destroy();
@@ -51,6 +57,11 @@ dbRouter.post('/addcard', async (req, res) => {
 dbRouter.get('/deckcards/:id', async (req, res) => {
   const cards = await Deck.getCardsFromDeck(req.params.id);
   res.status(200).send(cards);
+});
+
+dbRouter.post('/saveCard', async (req, res) => {
+  await Card.saveCard(req.body);
+  res.sendStatus(201);
 });
 
 module.exports = dbRouter;

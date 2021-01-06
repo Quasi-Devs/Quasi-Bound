@@ -17,6 +17,7 @@ const GameEnv = ({ setNav }) => {
   const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
+  const [botDeck, setBotDeck] = useState(_.shuffle(exampleData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
@@ -47,7 +48,11 @@ const GameEnv = ({ setNav }) => {
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
-    setTurn(data.id > data.id_enemy);
+    if (data.id_enemy === null) {
+      setTurn(true);
+    } else {
+      setTurn(data.id > data.id_enemy);
+    }
   }), []);
 
   useEffect(() => {
@@ -61,7 +66,21 @@ const GameEnv = ({ setNav }) => {
                 enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
               }
             } else if (val.point_attack) {
-              hp -= val.point_attack;
+              let counter = true;
+              for (let j = 0; j <= 3; j += 1) {
+                if (enemySlots[j]) {
+                  if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
+                    if (enemySlots[j].point_armor < val.point_attack) {
+                      enemySlots[j].point_health -= (val.point_attack - enemySlots[j].point_armor);
+                    }
+                    counter = false;
+                    break;
+                  }
+                }
+              }
+              if (counter) {
+                hp -= val.point_attack;
+              }
             }
           } else if (val) {
             yourSlots[i].turn = 0;
@@ -78,7 +97,21 @@ const GameEnv = ({ setNav }) => {
                 yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
               }
             } else if (val.point_attack) {
-              hp -= val.point_attack;
+              let counter = true;
+              for (let j = 0; j <= 3; j += 1) {
+                if (yourSlots[j]) {
+                  if (yourSlots[j].description.includes('Provoke') && yourSlots[j].point_health > 0) {
+                    if (yourSlots[j].point_armor < val.point_attack) {
+                      yourSlots[j].point_health -= (val.point_attack - yourSlots[j].point_armor);
+                    }
+                    counter = false;
+                    break;
+                  }
+                }
+              }
+              if (counter) {
+                hp -= val.point_attack;
+              }
             }
           } else if (val) {
             enemySlots[i].turn = 0;
@@ -119,7 +152,11 @@ const GameEnv = ({ setNav }) => {
           user={user}
           setTurn={setTurn}
           turn={turn}
+          setHandleEnd={setHandleEnd}
           enemySlots={enemySlots}
+          setEnemySlots={setEnemySlots}
+          botDeck={botDeck}
+          setBotDeck={setBotDeck}
           enemyHP={enemyHP}
           HP={HP}
         />

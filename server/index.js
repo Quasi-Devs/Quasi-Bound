@@ -10,6 +10,7 @@ const cloudinary = require('cloudinary');
 const path = require('path');
 const multer = require('multer');
 const User = require('./db/models/user');
+require('./auth/googleStrategy');
 
 const app = express();
 const sever = http.createServer(app);
@@ -55,6 +56,7 @@ app.post('/upload', (req, res) => {
 const discordRoute = require('./routes/discordAuth');
 require('./auth/discordStrategy');
 const dbRouter = require('./routes/dbRouter');
+const googleRoute = require('./routes/googleAuth');
 
 app.use(
   session({
@@ -70,6 +72,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/auth/google', googleRoute);
 app.use('/auth', discordRoute);
 app.use('/data', dbRouter);
 app.get('*', (req, res) => {
@@ -99,11 +102,13 @@ io.on('connection', (socket) => {
     if (!players) {
       players = id;
     } else {
-      User.addEnemy(id, players);
-      User.addEnemy(players, id);
-      io.emit(`${players}`);
-      io.emit(`${id}`);
-      players = null;
+      User.addEnemy(id, players)
+        .then(() => User.addEnemy(players, id))
+        .then(() => {
+          io.emit(`${players}`);
+          io.emit(`${id}`);
+          players = null;
+        });
     }
   });
 

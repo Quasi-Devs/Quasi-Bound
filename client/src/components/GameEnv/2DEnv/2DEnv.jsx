@@ -8,22 +8,29 @@ const socket = io.connect('', {
   transports: ['websocket'],
 });
 const TwoDEnv = ({
-  slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots,
+  slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
+  setBotDeck, setEnemySlots,
 }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
   const [count, setCount] = useState(0);
   const [cardInHand, setCardInHand] = useState([deck[0], deck[1], deck[2], deck[3], deck[4]]);
+  const [botHand, setBotHand] = useState([botDeck[0],
+    botDeck[1], botDeck[2], botDeck[3], botDeck[4]]);
   const [cardIndex, setCardIndex] = useState(0);
   const [clicked, setClick] = useState(false);
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
+  const [botGo, setBotGo] = useState(false);
   const handleResource = (num, check) => {
     if (user) {
       if (check) {
         socket.emit('end', user.id_enemy);
         setTurn(false);
         setCount(num);
+        if (!user.id_enemy) {
+          setBotGo(!botGo);
+        }
         deck.map(() => {
           if (cardInHand.length < 5) {
             cardInHand.push(deck.shift());
@@ -43,10 +50,48 @@ const TwoDEnv = ({
       setResourceCount(resource.join('').split('true').length - 1);
     }
   };
+  // handle bot moves here
+  useEffect(() => {
+    setTimeout(() => {
+      if (!turn && !user.id_enemy && user) {
+        let enmeyResource = resourceCount;
+        console.info(enmeyResource);
+        botDeck.map(() => {
+          if (botHand.length < 5) {
+            botHand.push(botDeck.shift());
+          }
+          return false;
+        });
+        const arr = enemySlots;
+        enemySlots.map((val, i) => {
+          for (let j = 0; j < botHand.length; j += 1) {
+            if (!val && botHand[j].point_resource <= enmeyResource) {
+              enmeyResource -= botHand[j].point_resource;
+              arr[i] = { ...botHand[j] };
+              if (arr[i].description.includes('Charge')) {
+                arr[i].turn = 0;
+              } else {
+                arr[i].turn = 1;
+              }
+              botHand.splice(j, 1);
+              setBotHand(botHand);
+              break;
+            }
+          }
+          return null;
+        });
+        setEnemySlots([...arr]);
+        setHandleEnd(true);
+        setTurn(true);
+      }
+    }, 2000);
+  }, [botGo]);
 
   useEffect(() => {
     deck.splice(0, 5);
     setDeck([...deck]);
+    botDeck.splice(0, 5);
+    setBotDeck([...botDeck]);
   }, []);
 
   return (
@@ -79,8 +124,30 @@ const TwoDEnv = ({
                       setCardInHand(cardInHand);
                       setResourceCount(resourceCount - taken);
                       handleResource(resourceCount - taken - 1);
-                    } else {
-                      setClick(false);
+                    } else if (clicked) {
+                      // change to handle spell cards
+                      if (!clicked.is_character) {
+                        if (slots[i]) {
+                          const number = clicked.description.match(/\d+/g);
+                          const arr = slots;
+                          if (clicked.description.includes('Health')) {
+                            arr[i].point_health += Number(number);
+                          }
+                          if (clicked.description.includes('attack')) {
+                            arr[i].point_attack += Number(number);
+                          }
+                          if (clicked.description.includes('armor')) {
+                            arr[i].point_armor += Number(number);
+                          }
+                          socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+                          setSlots([...arr]);
+                          cardInHand.splice(cardIndex, 1);
+                          setCardInHand(cardInHand);
+                          setResourceCount(resourceCount - taken);
+                          handleResource(resourceCount - taken - 1);
+                          setClick(false);
+                        }
+                      }
                     }
                   }
                 }}
@@ -111,6 +178,10 @@ TwoDEnv.propTypes = {
   setDeck: PropTypes.func.isRequired,
   turn: PropTypes.bool.isRequired,
   enemySlots: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setHandleEnd: PropTypes.func.isRequired,
+  botDeck: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setBotDeck: PropTypes.func.isRequired,
+  setEnemySlots: PropTypes.func.isRequired,
 };
 
 export default TwoDEnv;

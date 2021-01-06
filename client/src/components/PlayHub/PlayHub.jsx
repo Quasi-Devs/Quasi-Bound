@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
 import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 const socket = io.connect('', {
   transports: ['websocket'],
@@ -32,7 +33,16 @@ const PlayHub = ({ user }) => {
             socket.emit('Queue', user.id);
           }}
         >
-          Find Match
+          Finding A Match Against Player
+        </button>
+        <button
+          type="submit"
+          onClick={() => {
+            axios.get('/data/addEnemy')
+              .then(() => setGoOn(true));
+          }}
+        >
+          Start A Match Against Bot
         </button>
         <Modal open={Open}>
           <div>
