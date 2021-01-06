@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
+import botData from '../../../bot';
 
 const socket = io.connect('', {
   transports: ['websocket'],
@@ -17,7 +18,7 @@ const GameEnv = ({ setNav }) => {
   const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
-  const [botDeck, setBotDeck] = useState(_.shuffle(exampleData));
+  const [botDeck, setBotDeck] = useState(_.shuffle(botData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
