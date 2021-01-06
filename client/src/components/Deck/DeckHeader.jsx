@@ -39,7 +39,7 @@ const DeckHeader = () => {
   const [trigger, setTrigger] = useState(true);
   const classes = useStyles();
   const paths = [
-    { path: '/deck', icon: <img className={classes.deckIcon} src={img} alt="" />, title: 'My Decks' },
+    { path: '/deck/myDecks', icon: <img className={classes.deckIcon} src={img} alt="" />, title: 'My Decks' },
     { path: '/deck/createCard', icon: <LibraryAddIcon />, title: 'Create Card' },
     { path: '/deck/search', icon: <SearchIcon />, title: 'Search for Cards' },
     { path: '/deck/cards', icon: <ViewModuleIcon />, title: 'My Cards' },

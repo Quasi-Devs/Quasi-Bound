@@ -11,11 +11,11 @@ router.get(
   (req, res) => {
     res.cookie('QuasiBoundId', req.user.id);
 
-    db.query(`SELECT * FROM "user" where id_link = '${req.user.id}';`)
+    db.query(`SELECT * FROM "user" where discord_link = '${req.user.id}';`)
       .then(({ rows }) => {
         if (rows.length === 0) {
           db.query(
-            `INSERT INTO "user" (name_user, id_link) VALUES ('${req.user.username}', ${req.user.id});`,
+            `INSERT INTO "user" (name_user, discord_link) VALUES ('${req.user.username}', ${req.user.id});`,
             (err) => {
               if (err) {
                 res.redirect('/');

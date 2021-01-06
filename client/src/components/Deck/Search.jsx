@@ -61,7 +61,7 @@ const Search = ({ user }) => {
         <Grid container direction="row" justify="space-around" alignItems="center" md={5}>
           {subset.map((card) => <Card key={card} card={card} onClick={showButton} />)}
         </Grid>
-        {buttonVisible ? <button onClick={saveCard} type="button">Save Card</button> : null}
+        {buttonVisible ? <button onClick={saveCard} type="button">{`Save ${cardToSave.title}`}</button> : null}
       </div>
     </div>
   );
