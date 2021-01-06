@@ -2,8 +2,8 @@ import React from 'react';
 import PropType from 'prop-types';
 import './card.css';
 
-const Card = ({ card }) => (
-  <div className="cardDisplay">
+const Card = ({ card, onClick }) => (
+  <div className="cardDisplay" data-card={JSON.stringify(card)} onClick={onClick}>
     <div className="cardHeader">
       <div className="cardTitle">{card.title}</div>
       <div className="cardResource">{card.point_resource}</div>
@@ -29,6 +29,7 @@ Card.propTypes = {
     is_character: PropType.bool,
     description: PropType.string,
   }).isRequired,
+  onClick: PropType.func.isRequired,
 };
 
 export default Card;

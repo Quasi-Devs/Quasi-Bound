@@ -1,13 +1,16 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { Grid } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 // import cards from '../../../../cardSampleData.json';
 import Card from './Card';
 import './search.css';
 
-const Search = () => {
+const Search = ({ user }) => {
   const [cards, setCards] = useState();
   const [subset, setSubset] = useState([]);
+  const [buttonVisible, setButtonVisible] = useState(false);
+  const [cardToSave, setCardToSave] = useState({});
   // const [query, setQuery] = useState('');
 
   const searchCards = (query) => {
@@ -16,6 +19,21 @@ const Search = () => {
       return regex.test(card.title.toLowerCase());
     });
     setSubset(results);
+  };
+
+  const showButton = (e) => {
+    setButtonVisible(true);
+    let element = e.target;
+    while (!element.dataset.card) {
+      element = element.parentElement;
+    }
+    const card = JSON.parse(element.dataset.card);
+    setCardToSave(card);
+  };
+
+  const saveCard = () => {
+    axios.post('/data/saveCard', { userId: user.id, card: cardToSave })
+      .catch();
   };
 
   useLayoutEffect(() => {
@@ -39,13 +57,18 @@ const Search = () => {
           }
         }}
       />
-      {/* <button type="submit" onClick={searchCards}>Search</button>
-      <button type="button" onClick={() => setSubset(cards)}>Reset</button> */}
-      <Grid container direction="row" justify="space-around" alignItems="center" md={5}>
-        {subset.map((card) => <Card key={card} card={card} />)}
-      </Grid>
+      <div className="allCards">
+        <Grid container direction="row" justify="space-around" alignItems="center" md={5}>
+          {subset.map((card) => <Card key={card} card={card} onClick={showButton} />)}
+        </Grid>
+        {buttonVisible ? <button onClick={saveCard} type="button">Save Card</button> : null}
+      </div>
     </div>
   );
+};
+
+Search.propTypes = {
+  user: PropTypes.shape().isRequired,
 };
 
 export default Search;
