@@ -17,13 +17,11 @@ const GameEnv = ({ setNav }) => {
   const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
+  const [botDeck, setBotDeck] = useState(_.shuffle(exampleData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
-  // if (!turn) {
-  //   setTurn(true);
-  // }
   if (user) {
     socket.on(`${user.id}Turn`, () => {
       setHandleEnd(true);
@@ -50,7 +48,11 @@ const GameEnv = ({ setNav }) => {
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
-    setTurn(data.id > data.id_enemy);
+    if (data.id_enemy === null) {
+      setTurn(true);
+    } else {
+      setTurn(data.id > data.id_enemy);
+    }
   }), []);
 
   useEffect(() => {
@@ -150,7 +152,11 @@ const GameEnv = ({ setNav }) => {
           user={user}
           setTurn={setTurn}
           turn={turn}
+          setHandleEnd={setHandleEnd}
           enemySlots={enemySlots}
+          setEnemySlots={setEnemySlots}
+          botDeck={botDeck}
+          setBotDeck={setBotDeck}
           enemyHP={enemyHP}
           HP={HP}
         />

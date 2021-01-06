@@ -38,8 +38,8 @@ const PlayHub = ({ user }) => {
         <button
           type="submit"
           onClick={() => {
-            axios.get('/data/addEnemy');
-            setGoOn(true);
+            axios.get('/data/addEnemy')
+              .then(() => setGoOn(true));
           }}
         >
           Start A Match Against Bot

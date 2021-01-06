@@ -90,11 +90,13 @@ io.on('connection', (socket) => {
     if (!players) {
       players = id;
     } else {
-      User.addEnemy(id, players);
-      User.addEnemy(players, id);
-      io.emit(`${players}`);
-      io.emit(`${id}`);
-      players = null;
+      User.addEnemy(id, players)
+        .then(() => User.addEnemy(players, id))
+        .then(() => {
+          io.emit(`${players}`);
+          io.emit(`${id}`);
+          players = null;
+        });
     }
   });
 
