@@ -1,14 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const multer = require('multer');
 const passport = require('passport');
 const http = require('http');
 const socketio = require('socket.io');
+const cloudinary = require('cloudinary');
 const path = require('path');
+const multer = require('multer');
 const User = require('./db/models/user');
-// const router = Router();
 
 const app = express();
 const sever = http.createServer(app);
@@ -19,6 +20,11 @@ const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200,
 };
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+});
 const multerMid = multer({
   storage: multer.memoryStorage(),
   limits: {
@@ -35,10 +41,15 @@ app.use(express.static(dirPath));
 app.use(cors(corsOptions));
 
 app.post('/upload', (req, res) => {
-  const From = Buffer.from;
-  const b64 = new From(req.file.buffer).toString('base64');
-  const mimeType = 'img/png';
-  res.send(`data:${mimeType};base64,${b64}`);
+  if (req.file) {
+    const From = Buffer.from;
+    const b64 = new From(req.file.buffer).toString('base64');
+    cloudinary.uploader.upload(`data:${req.file.mimetype};base64,${b64}`)
+      .then((result) => {
+        const img = result.url;
+        res.status(201).send({ image: img, buffer: `data:${req.file.mimetype};base64,${b64}`, file: req.file });
+      }).catch(() => res.sendStatus(500));
+  }
 });
 
 const discordRoute = require('./routes/discordAuth');
