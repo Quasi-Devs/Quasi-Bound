@@ -28,6 +28,7 @@ const Search = ({ user }) => {
       element = element.parentElement;
     }
     const card = JSON.parse(element.dataset.card);
+    // console.info(card);
     setCardToSave(card);
   };
 
@@ -58,10 +59,10 @@ const Search = ({ user }) => {
         }}
       />
       <div className="allCards">
-        <Grid container direction="row" justify="space-around" alignItems="center" md={5}>
-          {subset.map((card) => <Card key={card} card={card} onClick={showButton} />)}
+        <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
+          {subset.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
         </Grid>
-        {buttonVisible ? <button onClick={saveCard} type="button">Save Card</button> : null}
+        {buttonVisible ? <button onClick={saveCard} type="button">{`Save ${cardToSave.title}`}</button> : null}
       </div>
     </div>
   );

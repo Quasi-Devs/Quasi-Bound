@@ -44,24 +44,29 @@ dbRouter.post('/deck', async (req, res) => {
   res.sendStatus(201);
 });
 
-dbRouter.get('/deck/:id', async (req, res) => {
-  const decks = await Deck.getDecksByUser(req.params.id);
+dbRouter.get('/deck/:userId', async (req, res) => {
+  const decks = await Deck.getDecksByUser(req.params.userId);
   res.status(200).json(decks);
 });
 
-dbRouter.post('/addcard', async (req, res) => {
+dbRouter.post('/addCard', async (req, res) => {
   await Deck.addCardToDeck(req.body);
   res.sendStatus(201);
 });
 
-dbRouter.get('/deckcards/:id', async (req, res) => {
-  const cards = await Deck.getCardsFromDeck(req.params.id);
+dbRouter.get('/deckCards/:deckId', async (req, res) => {
+  const cards = await Deck.getCardsFromDeck(req.params.deckId);
   res.status(200).send(cards);
 });
 
 dbRouter.post('/saveCard', async (req, res) => {
   await Card.saveCard(req.body);
   res.sendStatus(201);
+});
+
+dbRouter.get('/userCards/:userId', async (req, res) => {
+  const cards = await User.getCards(req.params.userId);
+  res.status(200).send(cards);
 });
 
 module.exports = dbRouter;

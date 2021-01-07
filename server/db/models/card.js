@@ -22,7 +22,10 @@ const getCards = async ({ key, value }) => {
 };
 
 const saveCard = async ({ userId, card }) => {
-  await db.query(`INSERT INTO "user_card" (id_user, id_card) VALUES (${userId}, ${card.id})`);
+  const { rows } = await db.query(`SELECT * from "user_card" WHERE (id_user = ${userId} AND id_card = ${card.id})`);
+  if (rows.length === 0) {
+    await db.query(`INSERT INTO "user_card" (id_user, id_card) VALUES (${userId}, ${card.id})`);
+  }
 };
 
 module.exports = {
