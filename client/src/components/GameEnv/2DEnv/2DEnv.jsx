@@ -22,6 +22,7 @@ const TwoDEnv = ({
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
   const [botGo, setBotGo] = useState(false);
+
   const handleResource = (num, check) => {
     if (user) {
       if (check) {
@@ -119,7 +120,13 @@ const TwoDEnv = ({
                       } else {
                         arr[i].turn = 1;
                       }
+                      const number = clicked.description.match(/\d+/g);
+                      const currentEnemySlots = enemySlots;
+                      if (clicked.description.includes('damage')) {
+                        currentEnemySlots[i].point_health -= Number(number);
+                      }
                       socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+                      setEnemySlots([...currentEnemySlots]);
                       setSlots([...arr]);
                       setClick(false);
                       cardInHand.splice(cardIndex, 1);
