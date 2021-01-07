@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +13,8 @@ const Search = ({ user }) => {
   const [buttonVisible, setButtonVisible] = useState(false);
   const [buttonPosition, setButtonPosition] = useState();
   const [cardToSave, setCardToSave] = useState({});
+  const [trigger, setTrigger] = useState(false);
+  const [savedMessage, setSavedMessage] = useState(false);
   const useStyles = makeStyles({
     saveButton: {
       position: 'relative',
@@ -42,8 +44,16 @@ const Search = ({ user }) => {
 
   const saveCard = () => {
     axios.post('/data/saveCard', { userId: user.id, card: cardToSave })
+      .then(() => {
+        setSavedMessage(true);
+        setTrigger(!trigger);
+      })
       .catch();
   };
+
+  useEffect(() => {
+    setTimeout(() => setSavedMessage(false), 2000);
+  }, [trigger]);
 
   useLayoutEffect(() => {
     const fetchData = async () => {
@@ -72,9 +82,14 @@ const Search = ({ user }) => {
         </Grid>
         {buttonVisible
           ? (
-            <button onClick={saveCard} type="button" className={classes.saveButton}>
-              {`Save ${cardToSave.title}`}
-            </button>
+            <div className={classes.saveButton}>
+              <button onClick={saveCard} type="button">
+                {`Save ${cardToSave.title}`}
+              </button>
+              {savedMessage
+                ? <span>Saved Successfully</span>
+                : null}
+            </div>
           )
           : null}
       </div>

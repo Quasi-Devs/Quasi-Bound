@@ -8,3 +8,10 @@
   height: 300px;
   text-align: center;
 }
+
+.cardsList {
+  border: solid 1px black;
+  position: absolute;
+  /* top: 0em; */
+  right: 0em;
+}
