@@ -210,11 +210,11 @@ module.exports = [
     is_character: false,
     description: '\n Gain 12 armor.',
   }, {
-    title: 'Greater Combat Potion',
-    thumbnail: 'https://i.pinimg.com/564x/62/b2/8a/62b28ae2b988d46cc41bd864d5ce5bd1.jpg',
-    point_resource: '6',
+    title: 'Volcanic Eruption',
+    thumbnail: 'https://volcanodiscovery.de/uploads/tx_tplink/merapi_d6204-180.jpg',
+    point_resource: '1',
     is_character: false,
-    description: '\n Gain 37 attack.',
+    description: '\n Deal 200 damage.',
   }, {
     title: 'Greater Combat Potion',
     thumbnail: 'https://i.pinimg.com/564x/62/b2/8a/62b28ae2b988d46cc41bd864d5ce5bd1.jpg',
