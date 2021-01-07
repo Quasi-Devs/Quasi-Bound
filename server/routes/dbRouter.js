@@ -27,6 +27,11 @@ dbRouter.get('/user', async (req, res) => {
   }
 });
 
+dbRouter.get('/allUser', async (req, res) => {
+  const info = await User.getAllUser();
+  res.json(info.rows);
+});
+
 dbRouter.get('/addEnemy', async (req, res) => {
   const info = await User.getUser(req.cookies.QuasiBoundId);
   User.addEnemy(info.rows[0].id, null);
