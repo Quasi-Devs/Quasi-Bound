@@ -41,11 +41,9 @@ const GameEnv = ({ setNav }) => {
       setYourSlots(card);
     });
   }
-
   if ((HP <= 0 || enemyHP <= 0) && !done) {
     setDone(true);
   }
-
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
@@ -55,7 +53,6 @@ const GameEnv = ({ setNav }) => {
       setTurn(data.id > data.id_enemy);
     }
   }), []);
-
   useEffect(() => {
     if (user) {
       if (handleEnd && turn) {
@@ -134,7 +131,6 @@ const GameEnv = ({ setNav }) => {
       }
     }
   }, [turn]);
-
   return (
     <div>
       <ThreeDEnv
@@ -160,6 +156,7 @@ const GameEnv = ({ setNav }) => {
           setBotDeck={setBotDeck}
           enemyHP={enemyHP}
           HP={HP}
+          setHP={setHP}
         />
       ) : <Link to="/home"><button type="submit">Retrun To Menu</button></Link>}
     </div>
@@ -168,5 +165,4 @@ const GameEnv = ({ setNav }) => {
 GameEnv.propTypes = {
   setNav: PropTypes.func.isRequired,
 };
-
 export default GameEnv;

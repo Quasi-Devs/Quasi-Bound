@@ -14,7 +14,25 @@ router.get(
     if (req.cookies.Quasigoogle) {
       db.query(`SELECT * FROM "user" where google_link = '${req.cookies.Quasigoogle}';`)
         .then(({ rows }) => {
-          if (!rows[0].discord_link) {
+          if (rows.length === 0) {
+            db.query(`SELECT * FROM "user" where discord_link = '${req.user.id}';`)
+              .then((data) => {
+                if (data.rows.length === 0) {
+                  db.query(
+                    `INSERT INTO "user" (name_user, discord_link, thumbnail) VALUES ('${req.user.username}', ${req.user.id}, 'https://cdn.discordapp.com/avatars/${req.user.id}/${req.user.avatar}.jpg');`,
+                    (err) => {
+                      if (err) {
+                        res.redirect('/');
+                      } else {
+                        res.redirect('/rules');
+                      }
+                    },
+                  );
+                } else {
+                  res.redirect('/home');
+                }
+              });
+          } else if (!rows[0].discord_link) {
             db.query(
               `UPDATE "user" SET discord_link = ${req.user.id} WHERE google_link = '${req.cookies.Quasigoogle}';`,
               (err) => {
@@ -26,7 +44,23 @@ router.get(
               },
             );
           } else {
-            res.redirect('/home');
+            db.query(`SELECT * FROM "user" where discord_link = '${req.user.id}';`)
+              .then((rowData) => {
+                if (rowData.rows.length === 0) {
+                  db.query(
+                    `INSERT INTO "user" (name_user, discord_link, thumbnail) VALUES ('${req.user.username}', ${req.user.id}, 'https://cdn.discordapp.com/avatars/${req.user.id}/${req.user.avatar}.jpg');`,
+                    (err) => {
+                      if (err) {
+                        res.redirect('/');
+                      } else {
+                        res.redirect('/rules');
+                      }
+                    },
+                  );
+                } else {
+                  res.redirect('/home');
+                }
+              });
           }
         });
     } else {
@@ -34,7 +68,7 @@ router.get(
         .then(({ rows }) => {
           if (rows.length === 0) {
             db.query(
-              `INSERT INTO "user" (name_user, discord_link) VALUES ('${req.user.username}', ${req.user.id});`,
+              `INSERT INTO "user" (name_user, discord_link, thumbnail) VALUES ('${req.user.username}', ${req.user.id}, 'https://cdn.discordapp.com/avatars/${req.user.id}/${req.user.avatar}.jpg');`,
               (err) => {
                 if (err) {
                   res.redirect('/');

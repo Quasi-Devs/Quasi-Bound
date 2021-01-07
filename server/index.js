@@ -98,6 +98,19 @@ io.on('connection', (socket) => {
     io.emit(`${id}hp`, hp, Ehp);
   });
 
+  socket.on('Invite', (userId, id, playerName) => {
+    io.emit(`${userId} Accept?`, id, playerName);
+  });
+
+  socket.on('Accept', (userId, id) => {
+    User.addEnemy(id, userId)
+      .then(() => User.addEnemy(userId, id))
+      .then(() => {
+        io.emit(`${userId} Proceed`);
+        io.emit(`${id} Proceed`);
+      });
+  });
+
   socket.on('Queue', (id) => {
     if (!players) {
       players = id;
