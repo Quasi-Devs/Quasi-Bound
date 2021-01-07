@@ -8,6 +8,11 @@ const getUser = async (id) => {
   return userData;
 };
 
+const getAllUser = async () => {
+  const userData = await db.query('SELECT * FROM "user"');
+  return userData;
+};
+
 const addEnemy = async (idUser, idEnemy) => {
   await db.query(`UPDATE "user" SET id_enemy = ${idEnemy} WHERE id = ${idUser}`);
 };
@@ -26,4 +31,5 @@ module.exports = {
   getUser,
   addEnemy,
   getCards,
+  getAllUser,
 };
