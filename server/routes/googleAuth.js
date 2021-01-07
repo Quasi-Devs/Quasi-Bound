@@ -33,7 +33,24 @@ router.get(
               },
             );
           } else {
-            res.redirect('/home');
+            db.query(`SELECT * FROM "user" where google_link = '${req.user.id}';`)
+              .then((data) => {
+                if (data.rows.length === 0) {
+                  db.query(
+                    `INSERT INTO "user" (name_user, google_link, thumbnail) VALUES ('${req.user.displayName}', '${req.user.id}', '${req.user.photos[0].value}');`,
+                    (err) => {
+                      if (err) {
+                        console.info(err);
+                        res.redirect('/');
+                      } else {
+                        res.redirect('/rules');
+                      }
+                    },
+                  );
+                } else {
+                  res.redirect('/home');
+                }
+              });
           }
         });
     } else {
@@ -41,7 +58,7 @@ router.get(
         .then(({ rows }) => {
           if (rows.length === 0) {
             db.query(
-              `INSERT INTO "user" (name_user, google_link) VALUES ('${req.user.displayName}', '${req.user.id}');`,
+              `INSERT INTO "user" (name_user, google_link, thumbnail) VALUES ('${req.user.displayName}', '${req.user.id}', '${req.user.photos[0].value}');`,
               (err) => {
                 if (err) {
                   console.info(err);

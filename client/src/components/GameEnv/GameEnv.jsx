@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
+import botData from '../../../bot';
 
 const socket = io.connect('', {
   transports: ['websocket'],
@@ -17,7 +18,7 @@ const GameEnv = ({ setNav }) => {
   const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
-  const [botDeck, setBotDeck] = useState(_.shuffle(exampleData));
+  const [botDeck, setBotDeck] = useState(_.shuffle(botData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
@@ -40,11 +41,9 @@ const GameEnv = ({ setNav }) => {
       setYourSlots(card);
     });
   }
-
   if ((HP <= 0 || enemyHP <= 0) && !done) {
     setDone(true);
   }
-
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
@@ -54,7 +53,6 @@ const GameEnv = ({ setNav }) => {
       setTurn(data.id > data.id_enemy);
     }
   }), []);
-
   useEffect(() => {
     if (user) {
       if (handleEnd && turn) {
@@ -133,7 +131,6 @@ const GameEnv = ({ setNav }) => {
       }
     }
   }, [turn]);
-
   return (
     <div>
       <ThreeDEnv
@@ -159,6 +156,7 @@ const GameEnv = ({ setNav }) => {
           setBotDeck={setBotDeck}
           enemyHP={enemyHP}
           HP={HP}
+          setHP={setHP}
         />
       ) : <Link to="/home"><button type="submit">Retrun To Menu</button></Link>}
     </div>
@@ -167,5 +165,4 @@ const GameEnv = ({ setNav }) => {
 GameEnv.propTypes = {
   setNav: PropTypes.func.isRequired,
 };
-
 export default GameEnv;

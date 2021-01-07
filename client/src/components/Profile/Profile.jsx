@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(() => ({
   /**
@@ -8,16 +9,13 @@ const useStyles = makeStyles(() => ({
    */
   profileContainer: {
     padding: '5%',
-    columns: '2 150px',
+    columns: '2 500px',
   },
   /**
    * @imgContainer supplies the style properties for the profile
    * Thumbnail.
    */
   imgContainer: {
-    position: 'absolute',
-    right: 0,
-    marginTop: '144px',
     display: 'flex',
     justifyContent: 'center',
     padding: '20px',
@@ -67,45 +65,50 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   statsContainer: {
-    height: '394px',
+    height: '400px',
   },
 }));
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const classes = useStyles();
   return (
     <div>
-      <div className={classes.profileContainer}>
-        <Card className={classes.statsContainer}>
-          <Card className={classes.cardHeader}>
-            <h1>Dan Bobish</h1>
+      {user ? (
+        <div className={classes.profileContainer}>
+          <Card className={classes.statsContainer}>
+            <Card className={classes.cardHeader}>
+              <h1>{`${user.name_user} #${user.id}`}</h1>
+            </Card>
+            <h1 className={classes.underHead}>My Stats:</h1>
+            <h4 className={classes.description}>{`Games Won: ${user.total_win || 0}`}</h4>
+            <h4 className={classes.description}>{`Games Lost: ${user.total_games - user.total_win}`}</h4>
+            <h4 className={classes.description}>{`Total Games: ${user.total_games || 0}`}</h4>
+            <h4 className={classes.description}>{`Score (ELO): ${user.count_rating || 0} LP`}</h4>
           </Card>
-          <h1 className={classes.underHead}>My Stats:</h1>
-          <h4 className={classes.description}>Games Won: 5</h4>
-          <h4 className={classes.description}>Games Lost: 122</h4>
-          <h4 className={classes.description}>Total Games: 127</h4>
-          <h4 className={classes.description}>Score (ELO): -5 LP</h4>
-        </Card>
-        <div className={classes.imgContainer}>
-          <img
-            src="https://lh3.googleusercontent.com/ogw/ADGmqu9MRmV9th8CboJblJP0PiUDHGVVMKHE5tnQV3sqZg=s192-c-mo"
-            alt="thumbnail"
-          />
+          <div className={classes.imgContainer}>
+            <img
+              src={user.thumbnail}
+              alt="thumbnail"
+              width="255"
+              height="255"
+            />
+          </div>
+          <div>
+            <Card>
+              <h1 className={classes.descriptionContainer}>About:</h1>
+              <h4 className={classes.description}>
+                {user.description}
+              </h4>
+            </Card>
+          </div>
         </div>
-        <div>
-          <Card>
-            <h1 className={classes.descriptionContainer}>Test</h1>
-            <h4 className={classes.description}>
-              Daniel Emerson Bobish is a retired American mixed martial artist
-              and professional wrestler. He was competing in the Super
-              Heavyweight division. He is a former King of the Cage Super
-              Heavyweight
-            </h4>
-          </Card>
-        </div>
-      </div>
+      ) : 'Loading...'}
     </div>
   );
+};
+
+Profile.propTypes = {
+  user: PropTypes.bool.isRequired,
 };
 
 export default Profile;
