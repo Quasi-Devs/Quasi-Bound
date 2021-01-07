@@ -58,6 +58,7 @@
     "p5": "^1.2.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
+    "passport-google-oauth": "^2.0.0",
     "pg": "^8.5.1",
     "pg-promise": "^10.8.1",
     "probability-node": "0.0.1",
