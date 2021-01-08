@@ -15,7 +15,6 @@ const server = http.createServer(app);
 const socketio = require('socket.io');
 const User = require('./db/models/user');
 
-const io = socketio(server, { wsEngine: 'ws' });
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const corsOptions = {
@@ -82,6 +81,12 @@ app.get('*', (req, res) => {
 
 let players = null;
 
+server.listen(PORT, () => {
+  console.info(`http://localhost:${PORT}`);
+});
+
+const io = socketio().listen(server);
+
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
     io.emit(`${enemy}`, array, card);
@@ -129,8 +134,4 @@ io.on('connection', (socket) => {
   socket.on('DeQueue', () => {
     players = null;
   });
-});
-
-server.listen(PORT, () => {
-  console.info(`http://localhost:${PORT}`);
 });
