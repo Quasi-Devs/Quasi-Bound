@@ -1,17 +1,30 @@
 import React, { useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Card from './Card';
 import './myDecks.css';
 
-const MyDecks = ({ user }) => {
+const MyDecks = ({ user, displayMode, setDisplayMode }) => {
   const [decks, setDecks] = useState([]);
-  const [deckCards, setDeckCards] = useState([]);
-  // const [cardsList, setCardsList] = useState([]);
+  const [deckCards, setDeckCards] = useState();
+  const [cardsList, setCardsList] = useState([]);
   const [title, setTitle] = useState('');
   const [inputShow, setInputShow] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(false);
+  const [cardToRemove, setCardToRemove] = useState({});
+  const [buttonPosition, setButtonPosition] = useState();
   const [trigger, setTrigger] = useState(false);
+  const useStyles = makeStyles({
+    removeButton: {
+      position: 'relative',
+      top: buttonPosition,
+    },
+  });
+  const classes = useStyles();
+  const history = useHistory();
 
   const createDeck = () => {
     if (inputShow) {
@@ -21,38 +34,118 @@ const MyDecks = ({ user }) => {
           setTrigger(!trigger);
           setTitle('');
         })
-        .catch();
+        .catch((err) => console.warn(err));
     } else {
       setInputShow(true);
     }
   };
 
-  const editDeck = (e) => {
-    console.info('clicked');
-    let element = e.target;
-    while (!element.dataset.id) {
-      element = element.parentElement;
-    }
-    axios.get(`/data/deck/${element.dataset.id}`)
+  const getDeckCards = (deck) => {
+    axios.get(`/data/deckCards/${deck.id}`)
       .then(({ data }) => {
-        setDeckCards(data);
-        data.map((card, i, list) => {
-          console.info(list);
-          return card.title;
+        data.sort((a, b) => {
+          if (a.point_resource > b.point_resource) {
+            return 1;
+          }
+          if (a.point_resource < b.point_resource) {
+            return -1;
+          }
+          if (a.point_health > b.point_health) {
+            return 1;
+          }
+          if (a.point_health < b.point_health) {
+            return -1;
+          }
+          if (a.point_attack > b.point_attack) {
+            return 1;
+          }
+          if (a.point_attack < b.point_attack) {
+            return -1;
+          }
+          if (a.point_armor > b.point_armor) {
+            return 1;
+          }
+          if (a.point_armor < b.point_armor) {
+            return -1;
+          }
+          return 0;
         });
+        setDeckCards(data);
+        const list = data.map((card) => card.title);
+        setCardsList(list);
+        setDecks([deck]);
       })
-      .catch();
+      .catch((err) => console.warn(err));
   };
 
-  const showButton = () => {
-    console.info('clicked');
+  const editDeck = (e) => {
+    let element = e.target;
+    while (!element.dataset.deck) {
+      element = element.parentElement;
+    }
+    const deck = JSON.parse(element.dataset.deck);
+    getDeckCards(deck);
+    setDisplayMode(deck.id);
+  };
+
+  const quitEdit = () => {
+    setDeckCards();
+    setCardsList([]);
+    setDisplayMode('browse');
+    setTrigger(!trigger);
+  };
+
+  const addCards = () => {
+    history.push('/deck/cards');
+  };
+
+  const cancelRemove = () => {
+    setButtonVisible(false);
+    setCardToRemove({});
+  };
+
+  const removeCard = () => {
+    axios.delete('/data/deckCard', {
+      data: {
+        cardId: cardToRemove.id,
+        deckId: decks[0].id,
+        cardCount: decks[0].count_card,
+      },
+    })
+      .then(() => {
+        cancelRemove();
+        getDeckCards(decks[0]);
+      })
+      .catch((err) => console.warn(err));
+  };
+
+  const showButton = (e) => {
+    setButtonVisible(true);
+    let element = e.target;
+    while (!element.dataset.card) {
+      element = element.parentElement;
+    }
+    const card = JSON.parse(element.dataset.card);
+    console.info(element.offsetTop);
+    setButtonPosition(element.offsetTop - 302);
+    setCardToRemove(card);
+    getDeckCards(decks[0]);
   };
 
   useLayoutEffect(() => {
     if (user) {
-      axios.get(`/data/deck/${user.id}`)
-        .then(({ data }) => setDecks(data))
-        .catch();
+      if (displayMode === 'browse') {
+        axios.get(`/data/decks/${user.id}`)
+          .then(({ data }) => setDecks(data))
+          .catch((err) => console.warn(err));
+      } else {
+        axios.get(`/data/decks/${user.id}`)
+          .then(({ data }) => {
+            const [myDeck] = data.filter((deck) => deck.id === displayMode);
+            getDeckCards(myDeck);
+          })
+          .catch((err) => console.warn(err));
+      }
     }
   }, [user, trigger]);
 
@@ -62,23 +155,42 @@ const MyDecks = ({ user }) => {
         <input value={title} placeholder="Deck Title" onChange={(e) => setTitle(e.target.value)} />
       )}
       <button type="button" onClick={createDeck}>Create Deck</button>
-      <div className="cardsList">
-        cards list
-      </div>
+      {cardsList.length > 0
+        ? (
+          <div className="cardsList">
+            {cardsList.map((name) => <div>{name}</div>)}
+          </div>
+        ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
         {decks.map((deck) => (
-          <div key={deck.id} className="deckCover" data-id={deck.id} onClick={editDeck}>
+          <div key={deck.id} className="deckCover" data-deck={JSON.stringify(deck)} onClick={editDeck}>
             <Typography variant="h4">
               {deck.title}
+            </Typography>
+            <Typography variant="h4">
+              {deck.count_card}
             </Typography>
           </div>
         ))}
       </Grid>
-      {deckCards.length > 0
+      {deckCards
         ? (
-          <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-            {deckCards.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
-          </Grid>
+          <div className="deckCards">
+            <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
+              {deckCards.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
+            </Grid>
+            {buttonVisible
+              ? (
+                <div className={classes.removeButton}>
+                  <button type="button" onClick={removeCard}>{`Remove ${cardToRemove.title}`}</button>
+                  <button type="button" onClick={cancelRemove}>Cancel</button>
+                </div>
+              ) : null}
+            <div id="buttonsContainer">
+              <button type="button" onClick={addCards}>Add Cards</button>
+              <button type="button" onClick={quitEdit}>Done</button>
+            </div>
+          </div>
         )
         : null}
     </div>
@@ -87,6 +199,8 @@ const MyDecks = ({ user }) => {
 
 MyDecks.propTypes = {
   user: PropTypes.shape().isRequired,
+  setDisplayMode: PropTypes.func.isRequired,
+  displayMode: PropTypes.string.isRequired,
 };
 
 export default MyDecks;

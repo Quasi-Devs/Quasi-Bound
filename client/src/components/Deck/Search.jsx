@@ -43,16 +43,17 @@ const Search = ({ user }) => {
   };
 
   const saveCard = () => {
+    setSavedMessage(false);
     axios.post('/data/saveCard', { userId: user.id, card: cardToSave })
       .then(() => {
         setSavedMessage(true);
         setTrigger(!trigger);
       })
-      .catch();
+      .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
-    setTimeout(() => setSavedMessage(false), 2000);
+    setTimeout(() => setSavedMessage(false), 1500);
   }, [trigger]);
 
   useLayoutEffect(() => {
@@ -87,7 +88,7 @@ const Search = ({ user }) => {
                 {`Save ${cardToSave.title}`}
               </button>
               {savedMessage
-                ? <span>Saved Successfully</span>
+                ? <span>{`Saved ${cardToSave.title}`}</span>
                 : null}
             </div>
           )
