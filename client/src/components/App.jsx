@@ -51,10 +51,7 @@ const App = () => {
       window.location.href = '/game';
     });
   }
-  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), []);
-  // function Alert(props) {
-  //   return <MuiAlert elevation={6} variant="filled" {...props} />;
-  // }
+  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)).catch((err) => console.warn(err)), []);
 
   useEffect(() => {
     if (user) {
@@ -65,7 +62,7 @@ const App = () => {
           }
         });
     }
-  }, [user]);
+  }, [user]).catch((err) => console.warn(err));
 
   return (
     <div className="root">
