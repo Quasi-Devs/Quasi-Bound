@@ -21,7 +21,7 @@ import Login from './Login';
 import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 

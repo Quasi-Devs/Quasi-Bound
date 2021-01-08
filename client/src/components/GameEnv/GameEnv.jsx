@@ -8,7 +8,7 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import botData from '../../../bot';
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 const GameEnv = ({
