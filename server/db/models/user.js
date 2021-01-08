@@ -8,8 +8,25 @@ const getUser = async (id) => {
   return userData;
 };
 
+const getAllUser = async () => {
+  const userData = await db.query('SELECT * FROM "user"');
+  return userData;
+};
+
 const addEnemy = async (idUser, idEnemy) => {
   await db.query(`UPDATE "user" SET id_enemy = ${idEnemy} WHERE id = ${idUser}`).catch((err) => console.warn(err));
+};
+
+const addDescription = async (idUser, description) => {
+  await db.query(`UPDATE "user" SET description = '${description}' WHERE id = ${idUser}`);
+};
+
+const updateWins = async (idUser, winScore) => {
+  await db.query(`UPDATE "user" SET total_win = ${winScore} WHERE id = ${idUser}`);
+};
+
+const updateGames = async (idUser, gameScore) => {
+  await db.query(`UPDATE "user" SET total_games = ${gameScore} WHERE id = ${idUser}`);
 };
 
 const getCards = async (userId) => {
@@ -26,4 +43,8 @@ module.exports = {
   getUser,
   addEnemy,
   getCards,
+  getAllUser,
+  addDescription,
+  updateGames,
+  updateWins,
 };

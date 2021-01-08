@@ -16,6 +16,8 @@ import Deck from './Deck/Deck';
 import PlayHub from './PlayHub/PlayHub';
 import GameEnv from './GameEnv/GameEnv';
 import Login from './Login';
+import Friends from './friends/Friends';
+import FriendProfile from './friends/FriendProfile';
 
 const socket = io.connect('', {
   transports: ['websocket'],
@@ -34,6 +36,7 @@ const App = () => {
   const [invitee, setInvitee] = useState('');
   const [enemyId, setEnemyId] = useState();
   const [open, setOpen] = useState(false);
+  const [friendProfile, setFriendProfile] = useState({});
   const classes = useStyles();
   if (user) {
     socket.on(`${user.id} Accept?`, (id, name) => {
@@ -83,7 +86,7 @@ const App = () => {
             <Rules />
           </Route>
           <Route path="/profile">
-            <Profile user={user} />
+            <Profile user={user} setUser={setUser} />
           </Route>
           <Route path="/deck">
             <Deck user={user} />
@@ -96,6 +99,12 @@ const App = () => {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/friends">
+            <Friends setFriendProfile={setFriendProfile} user={user} />
+          </Route>
+          <Route path="/friendProfile">
+            <FriendProfile friend={friendProfile} />
           </Route>
         </Switch>
       </BrowserRouter>
