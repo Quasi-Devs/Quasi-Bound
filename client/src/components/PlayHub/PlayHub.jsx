@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 const PlayHub = ({ user }) => {

@@ -9,7 +9,7 @@ import TwoDEnv from './2DEnv/2DEnv';
 // import exampleData from '../../../example';
 import botData from '../../../bot';
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 const GameEnv = ({ setNav, deck, setDeck }) => {

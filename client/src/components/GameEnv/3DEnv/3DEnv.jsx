@@ -80,7 +80,7 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 function Loading() {
