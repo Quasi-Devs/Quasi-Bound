@@ -16,6 +16,7 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
   const [buttonVisible, setButtonVisible] = useState(false);
   const [cardToRemove, setCardToRemove] = useState({});
   const [buttonPosition, setButtonPosition] = useState();
+  const [defaultDeck, setDefaultDeck] = useState();
   const [trigger, setTrigger] = useState(false);
   const useStyles = makeStyles({
     removeButton: {
@@ -131,11 +132,24 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
     getDeckCards(decks[0]);
   };
 
+  const setDefault = () => {
+    axios.put('/data/defaultDeck', { userId: user.id, deckId: decks[0].id })
+      .then(() => setDefaultDeck(decks[0].title))
+      .catch((err) => console.warn(err));
+  };
+
   useLayoutEffect(() => {
     if (user) {
       if (displayMode === 'browse') {
         axios.get(`/data/decks/${user.id}`)
-          .then(({ data }) => setDecks(data))
+          .then(({ data }) => {
+            data.forEach((deck) => {
+              if (deck.id === user.default_deck) {
+                setDefaultDeck(deck.title);
+              }
+            });
+            setDecks(data);
+          })
           .catch((err) => console.warn(err));
       } else {
         axios.get(`/data/decks/${user.id}`)
@@ -154,6 +168,7 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
         <input value={title} placeholder="Deck Title" onChange={(e) => setTitle(e.target.value)} />
       )}
       <button type="button" onClick={createDeck}>Create Deck</button>
+      <h2>{`Default Deck: ${defaultDeck || 'none'}`}</h2>
       {cardsList.length > 0
         ? (
           <div className="cardsList">
@@ -186,8 +201,13 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
                 </div>
               ) : null}
             <div id="buttonsContainer">
-              <button type="button" onClick={addCards}>Add Cards</button>
-              <button type="button" onClick={quitEdit}>Done</button>
+              <div>
+                <button type="button" onClick={setDefault}>Set Deck as Default</button>
+              </div>
+              <div>
+                <button type="button" onClick={addCards}>Add Cards</button>
+                <button type="button" onClick={quitEdit}>Done</button>
+              </div>
             </div>
           </div>
         )

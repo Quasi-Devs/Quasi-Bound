@@ -39,6 +39,10 @@ const getCards = async (userId) => {
   return Promise.all(cards);
 };
 
+const setDefaultDeck = async ({ userId, deckId }) => {
+  await db.query(`UPDATE "user" SET default_deck = ${deckId} WHERE id = ${userId}`).catch((err) => console.warn(err));
+};
+
 module.exports = {
   getUser,
   addEnemy,
@@ -47,4 +51,5 @@ module.exports = {
   addDescription,
   updateGames,
   updateWins,
+  setDefaultDeck,
 };

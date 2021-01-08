@@ -80,29 +80,34 @@ dbRouter.delete('/deckCard', async (req, res) => {
   res.sendStatus(204);
 });
 
+dbRouter.put('/defaultDeck', async (req, res) => {
+  await User.setDefaultDeck(req.body).catch((err) => console.warn(err));
+  res.sendStatus(200);
+});
+
 dbRouter.get('/wins/:userId', async (req, res) => {
-  const cards = await User.getCards(req.params.userId);
+  const cards = await User.getCards(req.params.userId).catch((err) => console.warn(err));
   res.status(200).send(cards);
 });
 
 dbRouter.get('/games/:userId', async (req, res) => {
-  const cards = await User.getCards(req.params.userId);
+  const cards = await User.getCards(req.params.userId).catch((err) => console.warn(err));
   res.status(200).send(cards);
 });
 
 dbRouter.get('/desc/:userId', async (req, res) => {
   const { description } = req.query;
-  await User.addDescription(req.params.userId, description);
+  await User.addDescription(req.params.userId, description).catch((err) => console.warn(err));
   res.status(200).send(description);
 });
 
 dbRouter.get('/friends/:userID', async (req, res) => {
-  const friends = await Friend.getFriends(req.params);
+  const friends = await Friend.getFriends(req.params).catch((err) => console.warn(err));
   res.status(200).send(friends);
 });
 
 dbRouter.post('/friends', async (req, res) => {
-  await Friend.addFriend(req.body);
+  await Friend.addFriend(req.body).catch((err) => console.warn(err));
   res.sendStatus(201);
 });
 
