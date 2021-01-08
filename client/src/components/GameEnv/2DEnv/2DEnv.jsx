@@ -9,7 +9,7 @@ const socket = io.connect('', {
 });
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
-  setBotDeck, setEnemySlots, setHP,
+  setBotDeck, setEnemySlots, setHP, setEnemyHP, enemyHP,
 }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
@@ -122,8 +122,16 @@ const TwoDEnv = ({
                       }
                       const number = clicked.description.match(/\d+/g);
                       const currentEnemySlots = enemySlots;
+                      if (!clicked.is_character) {
+                        arr[i] = false;
+                      }
                       if (clicked.description.includes('damage')) {
-                        currentEnemySlots[i].point_health -= Number(number);
+                        if (currentEnemySlots[i]) {
+                          currentEnemySlots[i].point_health -= Number(number);
+                        } else {
+                          socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+                          setEnemyHP(enemyHP - Number(number));
+                        }
                       }
                       socket.emit('placed', user.id_enemy, [...arr], enemySlots);
                       setEnemySlots([...currentEnemySlots]);
@@ -192,6 +200,8 @@ TwoDEnv.propTypes = {
   setBotDeck: PropTypes.func.isRequired,
   setEnemySlots: PropTypes.func.isRequired,
   setHP: PropTypes.func.isRequired,
+  setEnemyHP: PropTypes.func.isRequired,
+  enemyHP: PropTypes.number.isRequired,
 };
 
 export default TwoDEnv;

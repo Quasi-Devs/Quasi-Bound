@@ -155,6 +155,7 @@ const GameEnv = ({ setNav }) => {
           botDeck={botDeck}
           setBotDeck={setBotDeck}
           enemyHP={enemyHP}
+          setEnemyHP={setEnemyHP}
           HP={HP}
           setHP={setHP}
         />

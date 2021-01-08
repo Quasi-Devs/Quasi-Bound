@@ -22,7 +22,24 @@ function DOMObject({
   const ref = useRef(CSS3DObject);
   const pos = position;
   let rot = rotation;
+  let elevated = false;
+  const currentpos = position[1] * 10;
   CSSFrame(({ mouse }) => {
+    if (slot && slot.description.includes('Fly') && !clicked) {
+      if (ref.current.position.y >= currentpos + 200) {
+        elevated = true;
+      }
+      if (ref.current.position.y >= currentpos) {
+        if (elevated) {
+          ref.current.position.y -= 1;
+          if (ref.current.position.y === currentpos + 100) {
+            elevated = false;
+          }
+        } else {
+          ref.current.position.y += 1;
+        }
+      }
+    }
     if (clicked) {
       rot = [1.5, 0, 0];
       ref.current.rotation.x = 0.1;
