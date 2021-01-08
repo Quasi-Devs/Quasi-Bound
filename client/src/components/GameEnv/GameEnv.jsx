@@ -6,23 +6,24 @@ import _ from 'underscore';
 import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
-import exampleData from '../../../example';
 import botData from '../../../bot';
 
 const socket = io.connect('', {
   transports: ['websocket'],
 });
-const GameEnv = ({ setNav }) => {
+const GameEnv = ({
+  setNav, setDeck, deck,
+}) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
-  const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
-  const [deck, setDeck] = useState(_.shuffle(exampleData));
+  const [user, setUser] = useState(false);
   const [botDeck, setBotDeck] = useState(_.shuffle(botData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
+
   if (user) {
     socket.on(`${user.id}Turn`, () => {
       setHandleEnd(true);
@@ -42,8 +43,16 @@ const GameEnv = ({ setNav }) => {
     });
   }
   if ((HP <= 0 || enemyHP <= 0) && !done) {
+    if (enemyHP <= 0 && HP <= 0) {
+      axios.get(`data/wins/${user.id}/${user.total_win + 0.5}`);
+    } else if (enemyHP <= 0) {
+      axios.get(`data/wins/${user.id}/${user.total_win + 1}`);
+    }
+    axios.get(`data/games/${user.id}/${user.total_games + 1}`);
     setDone(true);
+    socket.emit('HP', user.id_enemy, enemyHP, HP);
   }
+
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
     setUser(data);
@@ -164,5 +173,7 @@ const GameEnv = ({ setNav }) => {
 };
 GameEnv.propTypes = {
   setNav: PropTypes.func.isRequired,
+  deck: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setDeck: PropTypes.func.isRequired,
 };
 export default GameEnv;
