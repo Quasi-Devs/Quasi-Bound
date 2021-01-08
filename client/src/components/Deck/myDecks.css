@@ -8,3 +8,27 @@
   height: 300px;
   text-align: center;
 }
+
+.cardsList {
+  border: solid 1px black;
+  position: absolute;
+  right: 0em;
+}
+
+.deckCards {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+#buttonsContainer {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+}
+
+/* #quitEdit {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+} */
