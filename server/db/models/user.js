@@ -29,6 +29,10 @@ const updateGames = async (idUser, gameScore) => {
   await db.query(`UPDATE "user" SET total_games = ${gameScore} WHERE id = ${idUser}`);
 };
 
+const updateELO = async (idUser, elo) => {
+  await db.query(`UPDATE "user" SET count_rating = ${elo} WHERE id = ${idUser}`);
+};
+
 const getCards = async (userId) => {
   const cardData = await db.query(`SELECT * FROM "user_card" WHERE id_user = ${userId}`).catch((err) => console.warn(err));
 
@@ -52,4 +56,5 @@ module.exports = {
   updateGames,
   updateWins,
   setDefaultDeck,
+  updateELO,
 };
