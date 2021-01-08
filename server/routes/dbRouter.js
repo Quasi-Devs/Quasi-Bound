@@ -97,6 +97,12 @@ dbRouter.get('/games/:userId/:num', async (req, res) => {
   res.status(200).send(cards);
 });
 
+dbRouter.get('/elo/:userId/:num', async (req, res) => {
+  const cards = await User.updateELO(req.params.userId, req.params.num)
+    .catch((err) => console.warn(err));
+  res.status(200).send(cards);
+});
+
 dbRouter.get('/desc/:userId', async (req, res) => {
   const { description } = req.query;
   await User.addDescription(req.params.userId, description).catch((err) => console.warn(err));

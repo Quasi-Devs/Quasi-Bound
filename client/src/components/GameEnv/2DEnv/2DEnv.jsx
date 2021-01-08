@@ -9,7 +9,7 @@ const socket = io.connect('', {
 });
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
-  setBotDeck, setEnemySlots, setHP,
+  setBotDeck, setEnemySlots, setHP, setEnemyHP, enemyHP,
 }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
@@ -22,6 +22,7 @@ const TwoDEnv = ({
   const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
   const [taken, setTaken] = useState(0);
   const [botGo, setBotGo] = useState(false);
+
   const handleResource = (num, check) => {
     if (user) {
       if (check) {
@@ -118,7 +119,21 @@ const TwoDEnv = ({
                       } else {
                         arr[i].turn = 1;
                       }
+                      const number = clicked.description.match(/\d+/g);
+                      const currentEnemySlots = enemySlots;
+                      if (!clicked.is_character) {
+                        arr[i] = false;
+                      }
+                      if (clicked.description.includes('damage')) {
+                        if (currentEnemySlots[i]) {
+                          currentEnemySlots[i].point_health -= Number(number);
+                        } else {
+                          socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+                          setEnemyHP(enemyHP - Number(number));
+                        }
+                      }
                       socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+                      setEnemySlots([...currentEnemySlots]);
                       setSlots([...arr]);
                       setClick(false);
                       cardInHand.splice(cardIndex, 1);
@@ -165,7 +180,12 @@ const TwoDEnv = ({
           <button type="submit" onClick={() => setHP(0)}>Surrender</button>
           <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
         </div>
-      ) : <h1>ENEMY TURN</h1>}
+      ) : (
+        <div>
+          <h1>ENEMY TURN</h1>
+          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
+        </div>
+      )}
     </div>
   );
 };
@@ -184,6 +204,8 @@ TwoDEnv.propTypes = {
   setBotDeck: PropTypes.func.isRequired,
   setEnemySlots: PropTypes.func.isRequired,
   setHP: PropTypes.func.isRequired,
+  setEnemyHP: PropTypes.func.isRequired,
+  enemyHP: PropTypes.number.isRequired,
 };
 
 export default TwoDEnv;

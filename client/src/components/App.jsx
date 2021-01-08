@@ -60,9 +60,9 @@ const App = () => {
           if (data.length !== 0) {
             setDeck(_.shuffle(data));
           }
-        });
+        }).catch((err) => console.warn(err));
     }
-  }, [user]).catch((err) => console.warn(err));
+  }, [user]);
 
   return (
     <div className="root">

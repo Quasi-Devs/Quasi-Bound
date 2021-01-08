@@ -6,18 +6,18 @@ import _ from 'underscore';
 import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
+// import exampleData from '../../../example';
 import botData from '../../../bot';
 
 const socket = io.connect('', {
   transports: ['websocket'],
 });
-const GameEnv = ({
-  setNav, setDeck, deck,
-}) => {
+const GameEnv = ({ setNav, deck, setDeck }) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
-  const [turn, setTurn] = useState(false);
   const [user, setUser] = useState(false);
+  const [turn, setTurn] = useState(false);
+
   const [botDeck, setBotDeck] = useState(_.shuffle(botData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
@@ -44,9 +44,21 @@ const GameEnv = ({
   }
   if ((HP <= 0 || enemyHP <= 0) && !done) {
     if (enemyHP <= 0 && HP <= 0) {
-      axios.get(`data/wins/${user.id}/${user.total_win + 0.5}`);
+      if (user.id_enemy) {
+        axios.get(`data/wins/${user.id}/${user.total_win + 0.5}`);
+        axios.get(`/data/elo/${user.id}/${user.count_rating + 5}`);
+      } else {
+        axios.get(`data/wins/${user.id}/${user.total_win + 0.5}`);
+      }
     } else if (enemyHP <= 0) {
-      axios.get(`data/wins/${user.id}/${user.total_win + 1}`);
+      if (user.id_enemy) {
+        axios.get(`data/wins/${user.id}/${user.total_win + 1}`);
+        axios.get(`/data/elo/${user.id}/${user.count_rating + 10}`);
+      } else {
+        axios.get(`data/wins/${user.id}/${user.total_win + 1}`);
+      }
+    } else if (HP <= 0 && user.id_enemy) {
+      axios.get(`/data/elo/${user.id}/${user.count_rating - 10}`);
     }
     axios.get(`data/games/${user.id}/${user.total_games + 1}`);
     setDone(true);
@@ -164,6 +176,7 @@ const GameEnv = ({
           botDeck={botDeck}
           setBotDeck={setBotDeck}
           enemyHP={enemyHP}
+          setEnemyHP={setEnemyHP}
           HP={HP}
           setHP={setHP}
         />
