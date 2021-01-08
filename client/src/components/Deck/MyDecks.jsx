@@ -126,7 +126,6 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
       element = element.parentElement;
     }
     const card = JSON.parse(element.dataset.card);
-    console.info(element.offsetTop);
     setButtonPosition(element.offsetTop - 302);
     setCardToRemove(card);
     getDeckCards(decks[0]);
