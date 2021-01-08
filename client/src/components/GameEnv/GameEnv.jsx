@@ -12,9 +12,10 @@ import botData from '../../../bot';
 const socket = io.connect('', {
   transports: ['websocket'],
 });
-const GameEnv = ({ setNav, user, setUser }) => {
+const GameEnv = ({ setNav }) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
+  const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
   const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [botDeck, setBotDeck] = useState(_.shuffle(botData));
@@ -42,6 +43,7 @@ const GameEnv = ({ setNav, user, setUser }) => {
   }
   if ((HP <= 0 || enemyHP <= 0) && !done) {
     setDone(true);
+    socket.emit('HP', user.id_enemy, enemyHP, HP);
   }
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
@@ -163,7 +165,5 @@ const GameEnv = ({ setNav, user, setUser }) => {
 };
 GameEnv.propTypes = {
   setNav: PropTypes.func.isRequired,
-  user: PropTypes.bool.isRequired,
-  setUser: PropTypes.func.isRequired,
 };
 export default GameEnv;
