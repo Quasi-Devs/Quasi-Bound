@@ -9,7 +9,7 @@ const socket = io.connect('', {
 });
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
-  setBotDeck, setEnemySlots,
+  setBotDeck, setEnemySlots, setHP,
 }) => {
   const [resource, setResource] = useState([
     true, false, false, false, false, false, false, false, false, false, false, false]);
@@ -81,8 +81,10 @@ const TwoDEnv = ({
           return null;
         });
         setEnemySlots([...arr]);
-        setHandleEnd(true);
-        setTurn(true);
+        setTimeout(() => {
+          setHandleEnd(true);
+          setTurn(true);
+        }, 1000);
       }
     }, 2000);
   }, [botGo]);
@@ -161,7 +163,7 @@ const TwoDEnv = ({
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}
           </div>
-          <button type="submit">Surrender</button>
+          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
           <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
         </div>
       ) : <h1>ENEMY TURN</h1>}
@@ -182,6 +184,7 @@ TwoDEnv.propTypes = {
   botDeck: PropTypes.arrayOf(PropTypes.object).isRequired,
   setBotDeck: PropTypes.func.isRequired,
   setEnemySlots: PropTypes.func.isRequired,
+  setHP: PropTypes.func.isRequired,
 };
 
 export default TwoDEnv;

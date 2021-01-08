@@ -3,17 +3,22 @@ const db = require('../index');
 /**
  * createDeck will create a new deck instance that will persist in database
  * Should hold up to 30 cards per deck.
- * @param {*} idCard,
- * @param {*} idUser,
+ * @param {*} cardId,
+ * @param {*} userId,
  */
-const createDeck = async ({ title, idUser }) => {
-  const deck = await db.query(`INSERT INTO "deck" (title, count_card) VALUES ('${title}', 0) RETURNING *`);
-  await db.query(`INSERT INTO "user_deck" (id_user, id_deck) VALUES (${idUser}, ${deck.rows[0].id})`);
-  return deck.rows[0];
+const createDeck = async ({ title, userId }) => {
+  try {
+    const deck = await db.query(`INSERT INTO "deck" (title, count_card) VALUES ('${title}', 0) RETURNING *`);
+    await db.query(`INSERT INTO "user_deck" (id_user, id_deck) VALUES (${userId}, ${deck.rows[0].id})`);
+    return deck.rows[0];
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
 };
 
-const getDecksByUser = async (idUser) => {
-  const deckData = await db.query(`SELECT * FROM "user_deck" WHERE id_user = ${idUser}`);
+const getDecksByUser = async (userId) => {
+  const deckData = await db.query(`SELECT * FROM "user_deck" WHERE id_user = ${userId}`);
 
   const decks = deckData.rows.map(async (record) => {
     const result = await db.query(`SELECT * FROM "deck" WHERE id = ${record.id_deck}`);

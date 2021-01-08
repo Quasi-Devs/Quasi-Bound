@@ -1,19 +1,42 @@
 import React, { useState } from 'react';
 import './playhub.css';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
 import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  userSearch: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  userSearchButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '20px',
+  },
+  modalStyle: {
+    backgroundColor: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+});
 
 const socket = io.connect('', {
   transports: ['websocket'],
 });
 const PlayHub = ({ user }) => {
+  const classes = useStyles();
   const text = 'play hub';
+  const [Invite, setInvite] = useState(false);
   const [Open, setOpen] = useState(false);
   const [GoOn, setGoOn] = useState(false);
+  const [input, setInput] = useState('');
   const handleModal = () => setOpen(!Open);
+  const handleInvite = () => setInvite(!Invite);
   if (user) {
     socket.on(`${user.id}`, () => {
       setGoOn(true);
@@ -45,7 +68,7 @@ const PlayHub = ({ user }) => {
           Start A Match Against Bot
         </button>
         <Modal open={Open}>
-          <div>
+          <div className={classes.modalStyle}>
             <h1>Finding A Match</h1>
             <button
               type="submit"
@@ -62,11 +85,36 @@ const PlayHub = ({ user }) => {
       <div className="create">
         <h1 className="header">{`right ${text}`}</h1>
         <h1>Img slot</h1>
-        <div>
-          <input placeholder="user" />
-          <button type="submit">Search User</button>
+        <div className={classes.userSearch}>
+          <h3>Search for player (ID can be found in profile)</h3>
         </div>
-        <Link to="/game"><button type="submit" className="button">Create</button></Link>
+        <div className={classes.userSearch}>
+          <input placeholder="#(replace with user ID)" value={input} onChange={(e) => setInput(e.target.value)} />
+        </div>
+        <div className={classes.userSearchButton}>
+          <button
+            type="submit"
+            onClick={() => {
+              handleInvite();
+              socket.emit('Invite', input, user.id, user.name_user);
+            }}
+          >
+            Invite User
+          </button>
+        </div>
+        <Modal open={Invite}>
+          <div className={classes.modalStyle}>
+            <h1>Waiting for player</h1>
+            <button
+              type="submit"
+              onClick={() => {
+                handleInvite();
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </Modal>
       </div>
     </div>
   );

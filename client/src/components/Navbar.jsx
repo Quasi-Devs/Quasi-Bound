@@ -49,14 +49,6 @@ const Navbar = ({ user }) => {
         >
           Home
         </Button>
-        {/* <Button
-          variant="contained"
-          className={classes.button}
-          color="primary"
-          type="button"
-        >
-          Google Translate
-        </Button> */}
         <Button
           variant="contained"
           className={classes.button}

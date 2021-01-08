@@ -1,0 +1,10 @@
+.myDecks {
+  display: flex;
+}
+
+.deckCover {
+  border: solid 1px black;
+  width: 150px;
+  height: 300px;
+  text-align: center;
+}

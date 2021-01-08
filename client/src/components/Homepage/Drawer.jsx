@@ -14,6 +14,7 @@ import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
+import PeopleIcon from '@material-ui/icons/People';
 import axios from 'axios';
 
 import { useHistory } from 'react-router-dom';
@@ -31,9 +32,6 @@ const useStyles = makeStyles({
     right: '0.5rem',
   },
   copyright: {
-    position: 'absolute',
-    bottom: '0px',
-    left: '7%',
     color: 'grey',
   },
   icon: {
@@ -49,6 +47,7 @@ const SidebarDrawer = () => {
     ['Home', '/home'],
     ['Guide', '/rules'],
     ['Profile', '/profile'],
+    ['Friends', '/friends'],
     ['Deck Builder', '/deck'],
     ['Log Out', '/'],
   ];
@@ -63,6 +62,10 @@ const SidebarDrawer = () => {
         <AccountBoxIcon className={clsx(classes.icon)} color="primary" />,
       ],
       [
+        'Friends',
+        <PeopleIcon className={clsx(classes.icon)} color="primary" />,
+      ],
+      [
         'Deck Builder',
         <ViewCarouselIcon className={clsx(classes.icon)} color="primary" />,
       ],
@@ -74,10 +77,10 @@ const SidebarDrawer = () => {
 
     return icons.reduce((acc, item) => {
       if (item[0] === page) {
-        acc.push(item[1]);
+        return item[1];
       }
       return acc;
-    }, []);
+    }, <div>No Icon</div>);
   };
 
   const listDrawerItems = () => (
@@ -87,7 +90,7 @@ const SidebarDrawer = () => {
       role="button"
     >
       {[...drawerMap].map((item) => (
-        <div key={item[0] + item[0]}>
+        <div key={item.toString()}>
           <Divider />
           <ListItem
             button
@@ -106,10 +109,14 @@ const SidebarDrawer = () => {
           </ListItem>
         </div>
       ))}
-
-      <Typography className={clsx(classes.copyright)}>
-        Copyright 2020 Quasi Bound
-      </Typography>
+      <div key="Copyright">
+        <Divider />
+        <ListItem>
+          <Typography className={clsx(classes.copyright)}>
+            Copyright 2020 Quasi Bound
+          </Typography>
+        </ListItem>
+      </div>
     </List>
   );
 
