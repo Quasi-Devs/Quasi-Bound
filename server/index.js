@@ -5,16 +5,17 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const http = require('http');
-const socketio = require('socket.io');
 const cloudinary = require('cloudinary');
 const path = require('path');
 const multer = require('multer');
-const User = require('./db/models/user');
 require('./auth/googleStrategy');
 
 const app = express();
-const sever = http.createServer(app);
-const io = socketio(sever, { wsEngine: 'ws' });
+const server = http.createServer(app);
+const socketio = require('socket.io');
+const User = require('./db/models/user');
+
+const io = socketio(server, { wsEngine: 'ws' });
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const corsOptions = {
@@ -130,6 +131,6 @@ io.on('connection', (socket) => {
   });
 });
 
-sever.listen(PORT, () => {
+server.listen(PORT, () => {
   console.info(`http://localhost:${PORT}`);
 });

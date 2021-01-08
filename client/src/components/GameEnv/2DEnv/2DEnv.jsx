@@ -94,7 +94,7 @@ const TwoDEnv = ({
     setDeck([...deck]);
     botDeck.splice(0, 5);
     setBotDeck([...botDeck]);
-  }, []);
+  }, [user]);
 
   return (
     <div>
