@@ -4,7 +4,6 @@ import React, {
 import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
-import { OrbitControls } from 'drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { io } from 'socket.io-client';
 import * as THREE from 'three';
@@ -132,19 +131,18 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
-  if (user) {
+  useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
     socket.on(`${user.id_enemy}Name`, (name) => {
       setEnemyName(name);
     });
-  }
+  }, [user]);
   return (
     <>
       <div>
         <div style={{ height: window.innerHeight * 0.73 }}>
           <Canvas>
             <color attach="background" args={['gray']} />
-            <OrbitControls />
             <directionalLight intensity={0.5} />
             <ambientLight intensity={0.5} />
             <spotLight position={[20, 20, 10]} angle={0.9} />
