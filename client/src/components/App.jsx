@@ -5,6 +5,8 @@ import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { io } from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
+import _ from 'underscore';
+import exampleData from '../../example';
 
 import Navbar from './Navbar';
 
@@ -34,6 +36,7 @@ const App = () => {
   const [user, setUser] = useState(false);
   const [nav, setNav] = useState(true);
   const [invitee, setInvitee] = useState('');
+  const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [enemyId, setEnemyId] = useState();
   const [open, setOpen] = useState(false);
   const [friendProfile, setFriendProfile] = useState({});
@@ -52,6 +55,18 @@ const App = () => {
   // function Alert(props) {
   //   return <MuiAlert elevation={6} variant="filled" {...props} />;
   // }
+
+  useEffect(() => {
+    if (user) {
+      axios.get(`/data/deckCards/${user.default_deck}`)
+        .then(({ data }) => {
+          if (data.length !== 0) {
+            setDeck(_.shuffle(data));
+          }
+        });
+    }
+  }, [user]);
+
   return (
     <div className="root">
       <Snackbar
@@ -95,7 +110,7 @@ const App = () => {
             <PlayHub user={user} />
           </Route>
           <Route path="/game">
-            <GameEnv setNav={setNav} user={user} setUser={setUser} />
+            <GameEnv setNav={setNav} deck={deck} setDeck={setDeck} />
           </Route>
           <Route path="/login">
             <Login />

@@ -85,13 +85,15 @@ dbRouter.put('/defaultDeck', async (req, res) => {
   res.sendStatus(200);
 });
 
-dbRouter.get('/wins/:userId', async (req, res) => {
-  const cards = await User.getCards(req.params.userId).catch((err) => console.warn(err));
+dbRouter.get('/wins/:userId/:num', async (req, res) => {
+  const cards = await User.updateWins(req.params.userId, req.params.num)
+    .catch((err) => console.warn(err));
   res.status(200).send(cards);
 });
 
-dbRouter.get('/games/:userId', async (req, res) => {
-  const cards = await User.getCards(req.params.userId).catch((err) => console.warn(err));
+dbRouter.get('/games/:userId/:num', async (req, res) => {
+  const cards = await User.updateGames(req.params.userId, req.params.num)
+    .catch((err) => console.warn(err));
   res.status(200).send(cards);
 });
 

@@ -55,6 +55,7 @@ const TwoDEnv = ({
     setTimeout(() => {
       if (!turn && !user.id_enemy && user) {
         let enmeyResource = resourceCount;
+        console.info(enmeyResource);
         botDeck.map(() => {
           if (botHand.length < 5) {
             botHand.push(botDeck.shift());
@@ -93,7 +94,7 @@ const TwoDEnv = ({
     setDeck([...deck]);
     botDeck.splice(0, 5);
     setBotDeck([...botDeck]);
-  }, [user]);
+  }, []);
 
   return (
     <div>
