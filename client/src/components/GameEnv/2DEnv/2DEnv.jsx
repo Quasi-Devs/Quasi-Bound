@@ -180,7 +180,12 @@ const TwoDEnv = ({
           <button type="submit" onClick={() => setHP(0)}>Surrender</button>
           <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
         </div>
-      ) : <h1>ENEMY TURN</h1>}
+      ) : (
+        <div>
+          <h1>ENEMY TURN</h1>
+          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
+        </div>
+      )}
     </div>
   );
 };
