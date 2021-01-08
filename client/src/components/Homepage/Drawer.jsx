@@ -14,6 +14,7 @@ import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
+import PeopleIcon from '@material-ui/icons/People';
 import axios from 'axios';
 
 import { useHistory } from 'react-router-dom';
@@ -46,6 +47,7 @@ const SidebarDrawer = () => {
     ['Home', '/home'],
     ['Guide', '/rules'],
     ['Profile', '/profile'],
+    ['Friends', '/friends'],
     ['Deck Builder', '/deck'],
     ['Log Out', '/'],
   ];
@@ -58,6 +60,10 @@ const SidebarDrawer = () => {
       [
         'Profile',
         <AccountBoxIcon className={clsx(classes.icon)} color="primary" />,
+      ],
+      [
+        'Friends',
+        <PeopleIcon className={clsx(classes.icon)} color="primary" />,
       ],
       [
         'Deck Builder',
