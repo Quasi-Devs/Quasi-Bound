@@ -1,6 +1,7 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 // import cards from '../../../../cardSampleData.json';
 import Card from './Card';
@@ -10,8 +11,17 @@ const Search = ({ user }) => {
   const [cards, setCards] = useState();
   const [subset, setSubset] = useState([]);
   const [buttonVisible, setButtonVisible] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState();
   const [cardToSave, setCardToSave] = useState({});
-  // const [query, setQuery] = useState('');
+  const [trigger, setTrigger] = useState(false);
+  const [savedMessage, setSavedMessage] = useState(false);
+  const useStyles = makeStyles({
+    saveButton: {
+      position: 'relative',
+      top: buttonPosition,
+    },
+  });
+  const classes = useStyles();
 
   const searchCards = (query) => {
     const results = cards.filter((card) => {
@@ -28,14 +38,23 @@ const Search = ({ user }) => {
       element = element.parentElement;
     }
     const card = JSON.parse(element.dataset.card);
-    // console.info(card);
+    setButtonPosition(element.offsetTop);
     setCardToSave(card);
   };
 
   const saveCard = () => {
+    setSavedMessage(false);
     axios.post('/data/saveCard', { userId: user.id, card: cardToSave })
-      .catch();
+      .then(() => {
+        setSavedMessage(true);
+        setTrigger(!trigger);
+      })
+      .catch((err) => console.warn(err));
   };
+
+  useEffect(() => {
+    setTimeout(() => setSavedMessage(false), 1500);
+  }, [trigger]);
 
   useLayoutEffect(() => {
     const fetchData = async () => {
@@ -62,7 +81,18 @@ const Search = ({ user }) => {
         <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
           {subset.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
         </Grid>
-        {buttonVisible ? <button onClick={saveCard} type="button">{`Save ${cardToSave.title}`}</button> : null}
+        {buttonVisible
+          ? (
+            <div className={classes.saveButton}>
+              <button onClick={saveCard} type="button">
+                {`Save ${cardToSave.title}`}
+              </button>
+              {savedMessage
+                ? <span>{`Saved ${cardToSave.title}`}</span>
+                : null}
+            </div>
+          )
+          : null}
       </div>
     </div>
   );
