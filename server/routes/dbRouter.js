@@ -75,6 +75,22 @@ dbRouter.get('/userCards/:userId', async (req, res) => {
   res.status(200).send(cards);
 });
 
+dbRouter.get('/wins/:userId', async (req, res) => {
+  const cards = await User.getCards(req.params.userId);
+  res.status(200).send(cards);
+});
+
+dbRouter.get('/games/:userId', async (req, res) => {
+  const cards = await User.getCards(req.params.userId);
+  res.status(200).send(cards);
+});
+
+dbRouter.get('/desc/:userId', async (req, res) => {
+  const { description } = req.query;
+  await User.addDescription(req.params.userId, description);
+  res.status(200).send(description);
+});
+
 dbRouter.get('/friends/:userID', async (req, res) => {
   const friends = await Friend.getFriends(req.params);
   res.status(200).send(friends);
