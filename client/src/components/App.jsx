@@ -95,7 +95,7 @@ const App = () => {
             <PlayHub user={user} />
           </Route>
           <Route path="/game">
-            <GameEnv setNav={setNav} />
+            <GameEnv setNav={setNav} user={user} setUser={setUser} />
           </Route>
           <Route path="/login">
             <Login />
