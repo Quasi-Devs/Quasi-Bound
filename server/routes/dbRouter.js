@@ -2,6 +2,7 @@ const { Router } = require('express');
 const Card = require('../db/models/card');
 const Deck = require('../db/models/deck');
 const User = require('../db/models/user');
+const Friend = require('../db/models/friend');
 
 const dbRouter = Router();
 
@@ -72,6 +73,42 @@ dbRouter.post('/saveCard', async (req, res) => {
 dbRouter.get('/userCards/:userId', async (req, res) => {
   const cards = await User.getCards(req.params.userId);
   res.status(200).send(cards);
+});
+
+dbRouter.get('/wins/:userId', async (req, res) => {
+  const cards = await User.getCards(req.params.userId);
+  res.status(200).send(cards);
+});
+
+dbRouter.get('/games/:userId', async (req, res) => {
+  const cards = await User.getCards(req.params.userId);
+  res.status(200).send(cards);
+});
+
+dbRouter.get('/desc/:userId', async (req, res) => {
+  const { description } = req.query;
+  await User.addDescription(req.params.userId, description);
+  res.status(200).send(description);
+});
+
+dbRouter.get('/friends/:userID', async (req, res) => {
+  const friends = await Friend.getFriends(req.params);
+  res.status(200).send(friends);
+});
+
+dbRouter.post('/friends', async (req, res) => {
+  await Friend.addFriend(req.body);
+  res.sendStatus(201);
+});
+
+dbRouter.put('/friends', async (req, res) => {
+  try {
+    await Friend.removeFriend(req.body);
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 });
 
 module.exports = dbRouter;

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@material-ui/core';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
@@ -69,8 +70,18 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Profile = ({ user }) => {
+const Profile = ({ user, setUser }) => {
   const classes = useStyles();
+  const [editing, isEditing] = useState(false);
+  const [newDescription, setNewDescription] = useState('');
+  const [update, setUpdate] = useState(false);
+
+  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), [update]);
+
+  useEffect(() => {
+    setNewDescription(user.description);
+  }, [user]);
+
   return (
     <div>
       {user ? (
@@ -95,9 +106,31 @@ const Profile = ({ user }) => {
           </div>
           <div>
             <Card>
-              <h1 className={classes.descriptionContainer}>About:</h1>
+              <h1 className={classes.descriptionContainer}>
+                About:
+                <button type="submit" onClick={() => { isEditing(true); }}>Edit</button>
+              </h1>
               <h4 className={classes.description}>
-                {user.description}
+                {!editing ? user.description
+                  : (
+                    <div>
+                      <input type="text" value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
+                      <button
+                        type="submit"
+                        onClick={async () => {
+                          try {
+                            await axios.get(`/data/desc/${user.id}`, { params: { description: newDescription } });
+                            setUpdate(!update);
+                            isEditing(false);
+                          } catch (err) {
+                            console.error(err);
+                          }
+                        }}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  )}
               </h4>
             </Card>
           </div>
@@ -109,6 +142,7 @@ const Profile = ({ user }) => {
 
 Profile.propTypes = {
   user: PropTypes.bool.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default Profile;

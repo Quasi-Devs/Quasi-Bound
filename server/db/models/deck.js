@@ -7,9 +7,14 @@ const db = require('../index');
  * @param {*} userId,
  */
 const createDeck = async ({ title, userId }) => {
-  const deck = await db.query(`INSERT INTO "deck" (title, count_card) VALUES ('${title}', 0) RETURNING *`);
-  await db.query(`INSERT INTO "user_deck" (id_user, id_deck) VALUES (${userId}, ${deck.rows[0].id})`);
-  return deck.rows[0];
+  try {
+    const deck = await db.query(`INSERT INTO "deck" (title, count_card) VALUES ('${title}', 0) RETURNING *`);
+    await db.query(`INSERT INTO "user_deck" (id_user, id_deck) VALUES (${userId}, ${deck.rows[0].id})`);
+    return deck.rows[0];
+  } catch (err) {
+    console.error(err);
+  }
+  return null;
 };
 
 const getDecksByUser = async (userId) => {
