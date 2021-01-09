@@ -356,7 +356,7 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     }
     if (isParadise) {
       if (typeParadise.includes('health')) {
-        description = `${description}\n Restore ${abilityPower} health.`;
+        description = `${description}\n Restore ${abilityPower} Health.`;
       }
       if (typeParadise.includes('armor')) {
         description = `${description}\n Gain ${abilityPower} armor.`;
