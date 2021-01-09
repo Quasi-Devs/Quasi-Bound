@@ -136,7 +136,7 @@ const ThreeDEnv = ({
     socket.on(`${user.id_enemy}Name`, (name) => {
       setEnemyName(name);
     });
-  }, [user]);
+  }, [slots, user, enemyHP, HP]);
   return (
     <>
       <div>
