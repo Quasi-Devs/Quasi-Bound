@@ -85,12 +85,6 @@ if (module === require.main) {
   });
 }
 
-// const appChat = require('express')();
-// const server1 = require('http').Server(appChat);
-// const io = require('socket.io')(server1);
-
-// server1.listen(65080);
-
 const io = socketio().listen(server);
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
