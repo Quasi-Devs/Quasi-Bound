@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 const TwoDEnv = ({

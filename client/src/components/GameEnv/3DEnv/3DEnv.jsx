@@ -5,7 +5,7 @@ import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import table from './models/scene.gltf';
@@ -80,7 +80,7 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 function Loading() {
@@ -136,7 +136,7 @@ const ThreeDEnv = ({
     socket.on(`${user.id_enemy}Name`, (name) => {
       setEnemyName(name);
     });
-  }, [user]);
+  }, [slots, user, enemyHP, HP]);
   return (
     <>
       <div>

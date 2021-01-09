@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './playhub.css';
 import { Redirect } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-const socket = io.connect('', {
+const socket = io.connect(window.location.origin, {
   transports: ['websocket'],
 });
 const PlayHub = ({ user }) => {
