@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 

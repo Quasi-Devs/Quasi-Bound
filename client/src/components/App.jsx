@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from 'underscore';
 import exampleData from '../../example';
