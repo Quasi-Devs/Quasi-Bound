@@ -11,6 +11,7 @@ const multer = require('multer');
 require('./auth/googleStrategy');
 
 const app = express();
+app.set('view engine', 'pug');
 const server = http.createServer(app);
 const socketio = require('socket.io');
 const User = require('./db/models/user');
@@ -78,12 +79,19 @@ app.get('*', (req, res) => {
 
 let players = null;
 
-server.listen(PORT, () => {
-  console.info(`http://localhost:${PORT}`);
-});
+if (module === require.main) {
+  server.listen(PORT, () => {
+    console.info(`http://localhost:${PORT}`);
+  });
+}
+
+// const appChat = require('express')();
+// const server1 = require('http').Server(appChat);
+// const io = require('socket.io')(server1);
+
+// server1.listen(65080);
 
 const io = socketio().listen(server);
-
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
     io.emit(`${enemy}`, array, card);
@@ -108,8 +116,8 @@ io.on('connection', (socket) => {
   socket.on('Accept', (userId, id) => {
     User.addEnemy(id, userId)
       .then(() => User.addEnemy(userId, id))
-      .then(() => {
-        io.emit(`${userId} Proceed`);
+      .then(async () => {
+        await io.emit(`${userId} Proceed`);
         io.emit(`${id} Proceed`);
       });
   });
@@ -120,9 +128,9 @@ io.on('connection', (socket) => {
     } else {
       User.addEnemy(id, players)
         .then(() => User.addEnemy(players, id))
-        .then(() => {
-          io.emit(`${players}`);
-          io.emit(`${id}`);
+        .then(async () => {
+          await io.emit(`${players}`);
+          await io.emit(`${id}`);
           players = null;
         });
     }

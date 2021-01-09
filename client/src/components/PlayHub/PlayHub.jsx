@@ -96,6 +96,7 @@ const PlayHub = ({ user }) => {
             type="submit"
             onClick={() => {
               handleInvite();
+              console.info('Invite', input, user.id, user.name_user);
               socket.emit('Invite', input, user.id, user.name_user);
             }}
           >
