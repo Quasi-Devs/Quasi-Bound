@@ -110,8 +110,8 @@ io.on('connection', (socket) => {
   socket.on('Accept', (userId, id) => {
     User.addEnemy(id, userId)
       .then(() => User.addEnemy(userId, id))
-      .then(async () => {
-        await io.emit(`${userId} Proceed`);
+      .then(() => {
+        io.emit(`${userId} Proceed`);
         io.emit(`${id} Proceed`);
       });
   });
@@ -122,9 +122,9 @@ io.on('connection', (socket) => {
     } else {
       User.addEnemy(id, players)
         .then(() => User.addEnemy(players, id))
-        .then(async () => {
-          await io.emit(`${players}`);
-          await io.emit(`${id}`);
+        .then(() => {
+          io.emit(`${players}`);
+          io.emit(`${id}`);
           players = null;
         });
     }
