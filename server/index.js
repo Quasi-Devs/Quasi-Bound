@@ -61,9 +61,6 @@ const googleRoute = require('./routes/googleAuth');
 app.use(
   session({
     secret: process.env.DISCORD_CLIENT_SECRET,
-    cookie: {
-      maxAge: 60000 * 60 * 24,
-    },
     saveUninitialized: false,
     resave: true,
   }),
