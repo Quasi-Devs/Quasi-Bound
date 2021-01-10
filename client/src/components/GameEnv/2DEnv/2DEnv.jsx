@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 
-const socket = io.connect(window.location.origin, {
+const socket = io({
   transports: ['websocket'],
 });
+
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
   setBotDeck, setEnemySlots, setHP, setEnemyHP, enemyHP,

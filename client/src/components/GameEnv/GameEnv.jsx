@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import _ from 'underscore';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
 
-const socket = io.connect(window.location.origin, {
+const socket = io({
   transports: ['websocket'],
 });
+
 const GameEnv = ({
   setNav,
 }) => {
