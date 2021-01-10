@@ -86,6 +86,7 @@ if (module === require.main) {
 }
 
 const io = socketio().listen(server);
+
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
     io.emit(`${enemy}`, array, card);
