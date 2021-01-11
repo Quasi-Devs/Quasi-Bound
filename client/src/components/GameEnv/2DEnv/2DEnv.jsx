@@ -171,7 +171,7 @@ const TwoDEnv = ({
                 {}
               </div>
             ))}
-            <div className="discard">{clicked ? <div style={{ border: '2px solid red' }}>place card in appropriate slots</div> : null}</div>
+            <div className="discard">{clicked ? <div className="todo">place card in appropriate slots</div> : null}</div>
           </div>
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}

@@ -151,6 +151,10 @@
     bottom: 10%;
 }
 
+.todo {
+    border: 2px solid red
+}
+
 .main {
     display: flex;
     flex-wrap: wrap;
