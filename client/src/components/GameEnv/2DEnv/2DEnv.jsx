@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 
-const socket = io({
+const socket = io('https://vertical-dryad-300701.uc.r.appspot.com', {
   transports: ['websocket'],
 });
 

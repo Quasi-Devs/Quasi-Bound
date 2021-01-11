@@ -8,7 +8,7 @@ import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
 
-const socket = io({
+const socket = io('https://vertical-dryad-300701.uc.r.appspot.com', {
   transports: ['websocket'],
 });
 

@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-const socket = io({
+const socket = io('https://vertical-dryad-300701.uc.r.appspot.com', {
   transports: ['websocket'],
 });
 
