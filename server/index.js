@@ -11,6 +11,7 @@ const multer = require('multer');
 require('./auth/googleStrategy');
 
 const app = express();
+app.set('view engine', 'html');
 const server = http.createServer(app);
 const socketio = require('socket.io');
 const User = require('./db/models/user');
@@ -65,9 +66,6 @@ const googleRoute = require('./routes/googleAuth');
 app.use(
   session({
     secret: process.env.DISCORD_CLIENT_SECRET,
-    cookie: {
-      maxAge: 60000 * 60 * 24,
-    },
     saveUninitialized: false,
     resave: true,
   }),
@@ -85,11 +83,13 @@ app.get('*', (req, res) => {
 
 let players = null;
 
-server.listen(PORT, () => {
-  console.info(`http://localhost:${PORT}`);
-});
+if (module === require.main) {
+  server.listen(PORT, () => {
+    console.info(`http://localhost:${PORT}`);
+  });
+}
 
-const io = socketio().listen(server);
+const io = socketio(server);
 
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {

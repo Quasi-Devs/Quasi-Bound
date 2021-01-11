@@ -4,9 +4,8 @@ import { io } from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 
-const socket = io.connect('', {
-  transports: ['websocket'],
-});
+const socket = io();
+
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
   setBotDeck, setEnemySlots, setHP, setEnemyHP, enemyHP,

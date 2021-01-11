@@ -5,8 +5,6 @@ import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { io } from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
-import _ from 'underscore';
-import exampleData from '../../example';
 
 import Navbar from './Navbar';
 
@@ -21,9 +19,7 @@ import Login from './Login';
 import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
 
-const socket = io.connect('', {
-  transports: ['websocket'],
-});
+const socket = io();
 
 const useStyles = makeStyles({
   alertFormat: {
@@ -36,7 +32,6 @@ const App = () => {
   const [user, setUser] = useState(false);
   const [nav, setNav] = useState(true);
   const [invitee, setInvitee] = useState('');
-  const [deck, setDeck] = useState(_.shuffle(exampleData));
   const [enemyId, setEnemyId] = useState();
   const [open, setOpen] = useState(false);
   const [friendProfile, setFriendProfile] = useState({});
@@ -52,17 +47,6 @@ const App = () => {
     });
   }
   useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)).catch((err) => console.warn(err)), []);
-
-  useEffect(() => {
-    if (user) {
-      axios.get(`/data/deckCards/${user.default_deck}`)
-        .then(({ data }) => {
-          if (data.length !== 0) {
-            setDeck(_.shuffle(data));
-          }
-        }).catch((err) => console.warn(err));
-    }
-  }, [user]);
 
   return (
     <div className="root">
@@ -107,7 +91,7 @@ const App = () => {
             <PlayHub user={user} />
           </Route>
           <Route path="/game">
-            <GameEnv setNav={setNav} deck={deck} setDeck={setDeck} />
+            <GameEnv setNav={setNav} />
           </Route>
           <Route path="/login">
             <Login />

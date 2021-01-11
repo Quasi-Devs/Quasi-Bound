@@ -80,9 +80,8 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect('', {
-  transports: ['websocket'],
-});
+const socket = io();
+
 function Loading() {
   return (
     <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
@@ -131,12 +130,12 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
+  socket.on(`${user.id_enemy}Name`, (name) => {
+    setEnemyName(name);
+  });
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
-    socket.on(`${user.id_enemy}Name`, (name) => {
-      setEnemyName(name);
-    });
-  }, [user]);
+  }, [slots, user, enemyHP, HP]);
   return (
     <>
       <div>

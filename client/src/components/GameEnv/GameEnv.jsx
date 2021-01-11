@@ -3,45 +3,44 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
-import { Link } from 'react-router-dom';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
-// import exampleData from '../../../example';
+import exampleData from '../../../example';
 import botData from '../../../bot';
 
-const socket = io.connect('', {
-  transports: ['websocket'],
-});
-const GameEnv = ({ setNav, deck, setDeck }) => {
+const socket = io();
+
+const GameEnv = ({
+  setNav,
+}) => {
   const [yourSlots, setYourSlots] = useState([false, false, false, false]);
   const [enemySlots, setEnemySlots] = useState([false, false, false, false]);
   const [user, setUser] = useState(false);
   const [turn, setTurn] = useState(false);
-
+  const [deck, setDeck] = useState(false);
   const [botDeck, setBotDeck] = useState(_.shuffle(botData));
   const [handleEnd, setHandleEnd] = useState(false);
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
 
-  if (user) {
-    socket.on(`${user.id}Turn`, () => {
-      setHandleEnd(true);
-      setTurn(true);
-    });
-    socket.on(`${user.id}hp`, (hp, hp2) => {
-      if (hp !== null) {
-        setHP(hp);
-      }
-      if (hp2 !== null) {
-        setEnemyHP(hp2);
-      }
-    });
-    socket.on(`${user.id}`, (array, card) => {
-      setEnemySlots(array);
-      setYourSlots(card);
-    });
-  }
+  socket.on(`${user.id}Turn`, () => {
+    setHandleEnd(true);
+    setTurn(true);
+  });
+  socket.on(`${user.id}hp`, (hp, hp2) => {
+    if (hp !== null) {
+      setHP(hp);
+    }
+    if (hp2 !== null) {
+      setEnemyHP(hp2);
+    }
+  });
+  socket.on(`${user.id}`, (array, card) => {
+    setEnemySlots(array);
+    setYourSlots(card);
+  });
+
   if ((HP <= 0 || enemyHP <= 0) && !done) {
     if (enemyHP <= 0 && HP <= 0) {
       if (user.id_enemy) {
@@ -64,6 +63,19 @@ const GameEnv = ({ setNav, deck, setDeck }) => {
     setDone(true);
     socket.emit('HP', user.id_enemy, enemyHP, HP);
   }
+
+  useEffect(() => {
+    if (user) {
+      axios.get(`/data/deckCards/${user.default_deck}`)
+        .then(({ data }) => {
+          if (data.length !== 0) {
+            setDeck(_.shuffle(data));
+          } else {
+            setDeck(_.shuffle(exampleData));
+          }
+        }).catch((err) => console.warn(err));
+    }
+  }, [user]);
 
   useEffect(() => setNav(false), []);
   useEffect(() => axios.get('/data/user').then(({ data }) => {
@@ -152,41 +164,44 @@ const GameEnv = ({ setNav, deck, setDeck }) => {
       }
     }
   }, [turn]);
+
   return (
     <div>
-      <ThreeDEnv
-        slots={[...yourSlots, ...enemySlots]}
-        user={user}
-        HP={HP}
-        enemyHP={enemyHP}
-        done={done}
-      />
-      {!done ? (
-        <TwoDEnv
-          slots={yourSlots}
-          setSlots={setYourSlots}
-          deck={deck}
-          setDeck={setDeck}
-          user={user}
-          setTurn={setTurn}
-          turn={turn}
-          setHandleEnd={setHandleEnd}
-          enemySlots={enemySlots}
-          setEnemySlots={setEnemySlots}
-          botDeck={botDeck}
-          setBotDeck={setBotDeck}
-          enemyHP={enemyHP}
-          setEnemyHP={setEnemyHP}
-          HP={HP}
-          setHP={setHP}
-        />
-      ) : <Link to="/home"><button type="submit">Retrun To Menu</button></Link>}
+      {(user, deck) ? (
+        <div>
+          <ThreeDEnv
+            slots={[...yourSlots, ...enemySlots]}
+            user={user}
+            HP={HP}
+            enemyHP={enemyHP}
+            done={done}
+          />
+          {!done ? (
+            <TwoDEnv
+              slots={yourSlots}
+              setSlots={setYourSlots}
+              deck={deck}
+              setDeck={setDeck}
+              user={user}
+              setTurn={setTurn}
+              turn={turn}
+              setHandleEnd={setHandleEnd}
+              enemySlots={enemySlots}
+              setEnemySlots={setEnemySlots}
+              botDeck={botDeck}
+              setBotDeck={setBotDeck}
+              enemyHP={enemyHP}
+              setEnemyHP={setEnemyHP}
+              HP={HP}
+              setHP={setHP}
+            />
+          ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
+        </div>
+      ) : <h1>loading in ...</h1>}
     </div>
   );
 };
 GameEnv.propTypes = {
   setNav: PropTypes.func.isRequired,
-  deck: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setDeck: PropTypes.func.isRequired,
 };
 export default GameEnv;

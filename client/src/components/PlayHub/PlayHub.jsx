@@ -25,9 +25,8 @@ const useStyles = makeStyles({
   },
 });
 
-const socket = io.connect('', {
-  transports: ['websocket'],
-});
+const socket = io();
+
 const PlayHub = ({ user }) => {
   const classes = useStyles();
   const text = 'play hub';
@@ -96,6 +95,7 @@ const PlayHub = ({ user }) => {
             type="submit"
             onClick={() => {
               handleInvite();
+              console.info('Invite', input, user.id, user.name_user);
               socket.emit('Invite', input, user.id, user.name_user);
             }}
           >
