@@ -10,6 +10,7 @@ let classifier7;
 let classifier8;
 let classifier9;
 let classifier10;
+let classifier11;
 
 /**
  * Resource points variable to hold card point to resource point scale.
@@ -49,7 +50,7 @@ const preload = async (ml5) => {
   /**
    * Character/Ability classifier
    */
-  classifier2 = await ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/22wMRj35M/model.json');
+  classifier2 = await ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/QUJO2zOgf/model.json');
   /**
    * Weapon/No Weapon classifier
    */
@@ -78,7 +79,11 @@ const preload = async (ml5) => {
   /**
    * Paradise !paradise
    */
-  classifier10 = await ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/_ShruFlmi/model.json');
+  classifier10 = await ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/Fxv5Brqm6/model.json');
+  /**
+   * Ability Armor/Health/Attack/ResourcePoints
+   */
+  classifier11 = await ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/-k8LOP2zH/model.json');
 };
 
 const card = {};
@@ -87,6 +92,7 @@ let aH; let cA; let dNd; let aNa; let fNf; let tySmMLgGiTi; let pAAg; let mNm; l
 let attack; let health; let armor = 0;
 let hasCharge; let hasProvoke; let mdmg; let mclass;
 let abilityPower; let isParadise; let typeParadise;
+let abilityType = '';
 let totalPoints = 0;
 
 const setup = async (thumbnail, ml5, Prob, title) => {
@@ -151,10 +157,16 @@ const setup = async (thumbnail, ml5, Prob, title) => {
       mNm = destructure;
     });
   } else {
-    await classifier10.predict(img, (err, results) => {
+    await classifier10.predict(img, async (err, results) => {
       const destructure = Object.values(results)[0];
       pNp = destructure;
     });
+    if (pNp.label === 'Paradise') {
+      await classifier11.predict(img, (err, results) => {
+        const destructure = Object.values(results)[0];
+        abilityType = destructure.label;
+      });
+    }
   }
   classifier2.classify(img, gotResult);
   if (cA.label === 'character') {
@@ -269,16 +281,57 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     }
   } else if (pNp.label === 'Paradise') {
     isParadise = true;
-    abilityPower = await Prob.probabilitySmall(abilityPower) / 2;
+    if (abilityType === 'rp') {
+      abilityPower = await Prob.probabilityApRP(abilityPower);
+      abilityType = await Prob.probabilityRP(abilityType);
+    }
+    if (abilityType === 'attack') {
+      abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+      abilityType = await Prob.probabilityAbAttack(abilityType);
+    }
+    if (abilityType === 'armor') {
+      abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+      abilityType = await Prob.probabilityAbArmor(abilityType);
+    }
+    if (abilityType === 'health') {
+      abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+      abilityType = await Prob.probabilityAbHealth(abilityType);
+    }
+    abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
     typeParadise = await Prob.probabilityParadise(typeParadise);
   } else {
-    abilityPower = await Prob.probabilitySmall(abilityPower);
+    abilityPower = await Prob.probabilityLarge(abilityPower);
   }
 
   if (cA.label === 'character') {
     armor = Math.floor(armor / 2);
     totalPoints += (attack + health + (armor * 2)) * 7;
-
+    while (totalPoints > 1300) {
+      if (totalPoints % 10 === 0) {
+        const decStat = Prob.probabilityDec();
+        if (decStat === 'health') {
+          health -= 1;
+        } else if (decStat === 'attack') {
+          attack -= 1;
+        } else if (armor !== 0) {
+          armor -= 1;
+        }
+      }
+      totalPoints -= 1;
+    }
+    while (totalPoints < 100) {
+      if (totalPoints % 10 === 0) {
+        const decStat = Prob.probabilityDec();
+        if (decStat === 'health') {
+          health += 1;
+        } else if (decStat === 'attack') {
+          attack += 1;
+        } else if (armor > 0) {
+          armor += 1;
+        }
+      }
+      totalPoints += 1;
+    }
     for (let i = 0; i < Object.keys(resourcePoints).length; i += 1) {
       if (totalPoints === resourcePoints[i]) {
         break;
@@ -294,7 +347,7 @@ const setup = async (thumbnail, ml5, Prob, title) => {
         }
         totalPoints = Object.values(resourcePoints)[Object.values(resourcePoints).indexOf(
           Math.round(totalPoints / 100) * 100,
-        )];
+        )] || totalPoints;
         break;
       }
     }
@@ -318,11 +371,8 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     if (fNf.label === 'Fly') {
       description += '\n Fly.';
     }
-    card.attack = attack;
-    card.health = health;
-    card.armor = armor;
   } else {
-    if (isParadise) {
+    if (typeParadise) {
       if (typeParadise.includes('health')) {
         totalPoints += (abilityPower) * 20;
       }
@@ -332,6 +382,20 @@ const setup = async (thumbnail, ml5, Prob, title) => {
       if (typeParadise.includes('attack')) {
         totalPoints += (abilityPower) * 20;
       }
+      if (abilityType.includes('rp')) {
+        if (abilityType.includes('total')) {
+          totalPoints += (abilityPower) * 120;
+        }
+        totalPoints += (abilityPower) * 50;
+      }
+      if (abilityType.includes('charge')) {
+        totalPoints += 50;
+      }
+      if (abilityType.includes('provoke')) {
+        totalPoints += 40;
+      }
+    } else if (abilityType.includes('adjacent')) {
+      totalPoints += totalPoints;
     } else {
       totalPoints += (abilityPower) * 10;
     }
@@ -355,19 +419,62 @@ const setup = async (thumbnail, ml5, Prob, title) => {
       }
     }
     if (isParadise) {
-      if (typeParadise.includes('health')) {
-        description = `${description}\n Restore ${abilityPower} health.`;
+      if (abilityType.includes('health')) {
+        if (abilityType.includes('adjacent')) {
+          description = `${description}\n Give adjacent characters ${abilityPower} health.`;
+        } else {
+          description = `${description}\n Restore ${abilityPower} health.`;
+        }
       }
-      if (typeParadise.includes('armor')) {
-        description = `${description}\n Gain ${abilityPower} armor.`;
+      if (abilityType.includes('armor')) {
+        if (abilityType.includes('adjacent')) {
+          description = `${description}\n Give adjacent characters ${abilityPower} armor.`;
+        } else {
+          description = `${description}\n Gain ${abilityPower} armor.`;
+        }
       }
-      if (typeParadise.includes('attack')) {
-        description = `${description}\n Gain ${abilityPower} attack.`;
+      if (abilityType.includes('attack')) {
+        if (abilityType.includes('adjacent')) {
+          description = `${description}\n Give adjacent characters ${abilityPower} attack.`;
+        } else {
+          description = `${description}\n Gain ${abilityPower} attack.`;
+        }
+      }
+      if (abilityType.includes('provoke')) {
+        if (abilityType.includes('adjacent')) {
+          description = `${description}\n Give adjacent characters provoke.`;
+        } else {
+          description = `${description}\n Give a friendly character provoke.`;
+        }
+      }
+      if (abilityType.includes('charge')) {
+        if (abilityType.includes('adjacent')) {
+          description = `${description}\n Give adjacent characters charge.`;
+        } else {
+          description = `${description}\n Give a friendly character provoke.`;
+        }
+      }
+      if (abilityType.includes('rp')) {
+        if (abilityType.includes('total')) {
+          description = `${description}\n Gain + ${abilityPower} resources permanently.`;
+        } else {
+          description = `${description}\n Gain + ${abilityPower} resource this turn.`;
+        }
       }
     } else {
-      description = `\n Deal ${abilityPower} damage.`;
+      if (abilityType.includes('armor')) {
+        description = `${description}\n Break ${abilityPower} armor.`;
+      }
+      if (abilityType.includes('attack')) {
+        description = `${description}\n Drain ${abilityPower} attack.`;
+      } else {
+        description = `\n Deal ${abilityPower} damage.`;
+      }
     }
   }
+  card.attack = attack || 0;
+  card.health = health || 0;
+  card.armor = armor || 0;
   card.title = title;
   card.thumbnail = thumbnail;
   card.size = tySmMLgGiTi ? tySmMLgGiTi.label : null;

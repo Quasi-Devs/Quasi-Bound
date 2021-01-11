@@ -1,5 +1,152 @@
 import Probability from 'probability-node';
 
+const probabilityRP = (stat) => {
+  let typeStat = stat;
+  const prob = new Probability({
+    p: '97%',
+    f: () => {
+      typeStat = 'rp';
+    },
+  }, {
+    p: '3%',
+    f: () => {
+      typeStat = 'rp total';
+    },
+  });
+  prob();
+  return typeStat;
+};
+
+const probabilityDec = (stat) => {
+  let typeStat = stat;
+  const prob = new Probability({
+    p: '34%',
+    f: () => {
+      typeStat = 'health';
+    },
+  }, {
+    p: '33%',
+    f: () => {
+      typeStat = 'attack';
+    },
+  }, {
+    p: '33%',
+    f: () => {
+      typeStat = 'armor';
+    },
+  });
+  prob();
+  return typeStat;
+};
+
+const probabilityAbAttack = (stat) => {
+  let typeStat = stat;
+  const prob = new Probability({
+    p: '90%',
+    f: () => {
+      typeStat = 'attack';
+    },
+  }, {
+    p: '7%',
+    f: () => {
+      typeStat = 'attack adjacent';
+    },
+  }, {
+    p: '2%',
+    f: () => {
+      typeStat = 'attack health armor';
+    },
+  }, {
+    p: '1%',
+    f: () => {
+      typeStat = 'attack health armor adjacent';
+    },
+  });
+  prob();
+  return typeStat;
+};
+
+const probabilityAbHealth = (stat) => {
+  let typeStat = stat;
+  const prob = new Probability({
+    p: '90%',
+    f: () => {
+      typeStat = 'health';
+    },
+  }, {
+    p: '7%',
+    f: () => {
+      typeStat = 'health adjacent';
+    },
+  }, {
+    p: '2%',
+    f: () => {
+      typeStat = 'health attack armor';
+    },
+  }, {
+    p: '1%',
+    f: () => {
+      typeStat = 'health attack armor adjacent';
+    },
+  });
+  prob();
+  return typeStat;
+};
+
+const probabilityAbArmor = (stat) => {
+  let typeStat = stat;
+  const prob = new Probability({
+    p: '90%',
+    f: () => {
+      typeStat = 'armor';
+    },
+  }, {
+    p: '7%',
+    f: () => {
+      typeStat = 'armor adjacent';
+    },
+  }, {
+    p: '2%',
+    f: () => {
+      typeStat = 'attack health armor';
+    },
+  }, {
+    p: '1%',
+    f: () => {
+      typeStat = 'attack health armor adjacent';
+    },
+  });
+  prob();
+  return typeStat;
+};
+
+const probabilityApRP = (stat) => {
+  let typeStat = stat;
+  const prob = new Probability({
+    p: '90%',
+    f: () => {
+      typeStat = Math.floor(Math.random() * (3 - 1) + 1);
+    },
+  }, {
+    p: '7%',
+    f: () => {
+      typeStat = Math.floor(Math.random() * (5 - 2) + 2);
+    },
+  }, {
+    p: '2%',
+    f: () => {
+      typeStat = Math.floor(Math.random() * (10 - 3) + 3);
+    },
+  }, {
+    p: '1%',
+    f: () => {
+      typeStat = Math.floor(Math.random() * (12 - 5) + 5);
+    },
+  });
+  prob();
+  return typeStat;
+};
+
 const probabilityParadise = (stat) => {
   let typeStat = stat;
   const prob = new Probability({
@@ -292,6 +439,12 @@ const Prob = {
   probabilitySmall,
   probabilityTiny,
   probabilityTitan,
+  probabilityAbArmor,
+  probabilityAbAttack,
+  probabilityAbHealth,
+  probabilityRP,
+  probabilityApRP,
+  probabilityDec,
 };
 
 export default Prob;
