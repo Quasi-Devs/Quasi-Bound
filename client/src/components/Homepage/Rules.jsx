@@ -26,6 +26,21 @@ const Rules = () => {
   return (
     <div>
       <Grid container direction="column" alignItems="center">
+        <Typography variant="h1">Lore</Typography>
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          className="mainContainer"
+        >
+          <Grid item className="gridItem">
+            QuasiBound is a tournament event where summoners from around the world
+            get together and compete by showing off their best summoning skills.
+            Summoners practice making summons to become like the best summoners.
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid container direction="column" alignItems="center">
         <Typography variant="h1">Rules</Typography>
         <Grid
           container
