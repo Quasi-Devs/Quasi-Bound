@@ -86,38 +86,50 @@ const GameEnv = ({
       setTurn(data.id > data.id_enemy);
     }
   }), []);
+
   useEffect(() => {
     if (user) {
       if (handleEnd && turn) {
         let hp = enemyHP;
-        yourSlots.map((val, i) => {
-          if (val && val.turn === 0) {
-            if (enemySlots[i]) {
-              if (val.point_attack && enemySlots[i].point_armor < val.point_attack) {
-                enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
-              }
-            } else if (val.point_attack) {
-              let counter = true;
-              for (let j = 0; j <= 3; j += 1) {
-                if (enemySlots[j]) {
-                  if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
-                    if (enemySlots[j].point_armor < val.point_attack) {
-                      enemySlots[j].point_health -= (val.point_attack - enemySlots[j].point_armor);
+        if (user.id_enemy === null) {
+          yourSlots.map((val, i) => {
+            if (val && val.turn === 0) {
+              if (enemySlots[i]) {
+                if (val.point_attack && enemySlots[i].point_armor < val.point_attack) {
+                  enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
+                }
+                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack) {
+                  yourSlots[i].point_health
+                  -= (enemySlots[i].point_attack - yourSlots[i].point_armor);
+                }
+              } else if (val.point_attack) {
+                let counter = true;
+                for (let j = 0; j <= 3; j += 1) {
+                  if (enemySlots[j]) {
+                    if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
+                      if (enemySlots[j].point_armor < val.point_attack) {
+                        enemySlots[j].point_health
+                        -= (val.point_attack - enemySlots[j].point_armor);
+                      }
+                      if (yourSlots[i].point_armor < enemySlots[j].point_attack) {
+                        yourSlots[i].point_health
+                        -= (enemySlots[j].point_attack - yourSlots[i].point_armor);
+                      }
+                      counter = false;
+                      break;
                     }
-                    counter = false;
-                    break;
                   }
                 }
+                if (counter) {
+                  hp -= val.point_attack;
+                }
               }
-              if (counter) {
-                hp -= val.point_attack;
-              }
+            } else if (val) {
+              yourSlots[i].turn = 0;
             }
-          } else if (val) {
-            yourSlots[i].turn = 0;
-          }
-          return null;
-        });
+            return null;
+          });
+        }
         socket.emit('HP', user.id_enemy, hp, null);
         setEnemyHP(hp);
         hp = HP;
@@ -126,6 +138,8 @@ const GameEnv = ({
             if (yourSlots[i]) {
               if (val.point_attack && yourSlots[i].point_armor < val.point_attack) {
                 yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
+                enemySlots[i].point_health
+                -= (yourSlots[i].point_attack - enemySlots[i].point_armor);
               }
             } else if (val.point_attack) {
               let counter = true;
@@ -134,6 +148,10 @@ const GameEnv = ({
                   if (yourSlots[j].description.includes('Provoke') && yourSlots[j].point_health > 0) {
                     if (yourSlots[j].point_armor < val.point_attack) {
                       yourSlots[j].point_health -= (val.point_attack - yourSlots[j].point_armor);
+                    }
+                    if (enemySlots[i].point_armor < yourSlots[j].point_attack) {
+                      enemySlots[i].point_health
+                      -= (yourSlots[j].point_attack - enemySlots[i].point_armor);
                     }
                     counter = false;
                     break;

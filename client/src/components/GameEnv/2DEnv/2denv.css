@@ -146,13 +146,13 @@
 }
 
 .discard {
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    border: 3px solid black;
-    height: 120px;
-    left: 8.5%;
-    width: 60px;
+    position: fixed;
+    width: 8%;
+    bottom: 10%;
+}
+
+.todo {
+    border: 2px solid red
 }
 
 .main {
