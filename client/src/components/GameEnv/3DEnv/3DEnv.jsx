@@ -132,11 +132,11 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
+  socket.on(`${user.id_enemy}Name`, (name) => {
+    setEnemyName(name);
+  });
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
-    socket.on(`${user.id_enemy}Name`, (name) => {
-      setEnemyName(name);
-    });
   }, [slots, user, enemyHP, HP]);
   return (
     <>
