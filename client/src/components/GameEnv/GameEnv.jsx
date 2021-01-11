@@ -86,6 +86,7 @@ const GameEnv = ({
       setTurn(data.id > data.id_enemy);
     }
   }), []);
+
   useEffect(() => {
     if (user) {
       if (handleEnd && turn) {
