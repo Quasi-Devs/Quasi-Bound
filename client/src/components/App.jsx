@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Navbar from './Navbar';
@@ -19,9 +19,7 @@ import Login from './Login';
 import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
 
-const socket = io.connect(window.location.origin, {
-  transports: ['websocket'],
-});
+const socket = io();
 
 const useStyles = makeStyles({
   alertFormat: {

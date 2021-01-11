@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './playhub.css';
 import { Redirect } from 'react-router-dom';
 import { Modal } from '@material-ui/core';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,9 +25,8 @@ const useStyles = makeStyles({
   },
 });
 
-const socket = io.connect(window.location.origin, {
-  transports: ['websocket'],
-});
+const socket = io();
+
 const PlayHub = ({ user }) => {
   const classes = useStyles();
   const text = 'play hub';
@@ -96,6 +95,7 @@ const PlayHub = ({ user }) => {
             type="submit"
             onClick={() => {
               handleInvite();
+              console.info('Invite', input, user.id, user.name_user);
               socket.emit('Invite', input, user.id, user.name_user);
             }}
           >

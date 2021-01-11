@@ -5,7 +5,7 @@ import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import table from './models/scene.gltf';
@@ -80,9 +80,8 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect(window.location.origin, {
-  transports: ['websocket'],
-});
+const socket = io();
+
 function Loading() {
   return (
     <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
@@ -131,11 +130,11 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
+  socket.on(`${user.id_enemy}Name`, (name) => {
+    setEnemyName(name);
+  });
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
-    socket.on(`${user.id_enemy}Name`, (name) => {
-      setEnemyName(name);
-    });
   }, [slots, user, enemyHP, HP]);
   return (
     <>
