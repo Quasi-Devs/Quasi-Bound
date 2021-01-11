@@ -45,7 +45,11 @@ app.post('/upload', (req, res) => {
   if (req.file) {
     const From = Buffer.from;
     const b64 = new From(req.file.buffer).toString('base64');
-    cloudinary.uploader.upload(`data:${req.file.mimetype};base64,${b64}`)
+    cloudinary.uploader.upload(`data:${req.file.mimetype};base64,${b64}`,
+      {
+        use_filename: true,
+        unique_filename: false,
+      })
       .then((result) => {
         const img = result.url;
         res.status(201).send({ image: img, buffer: `data:${req.file.mimetype};base64,${b64}`, file: req.file });
