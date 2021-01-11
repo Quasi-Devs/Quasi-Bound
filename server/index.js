@@ -11,7 +11,7 @@ const multer = require('multer');
 require('./auth/googleStrategy');
 
 const app = express();
-app.set('view engine', 'pug');
+app.set('view engine', 'html');
 const server = http.createServer(app);
 const socketio = require('socket.io');
 const User = require('./db/models/user');
@@ -85,7 +85,7 @@ if (module === require.main) {
   });
 }
 
-const io = socketio().listen(server);
+const io = socketio(server);
 
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {

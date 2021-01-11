@@ -80,9 +80,7 @@ function DOMObject({
   return null;
 }
 
-const socket = io('https://vertical-dryad-300701.uc.r.appspot.com', {
-  transports: ['websocket'],
-});
+const socket = io();
 
 function Loading() {
   return (

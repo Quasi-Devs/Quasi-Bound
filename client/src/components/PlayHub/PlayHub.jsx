@@ -25,9 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-const socket = io('https://vertical-dryad-300701.uc.r.appspot.com', {
-  transports: ['websocket'],
-});
+const socket = io();
 
 const PlayHub = ({ user }) => {
   const classes = useStyles();
