@@ -101,5 +101,5 @@ client/dist/
 
 # TernJS port file
 .tern-port
-config/
+config/vertical-dryad-300701-426c38446966.json
 client/dist
