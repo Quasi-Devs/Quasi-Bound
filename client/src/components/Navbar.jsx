@@ -60,7 +60,7 @@ const Navbar = ({ user }) => {
         >
           Play
         </Button>
-        {!user ? (
+        {!user.id ? (
           <Button
             variant="contained"
             color="primary"
