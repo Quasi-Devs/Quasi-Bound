@@ -95,19 +95,49 @@
     width: 240px;
 }
 
+.card_background {
+    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/000/093/695/small/marble-background-vector.jpg');
+}
+
 .hover_title{
     font-weight: bolder;
     font-size: 18px;
+    background-color: white;
+    opacity: 90%;
+}
+
+.top_stats {
+    display: flex;
+    height: 30px;
+    align-content: space-between;
+    justify-content: center;
+    background-color: white;
+    opacity: 90%;
+}
+.is_character {
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    opacity: 90%;
+}
+.stat {
+    margin-left: 10px;
+    background-color: white;
+    opacity: 90%;
 }
 
 .hover_resource {
     font-weight: bolder;
     font-size: 18px;
+    background-color: rgb(30, 30, 74);
+    color: white;
 }
 
 .hover_stats {
     font-weight: bolder;
     font-size: 18px;
+    
 }
 
 .placements {
