@@ -5,7 +5,6 @@ import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { io } from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
-
 import Navbar from './Navbar';
 
 import SplashPage from './Splashpage';
@@ -20,6 +19,7 @@ import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
 
 const socket = io();
+const key = 'f64c20cfef0d9aca4db81064e3e01800';
 
 const useStyles = makeStyles({
   alertFormat: {
@@ -46,7 +46,14 @@ const App = () => {
       window.location.href = '/game';
     });
   }
-  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)).catch((err) => console.warn(err)), []);
+
+  useEffect(() => {
+    axios.get('https://api.ipify.org')
+      .then(({ data }) => axios.get(`http://api.ipstack.com/${data}?access_key=${key}`))
+      .then(({ data }) => axios.get(`/data/area/${data.city}`))
+      .then(({ data }) => setUser(data))
+      .catch((err) => console.warn(err));
+  }, []);
 
   return (
     <div className="root">

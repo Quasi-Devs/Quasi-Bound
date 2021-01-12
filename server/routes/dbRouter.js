@@ -28,6 +28,17 @@ dbRouter.get('/user', async (req, res) => {
   }
 });
 
+dbRouter.get('/area/:city', async (req, res) => {
+  const data = await User.getUser(req.cookies.QuasiBoundId).catch((err) => console.warn(err));
+  const info = await User.updateArea(data.rows[0].id, req.params.city)
+    .catch((err) => console.warn(err));
+  if (data.rows[0]) {
+    res.json(data.rows[0]);
+  } else {
+    res.json(info);
+  }
+});
+
 dbRouter.get('/allUser', async (req, res) => {
   const info = await User.getAllUser();
   res.json(info.rows);

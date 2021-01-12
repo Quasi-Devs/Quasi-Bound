@@ -48,7 +48,7 @@ const Friends = ({ setFriendProfile, user }) => {
   return (
     <div>
       <Card className="main">
-        <div className="find">
+        <div className="friend">
           <div className={classes.userSearch}>
             <input placeholder="Search for users" value={input} onChange={(e) => setInput(e.target.value)} />
           </div>
@@ -90,7 +90,48 @@ const Friends = ({ setFriendProfile, user }) => {
             return null;
           }) : null}
         </div>
-        <div className="create">
+        <div className="following">
+          <h1>Players in your area</h1>
+          {search.map((profile) => {
+            if (profile.id !== user.id && !friends.includes(profile.id)
+            && user.area === profile.area) {
+              return (
+                <div>
+                  {(profile.name_user.toLowerCase().includes(input.toLowerCase()))
+                    ? (
+                      <div>
+                        <h1>{`${profile.name_user} #${profile.id}`}</h1>
+                        <button
+                          type="submit"
+                          onClick={() => {
+                            setFriendProfile(profile);
+                            history.push('/friendProfile');
+                          }}
+                        >
+                          View Profile
+                        </button>
+                        <button
+                          type="submit"
+                          onClick={async () => {
+                            try {
+                              await axios.post('/data/friends', { userID: user.id, friendID: profile.id });
+                              setUpdate(!update);
+                            } catch (err) {
+                              console.error(err);
+                            }
+                          }}
+                        >
+                          follow
+                        </button>
+                      </div>
+                    ) : null}
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+        <div className="following">
           <h1>Following</h1>
           {
             search.map((profile) => {
