@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
+import { makeStyles } from '@material-ui/core/styles';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
 
 const socket = io();
+
+const useStyles = makeStyles({
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  loadImage: {
+    filter: 'invert(100%)',
+  },
+});
 
 const GameEnv = ({
   setNav,
@@ -23,6 +34,7 @@ const GameEnv = ({
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
+  const classes = useStyles();
 
   socket.on(`${user.id}Turn`, () => {
     setHandleEnd(true);
@@ -215,7 +227,7 @@ const GameEnv = ({
             />
           ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
         </div>
-      ) : <img src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" />}
+      ) : <div className={classes.loader}><img className={classes.loadImage} src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" /></div>}
     </div>
   );
 };

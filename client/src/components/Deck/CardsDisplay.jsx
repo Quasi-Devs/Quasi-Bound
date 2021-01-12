@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import Card from '../Card/card';
+import Card from '../Card/Card';
 
 const CardsDisplay = ({ user, displayMode }) => {
   // const [userId, setUserId] = useState(user ? user.id : null);
