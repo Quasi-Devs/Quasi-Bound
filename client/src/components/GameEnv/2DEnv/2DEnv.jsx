@@ -100,8 +100,8 @@ const TwoDEnv = ({
       {(turn) ? (
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
-          <div className="discard">discard</div>
           <div className="Resourceholder">
+            <h2 style={{ position: 'fixed', bottom: '18%' }}>Resource</h2>
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">
@@ -172,6 +172,7 @@ const TwoDEnv = ({
                 {}
               </div>
             ))}
+            <div className="discard">{clicked ? <div className="todo">Click square above to place card</div> : null}</div>
           </div>
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}
@@ -193,11 +194,21 @@ TwoDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   setSlots: PropTypes.func.isRequired,
   deck: PropTypes.arrayOf(PropTypes.object).isRequired,
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+    description: PropTypes.string,
+    total_win: PropTypes.number,
+    total_games: PropTypes.number,
+    count_rating: PropTypes.number,
+    thumbnail: PropTypes.string,
+    id_enemy: PropTypes.number,
+  }).isRequired,
   setTurn: PropTypes.func.isRequired,
   setDeck: PropTypes.func.isRequired,
   turn: PropTypes.bool.isRequired,
-  enemySlots: PropTypes.arrayOf(PropTypes.object).isRequired,
+  enemySlots: PropTypes.arrayOf(PropTypes.bool).isRequired,
   setHandleEnd: PropTypes.func.isRequired,
   botDeck: PropTypes.arrayOf(PropTypes.object).isRequired,
   setBotDeck: PropTypes.func.isRequired,

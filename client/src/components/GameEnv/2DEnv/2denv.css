@@ -9,7 +9,7 @@
 .Resourceholder {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 1%;
+    margin-top: 2%;
     width: 10%;
     height: 10%;
     /* border: 3px solid blue; */
@@ -146,13 +146,13 @@
 }
 
 .discard {
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    border: 3px solid black;
-    height: 120px;
-    left: 8.5%;
-    width: 60px;
+    position: fixed;
+    width: 8%;
+    bottom: 10%;
+}
+
+.todo {
+    border: 2px solid red
 }
 
 .main {

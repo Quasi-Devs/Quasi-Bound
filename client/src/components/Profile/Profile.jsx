@@ -141,7 +141,16 @@ const Profile = ({ user, setUser }) => {
 };
 
 Profile.propTypes = {
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+    description: PropTypes.string,
+    total_win: PropTypes.number,
+    total_games: PropTypes.number,
+    count_rating: PropTypes.number,
+    thumbnail: PropTypes.string,
+  }).isRequired,
   setUser: PropTypes.func.isRequired,
 };
 

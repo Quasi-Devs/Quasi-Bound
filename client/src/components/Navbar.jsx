@@ -81,7 +81,9 @@ const Navbar = ({ user }) => {
 };
 
 Navbar.propTypes = {
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
 };
 
 export default Navbar;
