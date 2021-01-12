@@ -9,8 +9,6 @@ import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import table from './models/scene.gltf';
-import img from './models/textures/wire_228214153_baseColor.jpeg';
-import img2 from './models/textures/wire_228214153_normal.png';
 import './3denv.css';
 import '../2DEnv/2denv.css';
 
@@ -99,9 +97,6 @@ function Loading() {
 }
 
 function Table() {
-  const texture = new THREE.TextureLoader().load(img);
-  texture.repeat.set(1.0, 0.6);
-  const texture2 = new THREE.TextureLoader().load(img2);
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, table);
   useFrame(() => {
@@ -110,10 +105,10 @@ function Table() {
   return (
     <group ref={group} position={[-12, -17, -23]}>
       <mesh visible geometry={nodes.mesh_1.geometry}>
-        <meshPhongMaterial attach="material" map={texture2} />
+        <meshPhongMaterial attach="material" color="rgb(36, 240, 236)" />
       </mesh>
       <mesh visible geometry={nodes.mesh_0.geometry}>
-        <meshPhongMaterial attach="material" map={texture} />
+        <meshPhongMaterial attach="material" color="rgb(133, 104, 17)" />
       </mesh>
     </group>
   );
