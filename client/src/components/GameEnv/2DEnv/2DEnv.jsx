@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import Card from './card';
 import './2denv.css';
 
-const socket = io.connect(window.location.origin, {
-  transports: ['websocket'],
-});
+const socket = io();
+
 const TwoDEnv = ({
   slots, setSlots, deck, user, setTurn, setDeck, turn, enemySlots, setHandleEnd, botDeck,
   setBotDeck, setEnemySlots, setHP, setEnemyHP, enemyHP,
@@ -101,8 +100,8 @@ const TwoDEnv = ({
       {(turn) ? (
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
-          <div className="discard">discard</div>
           <div className="Resourceholder">
+            <h2 style={{ position: 'fixed', bottom: '18%' }}>Resource</h2>
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">
@@ -173,6 +172,7 @@ const TwoDEnv = ({
                 {}
               </div>
             ))}
+            <div className="discard">{clicked ? <div className="todo">Click square above to place card</div> : null}</div>
           </div>
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}

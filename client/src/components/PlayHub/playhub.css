@@ -16,6 +16,25 @@
     height: 550px;
 }
 
+.friend {
+    font-family: 'Roboto', sans-serif;
+    flex: 0 0 30%;
+    border: 5px solid #ac4f22;
+    flex-direction: column;
+    background-color: #f5ebda;
+    height: 550px;
+}
+
+.following {
+    margin-left: 2%;
+    font-family: 'Roboto', sans-serif;
+    flex: 0 0 30%;
+    border: 5px solid #ac4f22;
+    flex-direction: column;
+    background-color: #f5ebda;
+    height: 550px;
+}
+
 .header {
     background-color: grey;
     margin-top: 0%;

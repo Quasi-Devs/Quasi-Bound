@@ -8,12 +8,10 @@ import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import InvertColorsTwoToneIcon from '@material-ui/icons/InvertColorsTwoTone';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import table from './models/scene.gltf';
-import img from './models/textures/wire_228214153_baseColor.jpeg';
-import img2 from './models/textures/wire_228214153_normal.png';
 import './3denv.css';
 import '../2DEnv/2denv.css';
 
@@ -83,9 +81,8 @@ function DOMObject({
   return null;
 }
 
-const socket = io.connect(window.location.origin, {
-  transports: ['websocket'],
-});
+const socket = io();
+
 function Loading() {
   return (
     <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
@@ -103,9 +100,6 @@ function Loading() {
 }
 
 function Table() {
-  const texture = new THREE.TextureLoader().load(img);
-  texture.repeat.set(1.0, 0.6);
-  const texture2 = new THREE.TextureLoader().load(img2);
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, table);
   useFrame(() => {
@@ -114,10 +108,10 @@ function Table() {
   return (
     <group ref={group} position={[-12, -17, -23]}>
       <mesh visible geometry={nodes.mesh_1.geometry}>
-        <meshPhongMaterial attach="material" map={texture2} />
+        <meshPhongMaterial attach="material" color="rgb(36, 240, 236)" />
       </mesh>
       <mesh visible geometry={nodes.mesh_0.geometry}>
-        <meshPhongMaterial attach="material" map={texture} />
+        <meshPhongMaterial attach="material" color="rgb(133, 104, 17)" />
       </mesh>
     </group>
   );
@@ -134,11 +128,11 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
+  socket.on(`${user.id_enemy}Name`, (name) => {
+    setEnemyName(name);
+  });
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
-    socket.on(`${user.id_enemy}Name`, (name) => {
-      setEnemyName(name);
-    });
   }, [slots, user, enemyHP, HP]);
   return (
     <>
