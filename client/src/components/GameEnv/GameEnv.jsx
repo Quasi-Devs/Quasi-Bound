@@ -185,7 +185,7 @@ const GameEnv = ({
 
   return (
     <div>
-      {(user, deck) ? (
+      {(deck) ? (
         <div>
           <ThreeDEnv
             slots={[...yourSlots, ...enemySlots]}
@@ -215,7 +215,7 @@ const GameEnv = ({
             />
           ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
         </div>
-      ) : <h1>loading in ...</h1>}
+      ) : <img src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" />}
     </div>
   );
 };

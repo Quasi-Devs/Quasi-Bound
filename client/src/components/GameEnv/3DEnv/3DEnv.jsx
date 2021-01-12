@@ -155,23 +155,22 @@ const ThreeDEnv = ({
                   clicks[i] = false;
                 }
                 return (
-                  <>
-                    <DOMObject
-                      dom={refs[i]}
-                      position={positions[i]}
-                      scale={new THREE.Vector3(1.3, 1.3, 1.3)}
-                      rotation={[-0.9, 0, 0]}
-                      slot={slot}
-                      clicked={clicks[i]}
-                    />
-                  </>
+                  <DOMObject
+                    dom={refs[i]}
+                    position={positions[i]}
+                    scale={new THREE.Vector3(1.3, 1.3, 1.3)}
+                    rotation={[-0.9, 0, 0]}
+                    slot={slot}
+                    key={String(i)}
+                    clicked={clicks[i]}
+                  />
                 );
               })
             }
           </CanvasCSS3D>
           {
               slots.map((slot, i) => (
-                <div styles={{ width: '1px', height: '1px' }}>
+                <div styles={{ width: '1px', height: '1px' }} key={String(i)}>
                   <div
                     aria-hidden="true"
                     className="hover"
@@ -235,7 +234,17 @@ const ThreeDEnv = ({
 };
 ThreeDEnv.propTypes = {
   slots: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+    description: PropTypes.string,
+    total_win: PropTypes.number,
+    total_games: PropTypes.number,
+    count_rating: PropTypes.number,
+    thumbnail: PropTypes.string,
+    id_enemy: PropTypes.number,
+  }).isRequired,
   enemyHP: PropTypes.number.isRequired,
   HP: PropTypes.number.isRequired,
   done: PropTypes.bool.isRequired,

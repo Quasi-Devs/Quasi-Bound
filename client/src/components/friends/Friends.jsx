@@ -52,10 +52,10 @@ const Friends = ({ setFriendProfile, user }) => {
           <div className={classes.userSearch}>
             <input placeholder="Search for users" value={input} onChange={(e) => setInput(e.target.value)} />
           </div>
-          {input ? search.map((profile) => {
+          {input ? search.map((profile, i) => {
             if (profile.id !== user.id && !friends.includes(profile.id)) {
               return (
-                <div>
+                <div key={String(i)}>
                   {(profile.name_user.toLowerCase().includes(input.toLowerCase()))
                     ? (
                       <div>
@@ -92,11 +92,11 @@ const Friends = ({ setFriendProfile, user }) => {
         </div>
         <div className="following">
           <h1>Players in your area</h1>
-          {search.map((profile) => {
+          {search.map((profile, i) => {
             if (profile.id !== user.id && !friends.includes(profile.id)
             && user.area === profile.area) {
               return (
-                <div>
+                <div key={String(i)}>
                   {(profile.name_user.toLowerCase().includes(input.toLowerCase()))
                     ? (
                       <div>
@@ -134,10 +134,10 @@ const Friends = ({ setFriendProfile, user }) => {
         <div className="following">
           <h1>Following</h1>
           {
-            search.map((profile) => {
+            search.map((profile, i) => {
               if (friends.includes(profile.id)) {
                 return (
-                  <div>
+                  <div key={String(i)}>
                     <h1>{`${profile.name_user} #${profile.id}`}</h1>
                     <button
                       type="submit"
@@ -175,7 +175,11 @@ const Friends = ({ setFriendProfile, user }) => {
 
 Friends.propTypes = {
   setFriendProfile: PropTypes.func.isRequired,
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+  }).isRequired,
 };
 
 export default Friends;
