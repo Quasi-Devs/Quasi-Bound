@@ -318,9 +318,6 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     if (fNf.label === 'Fly') {
       description += '\n Fly.';
     }
-    card.attack = attack || null;
-    card.health = health || null;
-    card.armor = armor || null;
   } else {
     if (isParadise) {
       if (typeParadise.includes('health')) {
@@ -368,6 +365,9 @@ const setup = async (thumbnail, ml5, Prob, title) => {
       description = `\n Deal ${abilityPower} damage.`;
     }
   }
+  card.attack = attack || 0;
+  card.health = health || 0;
+  card.armor = armor || 0;
   card.title = title;
   card.thumbnail = thumbnail;
   card.size = tySmMLgGiTi ? tySmMLgGiTi.label : null;
