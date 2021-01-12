@@ -7,10 +7,12 @@ import axios from 'axios';
 
 import Card from './Card';
 
-const CardsDisplay = ({ user, displayMode }) => {
+const CardsDisplay = ({
+  user, displayMode, myCards, myDecks,
+}) => {
   // const [userId, setUserId] = useState(user ? user.id : null);
-  const [myCards, setMyCards] = useState([]);
-  const [myDecks, setMyDecks] = useState([]);
+  // const [myCards, setMyCards] = useState([]);
+  // const [myDecks, setMyDecks] = useState([]);
   const [cardsList, setCardsList] = useState([]);
   const [cardToAdd, setCardToAdd] = useState({});
   const [buttonVisible, setButtonVisible] = useState(false);
@@ -119,10 +121,6 @@ const CardsDisplay = ({ user, displayMode }) => {
   useLayoutEffect(() => {
     const fetchData = async () => {
       if (user) {
-        const { data: cardData } = await axios.get(`/data/userCards/${user.id}`).catch((err) => console.warn(err));
-        const { data: deckData } = await axios.get(`/data/decks/${user.id}`).catch((err) => console.warn(err));
-        setMyDecks(deckData);
-        setMyCards(cardData);
         if (displayMode !== 'browse') {
           getCardsList();
         }
@@ -159,6 +157,8 @@ const CardsDisplay = ({ user, displayMode }) => {
 CardsDisplay.propTypes = {
   user: PropTypes.shape().isRequired,
   displayMode: PropTypes.number.isRequired,
+  myCards: PropTypes.arrayOf().isRequired,
+  myDecks: PropTypes.arrayOf().isRequired,
 };
 
 export default CardsDisplay;

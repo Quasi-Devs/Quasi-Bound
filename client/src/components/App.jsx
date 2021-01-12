@@ -19,6 +19,8 @@ import Login from './Login';
 import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
 
+// import helpers from '../../helpers/helpers';
+
 const socket = io.connect('', {
   transports: ['websocket'],
 });
@@ -31,7 +33,7 @@ const useStyles = makeStyles({
 });
 
 const App = () => {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState();
   const [nav, setNav] = useState(true);
   const [invitee, setInvitee] = useState('');
   const [enemyId, setEnemyId] = useState();
@@ -48,10 +50,13 @@ const App = () => {
       window.location.href = '/game';
     });
   }
-  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), []);
-  // function Alert(props) {
-  //   return <MuiAlert elevation={6} variant="filled" {...props} />;
-  // }
+
+  useEffect(() => {
+    axios.get('/data/user')
+      .then(({ data }) => setUser(data))
+      .catch((err) => console.warn(err));
+  }, []);
+
   return (
     <div className="root">
       <Snackbar

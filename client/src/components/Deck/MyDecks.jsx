@@ -7,8 +7,10 @@ import axios from 'axios';
 import Card from './Card';
 import './myDecks.css';
 
-const MyDecks = ({ user, displayMode, setDisplayMode }) => {
-  const [decks, setDecks] = useState([]);
+const MyDecks = ({
+  user, displayMode, setDisplayMode, decks, allDeckCards, loaded,
+}) => {
+  const [displayDecks, setDisplayDecks] = useState(decks);
   const [deckCards, setDeckCards] = useState();
   const [cardsList, setCardsList] = useState([]);
   const [title, setTitle] = useState('');
@@ -42,41 +44,11 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
   };
 
   const getDeckCards = (deck) => {
-    axios.get(`/data/deckCards/${deck.id}`)
-      .then(({ data }) => {
-        data.sort((a, b) => {
-          if (a.point_resource > b.point_resource) {
-            return 1;
-          }
-          if (a.point_resource < b.point_resource) {
-            return -1;
-          }
-          if (a.point_health > b.point_health) {
-            return 1;
-          }
-          if (a.point_health < b.point_health) {
-            return -1;
-          }
-          if (a.point_attack > b.point_attack) {
-            return 1;
-          }
-          if (a.point_attack < b.point_attack) {
-            return -1;
-          }
-          if (a.point_armor > b.point_armor) {
-            return 1;
-          }
-          if (a.point_armor < b.point_armor) {
-            return -1;
-          }
-          return 0;
-        });
-        setDeckCards(data);
-        const list = data.map((card) => card.title);
-        setCardsList(list);
-        setDecks([deck]);
-      })
-      .catch((err) => console.warn(err));
+    const cards = allDeckCards[deck.id];
+    setDeckCards(cards);
+    const list = cards.map((card) => card.title);
+    setCardsList(list);
+    setDisplayDecks([deck]);
   };
 
   const editDeck = (e) => {
@@ -90,9 +62,9 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
   };
 
   const quitEdit = () => {
+    setDisplayMode('browse');
     setDeckCards();
     setCardsList([]);
-    setDisplayMode('browse');
     setTrigger(!trigger);
   };
 
@@ -139,31 +111,24 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
   };
 
   useLayoutEffect(() => {
-    if (user) {
+    if (user && decks) {
       if (displayMode === 'browse') {
-        axios.get(`/data/decks/${user.id}`)
-          .then(({ data }) => {
-            data.forEach((deck) => {
-              if (deck.id === user.default_deck) {
-                setDefaultDeck(deck.title);
-              }
-            });
-            setDecks(data);
-          })
-          .catch((err) => console.warn(err));
+        setDisplayDecks(decks);
+        decks.forEach((deck) => {
+          if (deck.id === user.default_deck) {
+            setDefaultDeck(deck.title);
+          }
+        });
       } else {
-        axios.get(`/data/decks/${user.id}`)
-          .then(({ data }) => {
-            const [myDeck] = data.filter((deck) => deck.id === displayMode);
-            getDeckCards(myDeck);
-          })
-          .catch((err) => console.warn(err));
+        const [myDeck] = decks.filter((deck) => deck.id === displayMode);
+        getDeckCards(myDeck);
       }
     }
-  }, [user, trigger]);
+  }, [user, decks, trigger]);
 
   return (
     <div>
+      {!loaded ? <h1>Loading...</h1> : null}
       {inputShow && (
         <input value={title} placeholder="Deck Title" onChange={(e) => setTitle(e.target.value)} />
       )}
@@ -176,7 +141,7 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-        {decks.map((deck) => (
+        {displayDecks.map((deck) => (
           <div key={deck.id} className="deckCover" data-deck={JSON.stringify(deck)} onClick={editDeck}>
             <Typography variant="h4">
               {deck.title}
@@ -220,6 +185,9 @@ MyDecks.propTypes = {
   user: PropTypes.shape().isRequired,
   setDisplayMode: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,
+  decks: PropTypes.arrayOf().isRequired,
+  allDeckCards: PropTypes.arrayOf().isRequired,
+  loaded: PropTypes.bool.isRequired,
 };
 
 export default MyDecks;

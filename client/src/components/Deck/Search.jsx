@@ -7,9 +7,9 @@ import axios from 'axios';
 import Card from './Card';
 import './search.css';
 
-const Search = ({ user }) => {
-  const [cards, setCards] = useState();
-  const [subset, setSubset] = useState([]);
+const Search = ({ user, cards }) => {
+  // const [cards, setCards] = useState();
+  const [subset, setSubset] = useState(cards);
   const [buttonVisible, setButtonVisible] = useState(false);
   const [buttonPosition, setButtonPosition] = useState();
   const [cardToSave, setCardToSave] = useState({});
@@ -57,13 +57,8 @@ const Search = ({ user }) => {
   }, [trigger]);
 
   useLayoutEffect(() => {
-    const fetchData = async () => {
-      const { data: cardData } = await axios.get('/data/cards');
-      setCards(cardData.rows);
-      setSubset(cardData.rows);
-    };
-    fetchData();
-  }, []);
+    setSubset(cards);
+  }, [cards]);
 
   return (
     <div>
@@ -100,6 +95,7 @@ const Search = ({ user }) => {
 
 Search.propTypes = {
   user: PropTypes.shape().isRequired,
+  cards: PropTypes.arrayOf().isRequired,
 };
 
 export default Search;
