@@ -4,6 +4,9 @@ import React, {
 import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
+import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
+import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
+import InvertColorsTwoToneIcon from '@material-ui/icons/InvertColorsTwoTone';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import io from 'socket.io-client';
 import * as THREE from 'three';
@@ -191,20 +194,23 @@ const ThreeDEnv = ({
                     <div className="hover_title">{slot.title}</div>
                     <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
                     <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
-                    <div className="hover_stats">
-                      <div>
+                    <div className="top_stats">
+                      <div className="stats">
+                        <InvertColorsTwoToneIcon />
                         {
-                      `ATTACK: ${slot.point_attack || 0}`
+                      ` ${slot.point_attack || 0}`
                       }
                       </div>
-                      <div>
+                      <div className="stat">
+                        <FavoriteTwoToneIcon />
                         {
-                        `HEALTH: ${slot.point_health || 0}`
+                        ` ${slot.point_health || 0}`
                       }
                       </div>
-                      <div>
+                      <div className="stat">
+                        <SecurityTwoToneIcon />
                         {
-                        `DEFENSE: ${slot.point_armor || 0}`
+                        ` ${slot.point_armor || 0}`
                       }
                       </div>
                     </div>
