@@ -173,46 +173,52 @@ const ThreeDEnv = ({
             }
           </CanvasCSS3D>
           {
-              slots.map((slot, i) => (
-                <div styles={{ width: '1px', height: '1px' }}>
-                  <div
-                    aria-hidden="true"
-                    className="hover"
-                    ref={refs[i]}
-                    onClick={() => {
-                      const replacement = clicks;
-                      replacement[i] = !replacement[i];
-                      setClick({ ...replacement });
-                    }}
-                  >
-                    <div className="hover_title">{slot.title}</div>
-                    <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
-                    <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
-                    <div className="top_stats">
-                      <div className="stats">
-                        <InvertColorsTwoToneIcon />
-                        {
+              slots.map((slot, i) => {
+                const attributes = slot ? slot.description.split('(')[0] : slot.description;
+                const lore = slot && slot.description.split('(')[1];
+                return (
+                  <div styles={{ width: '1px', height: '1px' }}>
+                    <div
+                      aria-hidden="true"
+                      className="hover card_background"
+                      ref={refs[i]}
+                      onClick={() => {
+                        const replacement = clicks;
+                        replacement[i] = !replacement[i];
+                        setClick({ ...replacement });
+                      }}
+                    >
+                      <div className="hover_title">{slot.title}</div>
+                      <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
+                      <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
+                      <div className="top_stats">
+                        <div className="stats">
+                          <InvertColorsTwoToneIcon />
+                          {
                       ` ${slot.point_attack || 0}`
                       }
-                      </div>
-                      <div className="stat">
-                        <FavoriteTwoToneIcon />
-                        {
+                        </div>
+                        <div className="stat">
+                          <FavoriteTwoToneIcon />
+                          {
                         ` ${slot.point_health || 0}`
                       }
-                      </div>
-                      <div className="stat">
-                        <SecurityTwoToneIcon />
-                        {
+                        </div>
+                        <div className="stat">
+                          <SecurityTwoToneIcon />
+                          {
                         ` ${slot.point_armor || 0}`
                       }
+                        </div>
                       </div>
+                      <div className="is_character">{slot.is_character ? `Character - ${slot.size}` : 'Spell' }</div>
+                      <div className="hover_stats">{attributes}</div>
+                      <hr />
+                      <div className="hover_stats"><i>{lore || null}</i></div>
                     </div>
-                    <div className="hover_stats">{slot.is_character ? 'Character' : 'Spell' }</div>
-                    <div className="hover_stats">{slot.description}</div>
                   </div>
-                </div>
-              ))
+                );
+              })
             }
           <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
           {(HP <= 0 && done) ? (

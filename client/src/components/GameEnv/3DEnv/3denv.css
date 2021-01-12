@@ -11,17 +11,6 @@ span.you {
     left: 50px;
 }
 
-.top_stats {
-    display: flex;
-    height: 30px;
-    align-content: space-between;
-    justify-content: center;
-}
-
-.stat {
-    margin-left: 10px;
-}
-
 span.enemy {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 700;
