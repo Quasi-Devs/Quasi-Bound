@@ -108,7 +108,16 @@ const friendProfile = ({ friend }) => {
 };
 
 friendProfile.propTypes = {
-  friend: PropTypes.objectOf.isRequired,
+  friend: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+    description: PropTypes.string,
+    total_win: PropTypes.number,
+    total_games: PropTypes.number,
+    count_rating: PropTypes.number,
+    thumbnail: PropTypes.string,
+  }).isRequired,
 };
 
 export default friendProfile;

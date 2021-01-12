@@ -29,23 +29,22 @@ const useStyles = makeStyles({
 });
 
 const App = () => {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState({});
   const [nav, setNav] = useState(true);
   const [invitee, setInvitee] = useState('');
   const [enemyId, setEnemyId] = useState();
   const [open, setOpen] = useState(false);
   const [friendProfile, setFriendProfile] = useState({});
   const classes = useStyles();
-  if (user) {
-    socket.on(`${user.id} Accept?`, (id, name) => {
-      setEnemyId(id);
-      setOpen(true);
-      setInvitee(name);
-    });
-    socket.on(`${user.id} Proceed`, () => {
-      window.location.href = '/game';
-    });
-  }
+
+  socket.on(`${user.id} Accept?`, (id, name) => {
+    setEnemyId(id);
+    setOpen(true);
+    setInvitee(name);
+  });
+  socket.on(`${user.id} Proceed`, () => {
+    window.location.href = '/game';
+  });
 
   useEffect(() => {
     axios.get('https://api.ipify.org')
@@ -80,7 +79,7 @@ const App = () => {
         {(window.location.pathname !== '/game' && nav) ? <Navbar user={user} /> : null}
         <Switch>
           <Route exact path="/">
-            <SplashPage user={user} />
+            <SplashPage />
           </Route>
           <Route path="/home">
             <Homepage user={user} setNav={setNav} />

@@ -54,7 +54,7 @@ const LeaderBoard = ({ user }) => {
       <h1 className={clsx(classes.header)}>LeaderBoard:</h1>
       <div className={classes.userDesc}>
         {users.map((leader, i) => (
-          <h1 className={(user.name_user === leader.name_user) ? classes.selectedUser : 'none'}>
+          <h1 key={String(i)} className={(user.name_user === leader.name_user) ? classes.selectedUser : 'none'}>
             {`
           ${i + 1}:
           
@@ -70,7 +70,16 @@ const LeaderBoard = ({ user }) => {
 };
 
 LeaderBoard.propTypes = {
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+    description: PropTypes.string,
+    total_win: PropTypes.number,
+    total_games: PropTypes.number,
+    count_rating: PropTypes.number,
+    thumbnail: PropTypes.string,
+  }).isRequired,
 };
 
 export default LeaderBoard;
