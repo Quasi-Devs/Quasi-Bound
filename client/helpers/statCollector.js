@@ -269,7 +269,7 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     }
   } else if (pNp.label === 'Paradise') {
     isParadise = true;
-    abilityPower = await Prob.probabilitySmall(abilityPower) / 2;
+    abilityPower = await Prob.probabilityMedium(abilityPower);
     typeParadise = await Prob.probabilityParadise(typeParadise);
   } else {
     abilityPower = await Prob.probabilitySmall(abilityPower);
@@ -318,9 +318,9 @@ const setup = async (thumbnail, ml5, Prob, title) => {
     if (fNf.label === 'Fly') {
       description += '\n Fly.';
     }
-    card.attack = attack;
-    card.health = health;
-    card.armor = armor;
+    card.attack = attack || null;
+    card.health = health || null;
+    card.armor = armor || null;
   } else {
     if (isParadise) {
       if (typeParadise.includes('health')) {
