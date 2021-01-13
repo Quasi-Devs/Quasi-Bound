@@ -16,16 +16,25 @@ import './3denv.css';
 import '../2DEnv/2denv.css';
 
 function DOMObject({
-  dom, position, scale, rotation, slot, clicked,
+  dom, position, scale, color, rotation, slot, clicked, index, opaque, setOpaque,
 }) {
   const { scene } = useThreeCSS3D();
   const ref = useRef(CSS3DObject);
   const pos = position;
   let rot = rotation;
   let elevated = false;
+  const opacity = opaque;
   const currentpos = position[1] * 10;
   CSSFrame(({ mouse }) => {
+    if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
+      opacity[index] -= 2;
+      setOpaque({ ...opacity });
+    } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
+      opacity[index] = 100;
+      setOpaque({ ...opacity });
+    }
     if (slot && slot.description.includes('Fly') && !clicked) {
+      ref.current.castShadow = true;
       if (ref.current.position.y >= currentpos + 200) {
         elevated = true;
       }
@@ -77,7 +86,7 @@ function DOMObject({
     ref.current.rotation.copy(newRot);
     scene.add(ref.current);
     return () => scene.remove(ref.current);
-  }, [dom, scene, position, scale, rotation]);
+  }, [dom, scene, position, scale, rotation, color]);
   return null;
 }
 
@@ -117,12 +126,22 @@ function Table() {
   );
 }
 
+const opa = {
+};
+
+// const opaque = {
+//   0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
+// };
+
 const ThreeDEnv = ({
   slots, user, enemyHP, HP, done,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
   const [background, setBackground] = useState(false);
+  const [opaque, setOpaque] = useState({
+    0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
+  });
 
   const refs = [useRef(null), useRef(null), useRef(null),
     useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -146,7 +165,12 @@ const ThreeDEnv = ({
       marginBottom: '100%',
     },
   });
+  slots.forEach((slot, i) => {
+    opa[`opacity${i}`] = { opacity: `${opaque[i]}%` };
+  });
+  const cardStyles = makeStyles(opa);
   const classes = useStyles();
+  const cardClasses = cardStyles();
   return (
     <>
       <div>
@@ -178,9 +202,13 @@ const ThreeDEnv = ({
                     dom={refs[i]}
                     position={positions[i]}
                     scale={new THREE.Vector3(1.3, 1.3, 1.3)}
+                    color={new THREE.Color()}
                     rotation={[-0.9, 0, 0]}
                     slot={slot}
                     key={String(i)}
+                    index={i}
+                    opaque={opaque}
+                    setOpaque={setOpaque}
                     clicked={clicks[i]}
                   />
                 );
@@ -195,7 +223,7 @@ const ThreeDEnv = ({
                   <div styles={{ width: '1px', height: '1px' }} key={String(i)}>
                     <div
                       aria-hidden="true"
-                      className="hover card_background"
+                      className={`hover card_background ${cardClasses[`opacity${i}`]}`}
                       ref={refs[i]}
                       onClick={() => {
                         const replacement = clicks;
