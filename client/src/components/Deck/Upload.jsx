@@ -22,8 +22,8 @@ const Upload = ({
   const [counter, setCounter] = useState(false);
 
   const uploadFile = async () => {
-    if (Lore.includes('damage') || Lore.includes('Charge') || Lore.includes('Provoke') || Lore.includes('Fly')) {
-      setCounter('cannot use words (damage, Charge, Provoke, Fly)');
+    if (Lore.includes('damage') || Lore.includes('Charge') || Lore.includes('Provoke') || Lore.includes('Fly') || Lore.includes('resource')) {
+      setCounter('cannot use words (damage, Charge, Provoke, Fly, resource)');
     } else {
       const form = new FormData();
       form.append('file', files[0].file, files[0].file.name);
