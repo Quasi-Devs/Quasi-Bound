@@ -75,9 +75,9 @@
 .cards {
     display: flex;
     flex-wrap: wrap;
-    width: 50%;
-    margin-left: 15%;
-    margin-right: 5%;
+    justify-content: center;
+    width: 70%;
+    margin-left: 10%;
     /* border: 3px solid blue; */
 }
 
@@ -137,14 +137,17 @@
 .hover_stats {
     font-weight: bolder;
     font-size: 18px;
-    
 }
 
 .placements {
     display: flex;
     flex-wrap: wrap;
     position: fixed;
-    right: 25%;
+    right: 15%;
+}
+
+.twodenv {
+    position: relative;
 }
 
 .slots {
@@ -181,6 +184,11 @@
     bottom: 10%;
 }
 
+.buttonPos {
+    position: absolute;
+    right: 0;
+}
+
 .todo {
     border: 2px solid red
 }
@@ -189,7 +197,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 1%;
-    width: 85%;
+    width: 100%;
     left: 10%;
     /* border: 5px solid #ac4f22; */
 }

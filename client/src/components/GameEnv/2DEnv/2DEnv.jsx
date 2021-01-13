@@ -96,7 +96,7 @@ const TwoDEnv = ({
   }, []);
 
   return (
-    <div>
+    <div className="twodenv">
       {(turn) ? (
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
@@ -177,8 +177,10 @@ const TwoDEnv = ({
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}
           </div>
-          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
-          <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
+          <div className="buttonPos">
+            <button type="submit" onClick={() => setHP(0)}>Surrender</button>
+            <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
+          </div>
         </div>
       ) : (
         <div>
