@@ -107,10 +107,12 @@ const GameEnv = ({
           yourSlots.map((val, i) => {
             if (val && val.turn === 0) {
               if (enemySlots[i]) {
-                if (val.point_attack && enemySlots[i].point_armor < val.point_attack) {
+                if (val.point_attack && enemySlots[i].point_armor < val.point_attack
+                  && val.point_health > 0) {
                   enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
                 }
-                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack) {
+                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack
+                  && enemySlots[i].point_health > 0) {
                   yourSlots[i].point_health
                   -= (enemySlots[i].point_attack - yourSlots[i].point_armor);
                 }
@@ -132,7 +134,7 @@ const GameEnv = ({
                     }
                   }
                 }
-                if (counter) {
+                if (counter && val.point_health > 0) {
                   hp -= val.point_attack;
                 }
               }
@@ -148,7 +150,8 @@ const GameEnv = ({
         enemySlots.map((val, i) => {
           if (val && val.turn === 0) {
             if (yourSlots[i]) {
-              if (val.point_attack && yourSlots[i].point_armor < val.point_attack) {
+              if (val.point_attack && yourSlots[i].point_armor < val.point_attack
+                && val.point_health > 0) {
                 yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
                 enemySlots[i].point_health
                 -= (yourSlots[i].point_attack - enemySlots[i].point_armor);
@@ -170,7 +173,7 @@ const GameEnv = ({
                   }
                 }
               }
-              if (counter) {
+              if (counter && val.point_health > 0) {
                 hp -= val.point_attack;
               }
             }
