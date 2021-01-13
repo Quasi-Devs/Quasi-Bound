@@ -91,6 +91,10 @@ io.on('connection', (socket) => {
     io.emit(`${enemy}`, array, card);
   });
 
+  socket.on('Spell', (spell, id) => {
+    io.emit(`${id}Spell`, spell);
+  });
+
   socket.on('Name', (name, id) => {
     io.emit(`${id}Name`, name);
   });

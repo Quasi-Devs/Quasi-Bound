@@ -118,12 +118,13 @@ function Table() {
 }
 
 const ThreeDEnv = ({
-  slots, user, enemyHP, HP, done,
+  slots, user, enemyHP, HP, done, spellSlot,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
   const [background, setBackground] = useState(false);
 
+  const spell = useRef(null);
   const refs = [useRef(null), useRef(null), useRef(null),
     useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
   const [cameraY] = useState(30);
@@ -186,6 +187,13 @@ const ThreeDEnv = ({
                 );
               })
             }
+            <DOMObject
+              dom={spell}
+              position={[0, 4, -4]}
+              scale={new THREE.Vector3(1.6, 1.6, 1.6)}
+              rotation={[-0.2, 0, 0]}
+              slot={spellSlot}
+            />
           </CanvasCSS3D>
           {
               slots.map((slot, i) => {
@@ -235,7 +243,43 @@ const ThreeDEnv = ({
                 );
               })
             }
+          <div styles={{ width: '1px', height: '1px' }}>
+            <div
+              aria-hidden="true"
+              className="hover card_background"
+              ref={spell}
+            >
+              <div className="hover_title">{spellSlot.title}</div>
+              <div className="hover_resource">{`cost: ${spellSlot.point_resource}`}</div>
+              <img className="hover_img" src={spellSlot.thumbnail} alt="thumbnail" />
+              <div className="top_stats">
+                <div className="stats">
+                  <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
+                  {
+                      ` ${spellSlot.point_attack || 0}`
+                      }
+                </div>
+                <div className="stat">
+                  <FavoriteTwoToneIcon />
+                  {
+                        ` ${spellSlot.point_health || 0}`
+                      }
+                </div>
+                <div className="stat">
+                  <SecurityTwoToneIcon />
+                  {
+                        ` ${spellSlot.point_armor || 0}`
+                      }
+                </div>
+              </div>
+              <div className="is_character">{spellSlot.is_character ? `Character - ${spellSlot.size}` : 'Spell' }</div>
+              <div className="hover_stats">{spellSlot ? spellSlot.description.split('(')[0] : spellSlot.description}</div>
+              <hr />
+              <div className="hover_stats"><i>{spellSlot && spellSlot.description.split('(')[1] ? spellSlot.description.split('(')[1] : null}</i></div>
+            </div>
+          </div>
           <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+          <span className="spell">{spellSlot ? `${enemyName} use spell` : null}</span>
           {(HP <= 0 && done) ? (
             <>
               {(HP <= 0 && enemyHP <= 0 && done) ? (
@@ -286,6 +330,7 @@ ThreeDEnv.propTypes = {
   enemyHP: PropTypes.number.isRequired,
   HP: PropTypes.number.isRequired,
   done: PropTypes.bool.isRequired,
+  spellSlot: PropTypes.bool.isRequired,
 };
 
 export default ThreeDEnv;
