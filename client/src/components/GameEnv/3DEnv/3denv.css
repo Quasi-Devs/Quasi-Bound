@@ -3,8 +3,9 @@ span.you {
     font-weight: 700;
     position: absolute;
     width: 200px;
+    max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 5em;
+    font-size: 3em;
     line-height: 0.9em;
     pointer-events: none;
     top: 180px;
@@ -16,8 +17,9 @@ span.enemy {
     font-weight: 700;
     position: absolute;
     width: 200px;
+    max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 5em;
+    font-size: 3em;
     line-height: 0.9em;
     pointer-events: none;
     top: 180px;

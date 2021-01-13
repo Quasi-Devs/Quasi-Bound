@@ -6,7 +6,7 @@ import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame 
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
 import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import InvertColorsTwoToneIcon from '@material-ui/icons/InvertColorsTwoTone';
+import { makeStyles } from '@material-ui/core/styles';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { io } from 'socket.io-client';
 import * as THREE from 'three';
@@ -122,6 +122,7 @@ const ThreeDEnv = ({
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
+  const [background, setBackground] = useState(false);
 
   const refs = [useRef(null), useRef(null), useRef(null),
     useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
@@ -134,9 +135,24 @@ const ThreeDEnv = ({
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
   }, [slots, user, enemyHP, HP]);
+  const useStyles = makeStyles({
+    doneIcon: {
+      backgroundImage: background,
+      width: window.innerWidth - 200,
+      height: window.innerHeight,
+      position: 'absolute',
+      zIndex: 1,
+      marginLeft: '10%',
+      marginBottom: '100%',
+    },
+  });
+  const classes = useStyles();
   return (
     <>
       <div>
+        {
+         background && <div className={classes.doneIcon} />
+        }
         <div style={{ height: window.innerHeight * 0.73 }}>
           <Canvas>
             <color attach="background" args={['gray']} />
@@ -192,7 +208,7 @@ const ThreeDEnv = ({
                       <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
                       <div className="top_stats">
                         <div className="stats">
-                          <InvertColorsTwoToneIcon />
+                          <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
                           {
                       ` ${slot.point_attack || 0}`
                       }
@@ -226,7 +242,12 @@ const ThreeDEnv = ({
                 <>
                   <span className="Done">Tie</span>
                 </>
-              ) : <span className="Done">Lose</span>}
+              ) : (
+                <>
+                  { !background && setBackground('url(https://static.wixstatic.com/media/d5fe05_38421c1389974763ae998de5958b0f93~mv2.gif)') }
+                  <span className="Done">Lose</span>
+                </>
+              )}
             </>
           ) : null}
           {(enemyHP <= 0 && done) ? (
@@ -235,7 +256,12 @@ const ThreeDEnv = ({
                 <>
                   <span className="Done">Tie</span>
                 </>
-              ) : <span className="Done">Win</span>}
+              ) : (
+                <>
+                  { !background && setBackground('url(https://i.gifer.com/ZGYq.gif)') }
+                  <span className="Done">Win</span>
+                </>
+              )}
             </>
           ) : null}
           <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
