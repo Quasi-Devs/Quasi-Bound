@@ -134,7 +134,7 @@ const Friends = ({ setFriendProfile, user }) => {
 
 Friends.propTypes = {
   setFriendProfile: PropTypes.func.isRequired,
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape().isRequired,
 };
 
 export default Friends;

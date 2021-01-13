@@ -61,7 +61,7 @@ const Homepage = ({ user, setNav }) => {
   const { newuser } = query.parse(window.location.search);
   useEffect(() => setNav(true), []);
   let greeting;
-  if (user !== null) {
+  if (user) {
     greeting = `Welcome, ${user.name_user}`;
   }
   return (
@@ -93,7 +93,7 @@ const Homepage = ({ user, setNav }) => {
 };
 
 Homepage.propTypes = {
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape().isRequired,
   setNav: PropTypes.func.isRequired,
 };
 

@@ -120,6 +120,6 @@ const PlayHub = ({ user }) => {
   );
 };
 PlayHub.propTypes = {
-  user: PropTypes.bool.isRequired,
+  user: PropTypes.shape().isRequired,
 };
 export default PlayHub;
