@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './playhub.css';
 import { Redirect } from 'react-router-dom';
-import { Modal } from '@material-ui/core';
+import { Modal, Snackbar } from '@material-ui/core';
 import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
+import { Alert } from '@material-ui/lab';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,6 +24,10 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     flexDirection: 'column',
   },
+  alertFormat: {
+    position: 'absolute',
+    top: '0',
+  },
 });
 
 const socket = io();
@@ -32,6 +37,7 @@ const PlayHub = ({ user }) => {
   const text = 'play hub';
   const [Invite, setInvite] = useState(false);
   const [Open, setOpen] = useState(false);
+  const [Error, setError] = useState(false);
   const [GoOn, setGoOn] = useState(false);
   const [input, setInput] = useState('');
   const handleModal = () => setOpen(!Open);
@@ -43,6 +49,17 @@ const PlayHub = ({ user }) => {
   }
   return (
     <div className="main">
+      <Snackbar
+        open={Error}
+        className={classes.alertFormat}
+        autoHideDuration={6000}
+        onClose={() => setError(!Error)}
+      >
+        <Alert severity="info">
+          <h2>sign in to continue</h2>
+          <button type="submit" onClick={() => setError(false)}>Okay</button>
+        </Alert>
+      </Snackbar>
       {GoOn ? <Redirect to="/game" /> : null}
       <div className="find">
         <h1 className="header">{`left ${text}`}</h1>
@@ -51,8 +68,12 @@ const PlayHub = ({ user }) => {
           type="submit"
           className="button"
           onClick={() => {
-            handleModal();
-            socket.emit('Queue', user.id);
+            if (!user.id) {
+              setError(true);
+            } else {
+              handleModal();
+              socket.emit('Queue', user.id);
+            }
           }}
         >
           Finding A Match Against Player
@@ -60,8 +81,12 @@ const PlayHub = ({ user }) => {
         <button
           type="submit"
           onClick={() => {
-            axios.get('/data/addEnemy')
-              .then(() => setGoOn(true));
+            if (!user.id) {
+              setError(true);
+            } else {
+              axios.get('/data/addEnemy')
+                .then(() => setGoOn(true));
+            }
           }}
         >
           Start A Match Against Bot
@@ -94,9 +119,13 @@ const PlayHub = ({ user }) => {
           <button
             type="submit"
             onClick={() => {
-              handleInvite();
-              console.info('Invite', input, user.id, user.name_user);
-              socket.emit('Invite', input, user.id, user.name_user);
+              if (!user.id) {
+                setError(true);
+              } else {
+                handleInvite();
+                console.info('Invite', input, user.id, user.name_user);
+                socket.emit('Invite', input, user.id, user.name_user);
+              }
             }}
           >
             Invite User

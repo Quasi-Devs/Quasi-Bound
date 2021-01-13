@@ -137,8 +137,10 @@ const TwoDEnv = ({
                       setClick(false);
                       cardInHand.splice(cardIndex, 1);
                       setCardInHand(cardInHand);
-                      setResourceCount(resourceCount - taken);
                       handleResource(resourceCount - taken - 1);
+                      if (clicked.description.includes('resource')) {
+                        handleResource(number - 1);
+                      }
                     } else if (clicked) {
                       // change to handle spell cards
                       if (!clicked.is_character) {
