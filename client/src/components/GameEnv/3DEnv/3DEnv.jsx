@@ -278,7 +278,13 @@ const ThreeDEnv = ({
               <div className="hover_stats"><i>{spellSlot && spellSlot.description.split('(')[1] ? spellSlot.description.split('(')[1] : null}</i></div>
             </div>
           </div>
-          <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+          <span className="you">
+            <div>
+              {`${user.name_user}: `}
+              <div className={(HP > 167) ? 'good' : 'okay'}>{HP}</div>
+              <div className="bad">{(HP > 83) ? null : HP}</div>
+            </div>
+          </span>
           <span className="spell">{spellSlot ? `${enemyName} use spell` : null}</span>
           {(HP <= 0 && done) ? (
             <>
@@ -308,7 +314,13 @@ const ThreeDEnv = ({
               )}
             </>
           ) : null}
-          <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
+          <span className="enemy">
+            <div>
+              {`${enemyName}: `}
+              <div className={(enemyHP > 167) ? 'good' : 'okay'}>{enemyHP}</div>
+              <div className="bad">{(enemyHP > 83) ? null : enemyHP}</div>
+            </div>
+          </span>
         </div>
       </div>
     </>

@@ -45,10 +45,8 @@ const GameEnv = ({
   });
 
   socket.on(`${user.id}Turn`, () => {
-    setTimeout(() => {
-      setHandleEnd(true);
-      setTurn(true);
-    }, 1000);
+    setHandleEnd(true);
+    setTurn(true);
   });
   socket.on(`${user.id}hp`, (hp, hp2) => {
     if (hp !== null) {
