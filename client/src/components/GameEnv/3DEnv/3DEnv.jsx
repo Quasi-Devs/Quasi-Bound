@@ -68,7 +68,7 @@ function DOMObject({
     posit = [0, 0, 100];
   }
   posit = posit || position;
-  const newPos = new THREE.Vector3(posit[0] * 140, posit[1] * 8.1, posit[2] * 140);
+  const newPos = new THREE.Vector3(posit[0] * 65, posit[1] * 8.3, posit[2] * 140);
   const newRot = new THREE.Euler(rot[0], rot[1], rot[2]);
   useEffect(() => {
     ref.current = new CSS3DObject(dom.current);
