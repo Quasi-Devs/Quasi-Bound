@@ -38,3 +38,62 @@ span.Done {
     top: 30%;
     left: 44%;
 }
+
+span.spell {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    width: 200px;
+    max-width: 200px;
+    transform: translate3d(0, -50%, 0);
+    font-size: 3em;
+    line-height: 0.9em;
+    pointer-events: none;
+    top: 15%;
+    left: 44%;
+}
+
+.good {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    width: 200px;
+    max-width: 200px;
+    transform: translate3d(0, -50%, 0);
+    font-size: 3em;
+    line-height: 0.9em;
+    color: green;
+    pointer-events: none;
+    top: 180px;
+    left: 50px;
+}
+
+.okay {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    width: 200px;
+    max-width: 200px;
+    transform: translate3d(0, -50%, 0);
+    font-size: 3em;
+    line-height: 0.9em;
+    color: yellow;
+    pointer-events: none;
+    top: 180px;
+    left: 50px;
+}
+
+.bad {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    position: absolute;
+    width: 200px;
+    max-width: 200px;
+    transform: translate3d(0, -50%, 0);
+    font-size: 3em;
+    line-height: 0.9em;
+    color: red;
+    pointer-events: none;
+    top: 180px;
+    left: 50px;
+}

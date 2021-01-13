@@ -123,6 +123,7 @@ const TwoDEnv = ({
                       const number = clicked.description.match(/\d+/g);
                       const currentEnemySlots = enemySlots;
                       if (!clicked.is_character) {
+                        socket.emit('Spell', clicked, user.id_enemy);
                         arr[i] = false;
                       }
                       if (clicked.description.includes('damage')) {
@@ -145,6 +146,7 @@ const TwoDEnv = ({
                       }
                     } else if (clicked) {
                       // change to handle spell cards
+                      const currentEnemySlots = enemySlots;
                       if (!clicked.is_character) {
                         if (slots[i]) {
                           const number = clicked.description.match(/\d+/g);
@@ -158,6 +160,15 @@ const TwoDEnv = ({
                           if (clicked.description.includes('armor')) {
                             arr[i].point_armor += Number(number);
                           }
+                          if (clicked.description.includes('damage')) {
+                            if (currentEnemySlots[i]) {
+                              currentEnemySlots[i].point_health -= Number(number);
+                            } else {
+                              socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+                              setEnemyHP(enemyHP - Number(number));
+                            }
+                          }
+                          socket.emit('Spell', clicked, user.id_enemy);
                           socket.emit('placed', user.id_enemy, [...arr], enemySlots);
                           setSlots([...arr]);
                           cardInHand.splice(cardIndex, 1);

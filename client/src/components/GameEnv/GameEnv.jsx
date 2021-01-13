@@ -34,7 +34,15 @@ const GameEnv = ({
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
+  const [spellSlot, setSpellSlot] = useState(false);
   const classes = useStyles();
+
+  socket.on(`${user.id}Spell`, (spell) => {
+    setSpellSlot(spell);
+    setTimeout(() => {
+      setSpellSlot(false);
+    }, 3000);
+  });
 
   socket.on(`${user.id}Turn`, () => {
     setHandleEnd(true);
@@ -209,6 +217,7 @@ const GameEnv = ({
             HP={HP}
             enemyHP={enemyHP}
             done={done}
+            spellSlot={spellSlot}
           />
           {!done ? (
             <TwoDEnv
