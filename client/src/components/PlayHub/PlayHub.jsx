@@ -85,7 +85,8 @@ const PlayHub = ({ user }) => {
               setError(true);
             } else {
               axios.get('/data/addEnemy')
-                .then(() => setGoOn(true));
+                .then(() => setGoOn(true))
+                .catch((err) => console.warn(err));
             }
           }}
         >
