@@ -21,6 +21,7 @@
     border: 3px solid black;
     height: 120px;
     width: 60px;
+    overflow: hidden;
 }
 
 .card_title {
@@ -54,7 +55,7 @@
     /* border: 3px solid blue; */
     font-size: 12px;
     position: relative;
-    bottom: 20%;
+    bottom: 10%;
     left: 5%
 }
 
@@ -75,9 +76,9 @@
 .cards {
     display: flex;
     flex-wrap: wrap;
-    width: 50%;
-    margin-left: 15%;
-    margin-right: 5%;
+    justify-content: center;
+    width: 70%;
+    margin-left: 10%;
     /* border: 3px solid blue; */
 }
 
@@ -92,29 +93,65 @@
 
 .hover_img {
     height: 200px;
-    width: 240px;
+    width: 233px;
+}
+
+.card_background {
+    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/000/093/695/small/marble-background-vector.jpg');
 }
 
 .hover_title{
     font-weight: bolder;
     font-size: 18px;
+    background-color: white;
+    opacity: 90%;
+}
+
+.top_stats {
+    display: flex;
+    height: 30px;
+    align-content: space-between;
+    justify-content: center;
+    background-color: white;
+    opacity: 90%;
+}
+.is_character {
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    opacity: 90%;
+}
+.stat {
+    margin-left: 10px;
+    background-color: white;
+    opacity: 90%;
 }
 
 .hover_resource {
     font-weight: bolder;
     font-size: 18px;
+    background-color: rgb(30, 30, 74);
+    color: white;
 }
 
 .hover_stats {
-    font-weight: bolder;
-    font-size: 18px;
+    font-size: 15px;
+}
+
+.hover_lore {
+  font-size: 12px;
 }
 
 .placements {
     display: flex;
     flex-wrap: wrap;
     position: fixed;
-    right: 25%;
+    right: 15%;
+}
+
+.twodenv {
+    position: relative;
 }
 
 .slots {
@@ -145,21 +182,39 @@
     font-size: 12px;
 }
 
+.cardpos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.playcard {
+  position: absolute;
+  right: 10%;
+  top: -10%;
+}
+
 .discard {
-    position: fixed;
+    position: absolute;
     width: 8%;
     bottom: 10%;
 }
 
+.buttonPos {
+    position: absolute;
+    right: 0;
+}
+
 .todo {
-    border: 2px solid red
+    border: 2px solid red;
+    position: absolute;
+    width: 8%;
 }
 
 .main {
     display: flex;
     flex-wrap: wrap;
     margin-top: 1%;
-    width: 85%;
+    width: 100%;
     left: 10%;
     /* border: 5px solid #ac4f22; */
 }

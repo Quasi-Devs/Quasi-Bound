@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { io } from 'socket.io-client';
-import Card from './card';
+import 'antd/dist/antd.css';
+import { Button } from 'antd';
+import Card from '../../Card/Card';
 import './2denv.css';
 
 const socket = io();
@@ -96,7 +98,7 @@ const TwoDEnv = ({
   }, []);
 
   return (
-    <div>
+    <div className="twodenv">
       {(turn) ? (
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
@@ -179,13 +181,15 @@ const TwoDEnv = ({
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}
           </div>
-          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
-          <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
+          <div className="buttonPos">
+            <Button type="submit" block onClick={() => setHP(0)}>Surrender</Button>
+            <Button type="submit" block onClick={() => handleResource(count + 1, true)}>End Turn</Button>
+          </div>
         </div>
       ) : (
         <div>
           <h1>ENEMY TURN</h1>
-          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
+          <Button type="submit" block onClick={() => setHP(0)}>Surrender</Button>
         </div>
       )}
     </div>
