@@ -279,11 +279,11 @@ const ThreeDEnv = ({
             </div>
           </div>
           <span className="you">
-            <div>
+            <p>
               {`${user.name_user}: `}
-              <div className={(HP > 167) ? 'good' : 'okay'}>{HP}</div>
-              <div className="bad">{(HP > 83) ? null : HP}</div>
-            </div>
+              <p className={(HP > 167) ? 'good' : 'okay'}>{HP}</p>
+              <p className="bad">{(HP > 83) ? null : HP}</p>
+            </p>
           </span>
           <span className="spell">{spellSlot ? `${enemyName} use spell` : null}</span>
           {(HP <= 0 && done) ? (
@@ -315,11 +315,11 @@ const ThreeDEnv = ({
             </>
           ) : null}
           <span className="enemy">
-            <div>
+            <p>
               {`${enemyName}: `}
-              <div className={(enemyHP > 167) ? 'good' : 'okay'}>{enemyHP}</div>
-              <div className="bad">{(enemyHP > 83) ? null : enemyHP}</div>
-            </div>
+              <p className={(enemyHP > 167) ? 'good' : 'okay'}>{enemyHP}</p>
+              <p className="bad">{(enemyHP > 83) ? null : enemyHP}</p>
+            </p>
           </span>
         </div>
       </div>
