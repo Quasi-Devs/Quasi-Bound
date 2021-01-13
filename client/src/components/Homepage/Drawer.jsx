@@ -99,7 +99,7 @@ const SidebarDrawer = () => {
                 axios.get('/data/logout')
                   .then(() => {
                     window.location.reload();
-                  });
+                  }).catch((err) => console.warn(err));
               }
               history.push(item[1]);
             }}

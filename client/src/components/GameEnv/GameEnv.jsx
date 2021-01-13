@@ -90,14 +90,15 @@ const GameEnv = ({
   }, [user]);
 
   useEffect(() => setNav(false), []);
-  useEffect(() => axios.get('/data/user').then(({ data }) => {
-    setUser(data);
-    if (data.id_enemy === null) {
-      setTurn(true);
-    } else {
-      setTurn(data.id > data.id_enemy);
-    }
-  }), []);
+  useEffect(() => axios.get('/data/user')
+    .then(({ data }) => {
+      setUser(data);
+      if (data.id_enemy === null) {
+        setTurn(true);
+      } else {
+        setTurn(data.id > data.id_enemy);
+      }
+    }).catch((err) => console.warn(err)), []);
 
   useEffect(async () => {
     if (user) {
