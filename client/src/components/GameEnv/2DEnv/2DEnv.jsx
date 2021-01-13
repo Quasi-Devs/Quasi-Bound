@@ -103,7 +103,7 @@ const TwoDEnv = ({
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
           <div className="Resourceholder">
-            <h2 style={{ position: 'fixed', bottom: '18%' }}>Resource</h2>
+            <h2>Resource</h2>
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">

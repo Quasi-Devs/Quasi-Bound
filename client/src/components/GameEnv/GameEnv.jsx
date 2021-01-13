@@ -108,7 +108,7 @@ const GameEnv = ({
       }
     }).catch((err) => console.warn(err)), []);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (user) {
       if (handleEnd && turn) {
         let hp = enemyHP;
@@ -156,7 +156,7 @@ const GameEnv = ({
         socket.emit('HP', user.id_enemy, hp, null);
         setEnemyHP(hp);
         hp = HP;
-        enemySlots.map((val, i) => {
+        await enemySlots.map(async (val, i) => {
           if (val && val.turn === 0) {
             if (yourSlots[i]) {
               if (val.point_attack && yourSlots[i].point_armor < val.point_attack
@@ -190,18 +190,26 @@ const GameEnv = ({
             enemySlots[i].turn = 0;
           }
           if (!val.point_health || val.point_health <= 0) {
-            enemySlots[i] = false;
+            setEnemySlots([...enemySlots]);
+            setTimeout(() => {
+              enemySlots[i] = false;
+            }, 1000);
           }
           if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
-            yourSlots[i] = false;
+            setYourSlots([...yourSlots]);
+            setTimeout(() => {
+              yourSlots[i] = false;
+            }, 1000);
           }
           return null;
         });
         socket.emit('placed', user.id_enemy, [...yourSlots], [...enemySlots]);
         socket.emit('HP', user.id_enemy, null, hp);
         setHP(hp);
-        setEnemySlots([...enemySlots]);
-        setYourSlots([...yourSlots]);
+        setTimeout(() => {
+          setEnemySlots([...enemySlots]);
+          setYourSlots([...yourSlots]);
+        }, 3000);
         setHandleEnd(false);
       }
     }

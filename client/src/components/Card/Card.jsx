@@ -41,7 +41,7 @@ const Card = ({
             </div>
           )
         }
-        <div className={hover ? 'is_character' : 'cardClass'}>{info.is_character ? 'Character' : 'Spell' }</div>
+        <div className={hover ? 'is_character' : 'cardClass'}>{hover ? <div>{info.is_character ? 'Character' : 'Spell' }</div> : <div>{info.is_character ? 'Char' : 'Spell' }</div>}</div>
         {hover && (<div className="hover_stats">{attributes}</div>)}
         {hover && (<hr />)}
         {hover && (<div className="hover_lore"><i>{lore || null}</i></div>)}
