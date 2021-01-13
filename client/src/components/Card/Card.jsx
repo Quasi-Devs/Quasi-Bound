@@ -45,7 +45,7 @@ const Card = ({
       {hover && (<div className="hover_stats">{attributes}</div>)}
       {hover && (<hr />)}
       {hover && (<div className="hover_stats"><i>{lore || null}</i></div>)}
-      {hover && setClick ? (
+      {hover ? (
         <button
           onClick={() => {
             if (resourceCount >= info.point_resource) {
