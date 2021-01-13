@@ -124,7 +124,6 @@ const PlayHub = ({ user }) => {
                 setError(true);
               } else {
                 handleInvite();
-                console.info('Invite', input, user.id, user.name_user);
                 socket.emit('Invite', input, user.id, user.name_user);
               }
             }}
