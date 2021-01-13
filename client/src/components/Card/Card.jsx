@@ -2,26 +2,26 @@ import React, { useState } from 'react';
 import PropType from 'prop-types';
 import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
-import InvertColorsTwoToneIcon from '@material-ui/icons/InvertColorsTwoTone';
 import '../GameEnv/2DEnv/2denv.css';
 
 const Card = ({
   info, setClick, resourceCount, setTaken, i, setCardIndex,
 }) => {
-  const [hover, setHover] = useState(false);
-  const handleHover = () => setHover(!hover);
+  const [hover, setHover] = useState(!setClick);
+  const handleHover = () => setClick && setHover(!hover);
   const attributes = info ? info.description.split('(')[0] : info.description;
   const lore = info && info.description.split('(')[1];
   return (
-    <div aria-hidden="true" className={hover ? 'hover card_background' : 'card card_background'} onClick={handleHover}>
-      <div className={hover ? 'hover_title' : 'card_title'}>{info.title}</div>
-      <div className={hover ? 'hover_resource' : 'card_resource'}>{hover ? `cost: ${info.point_resource}` : info.point_resource}</div>
-      <img className={hover ? 'hover_img' : 'card_img'} src={info.thumbnail} alt="thumbnail" />
-      {
+    <div className="cardpos">
+      <div aria-hidden="true" className={hover ? 'hover card_background' : 'card card_background'} onClick={handleHover}>
+        <div className={hover ? 'hover_title' : 'card_title'}>{info.title}</div>
+        <div className={hover ? 'hover_resource' : 'card_resource'}>{hover ? `cost: ${info.point_resource}` : info.point_resource}</div>
+        <img className={hover ? 'hover_img' : 'card_img'} src={info.thumbnail} alt="thumbnail" />
+        {
           info.is_character && (
             <div className={hover ? 'top_stats' : 'card_stats'}>
               <div className="stat">
-                {hover && (<InvertColorsTwoToneIcon />)}
+                {hover && (<img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />)}
                 {
                         ` ${info.point_attack || 0}`
               }
@@ -41,10 +41,11 @@ const Card = ({
             </div>
           )
         }
-      <div className={hover ? 'is_character' : 'cardClass'}>{info.is_character ? 'Character' : 'Spell' }</div>
-      {hover && (<div className="hover_stats">{attributes}</div>)}
-      {hover && (<hr />)}
-      {hover && (<div className="hover_stats"><i>{lore || null}</i></div>)}
+        <div className={hover ? 'is_character' : 'cardClass'}>{info.is_character ? 'Character' : 'Spell' }</div>
+        {hover && (<div className="hover_stats">{attributes}</div>)}
+        {hover && (<hr />)}
+        {hover && (<div className="hover_lore"><i>{lore || null}</i></div>)}
+      </div>
       {hover ? (
         <button
           onClick={() => {
@@ -55,6 +56,7 @@ const Card = ({
             }
           }}
           type="submit"
+          className="playcard"
         >
           {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
         </button>
