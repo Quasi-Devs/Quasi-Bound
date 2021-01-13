@@ -76,7 +76,7 @@ const Profile = ({ user, setUser }) => {
   const [newDescription, setNewDescription] = useState('');
   const [update, setUpdate] = useState(false);
 
-  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), [update]);
+  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)).catch((err) => console.warn(err)), [update]);
 
   useEffect(() => {
     setNewDescription(user.description);

@@ -50,9 +50,9 @@ router.get(
                 } else {
                   res.redirect('/home');
                 }
-              });
+              }).catch((err) => console.warn(err));
           }
-        });
+        }).catch((err) => console.warn(err));
     } else {
       db.query(`SELECT * FROM "user" where google_link = '${req.user.id}';`)
         .then(({ rows }) => {
@@ -71,7 +71,7 @@ router.get(
           } else {
             res.redirect('/home');
           }
-        });
+        }).catch((err) => console.warn(err));
     }
   },
 );

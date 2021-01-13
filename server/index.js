@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
       .then(() => {
         io.emit(`${userId} Proceed`);
         io.emit(`${id} Proceed`);
-      });
+      }).catch((err) => console.warn(err));
   });
 
   socket.on('Queue', (id) => {
@@ -126,7 +126,7 @@ io.on('connection', (socket) => {
           io.emit(`${players}`);
           io.emit(`${id}`);
           players = null;
-        });
+        }).catch((err) => console.warn(err));
     }
   });
 
