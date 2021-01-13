@@ -31,7 +31,7 @@ router.get(
                 } else {
                   res.redirect('/home');
                 }
-              });
+              }).catch((err) => console.warn(err));
           } else if (!rows[0].discord_link) {
             db.query(
               `UPDATE "user" SET discord_link = ${req.user.id} WHERE google_link = '${req.cookies.Quasigoogle}';`,
@@ -60,9 +60,9 @@ router.get(
                 } else {
                   res.redirect('/home');
                 }
-              });
+              }).catch((err) => console.warn(err));
           }
-        });
+        }).catch((err) => console.warn(err));
     } else {
       db.query(`SELECT * FROM "user" where discord_link = '${req.user.id}';`)
         .then(({ rows }) => {
@@ -80,7 +80,7 @@ router.get(
           } else {
             res.redirect('/home');
           }
-        });
+        }).catch((err) => console.warn(err));
     }
   },
 );

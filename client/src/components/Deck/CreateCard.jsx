@@ -47,7 +47,7 @@ const CreateCard = () => {
   const [stats, setStats] = useState({});
 
   const createCard = async () => {
-    stats.description += ` ${Lore}`;
+    stats.description += ` (${Lore})`;
     console.info(stats);
     await axios.post('/data/cards', stats);
   };

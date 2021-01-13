@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { io } from 'socket.io-client';
-import Card from './card';
+import 'antd/dist/antd.css';
+import { Button } from 'antd';
+import Card from '../../Card/Card';
 import './2denv.css';
 
 const socket = io();
@@ -96,12 +98,12 @@ const TwoDEnv = ({
   }, []);
 
   return (
-    <div>
+    <div className="twodenv">
       {(turn) ? (
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
           <div className="Resourceholder">
-            <h2 style={{ position: 'fixed', bottom: '18%' }}>Resource</h2>
+            <h2>Resource</h2>
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">
@@ -121,6 +123,7 @@ const TwoDEnv = ({
                       const number = clicked.description.match(/\d+/g);
                       const currentEnemySlots = enemySlots;
                       if (!clicked.is_character) {
+                        socket.emit('Spell', clicked, user.id_enemy);
                         arr[i] = false;
                       }
                       if (clicked.description.includes('damage')) {
@@ -137,10 +140,13 @@ const TwoDEnv = ({
                       setClick(false);
                       cardInHand.splice(cardIndex, 1);
                       setCardInHand(cardInHand);
-                      setResourceCount(resourceCount - taken);
                       handleResource(resourceCount - taken - 1);
+                      if (clicked.description.includes('resource')) {
+                        handleResource(number - 1);
+                      }
                     } else if (clicked) {
                       // change to handle spell cards
+                      const currentEnemySlots = enemySlots;
                       if (!clicked.is_character) {
                         if (slots[i]) {
                           const number = clicked.description.match(/\d+/g);
@@ -154,6 +160,15 @@ const TwoDEnv = ({
                           if (clicked.description.includes('armor')) {
                             arr[i].point_armor += Number(number);
                           }
+                          if (clicked.description.includes('damage')) {
+                            if (currentEnemySlots[i]) {
+                              currentEnemySlots[i].point_health -= Number(number);
+                            } else {
+                              socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+                              setEnemyHP(enemyHP - Number(number));
+                            }
+                          }
+                          socket.emit('Spell', clicked, user.id_enemy);
                           socket.emit('placed', user.id_enemy, [...arr], enemySlots);
                           setSlots([...arr]);
                           cardInHand.splice(cardIndex, 1);
@@ -177,13 +192,15 @@ const TwoDEnv = ({
           <div className="cards">
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}
           </div>
-          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
-          <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
+          <div className="buttonPos">
+            <Button type="submit" block onClick={() => setHP(0)}>Surrender</Button>
+            <Button type="submit" block onClick={() => handleResource(count + 1, true)}>End Turn</Button>
+          </div>
         </div>
       ) : (
         <div>
           <h1>ENEMY TURN</h1>
-          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
+          <Button type="submit" block onClick={() => setHP(0)}>Surrender</Button>
         </div>
       )}
     </div>

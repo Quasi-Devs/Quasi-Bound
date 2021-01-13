@@ -3,12 +3,23 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
+import { makeStyles } from '@material-ui/core/styles';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
 
 const socket = io();
+
+const useStyles = makeStyles({
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  loadImage: {
+    filter: 'invert(100%)',
+  },
+});
 
 const GameEnv = ({
   setNav,
@@ -23,6 +34,15 @@ const GameEnv = ({
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
+  const [spellSlot, setSpellSlot] = useState(false);
+  const classes = useStyles();
+
+  socket.on(`${user.id}Spell`, (spell) => {
+    setSpellSlot(spell);
+    setTimeout(() => {
+      setSpellSlot(false);
+    }, 3000);
+  });
 
   socket.on(`${user.id}Turn`, () => {
     setHandleEnd(true);
@@ -78,16 +98,17 @@ const GameEnv = ({
   }, [user]);
 
   useEffect(() => setNav(false), []);
-  useEffect(() => axios.get('/data/user').then(({ data }) => {
-    setUser(data);
-    if (data.id_enemy === null) {
-      setTurn(true);
-    } else {
-      setTurn(data.id > data.id_enemy);
-    }
-  }), []);
+  useEffect(() => axios.get('/data/user')
+    .then(({ data }) => {
+      setUser(data);
+      if (data.id_enemy === null) {
+        setTurn(true);
+      } else {
+        setTurn(data.id > data.id_enemy);
+      }
+    }).catch((err) => console.warn(err)), []);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (user) {
       if (handleEnd && turn) {
         let hp = enemyHP;
@@ -95,10 +116,12 @@ const GameEnv = ({
           yourSlots.map((val, i) => {
             if (val && val.turn === 0) {
               if (enemySlots[i]) {
-                if (val.point_attack && enemySlots[i].point_armor < val.point_attack) {
+                if (val.point_attack && enemySlots[i].point_armor < val.point_attack
+                  && val.point_health > 0) {
                   enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
                 }
-                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack) {
+                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack
+                  && enemySlots[i].point_health > 0) {
                   yourSlots[i].point_health
                   -= (enemySlots[i].point_attack - yourSlots[i].point_armor);
                 }
@@ -120,7 +143,7 @@ const GameEnv = ({
                     }
                   }
                 }
-                if (counter) {
+                if (counter && val.point_health > 0) {
                   hp -= val.point_attack;
                 }
               }
@@ -133,10 +156,11 @@ const GameEnv = ({
         socket.emit('HP', user.id_enemy, hp, null);
         setEnemyHP(hp);
         hp = HP;
-        enemySlots.map((val, i) => {
+        await enemySlots.map(async (val, i) => {
           if (val && val.turn === 0) {
             if (yourSlots[i]) {
-              if (val.point_attack && yourSlots[i].point_armor < val.point_attack) {
+              if (val.point_attack && yourSlots[i].point_armor < val.point_attack
+                && val.point_health > 0) {
                 yourSlots[i].point_health -= (val.point_attack - yourSlots[i].point_armor);
                 enemySlots[i].point_health
                 -= (yourSlots[i].point_attack - enemySlots[i].point_armor);
@@ -158,7 +182,7 @@ const GameEnv = ({
                   }
                 }
               }
-              if (counter) {
+              if (counter && val.point_health > 0) {
                 hp -= val.point_attack;
               }
             }
@@ -166,18 +190,26 @@ const GameEnv = ({
             enemySlots[i].turn = 0;
           }
           if (!val.point_health || val.point_health <= 0) {
-            enemySlots[i] = false;
+            setEnemySlots([...enemySlots]);
+            setTimeout(() => {
+              enemySlots[i] = false;
+            }, 1000);
           }
           if (!yourSlots[i].point_health || yourSlots[i].point_health <= 0) {
-            yourSlots[i] = false;
+            setYourSlots([...yourSlots]);
+            setTimeout(() => {
+              yourSlots[i] = false;
+            }, 1000);
           }
           return null;
         });
         socket.emit('placed', user.id_enemy, [...yourSlots], [...enemySlots]);
         socket.emit('HP', user.id_enemy, null, hp);
         setHP(hp);
-        setEnemySlots([...enemySlots]);
-        setYourSlots([...yourSlots]);
+        setTimeout(() => {
+          setEnemySlots([...enemySlots]);
+          setYourSlots([...yourSlots]);
+        }, 3000);
         setHandleEnd(false);
       }
     }
@@ -193,6 +225,7 @@ const GameEnv = ({
             HP={HP}
             enemyHP={enemyHP}
             done={done}
+            spellSlot={spellSlot}
           />
           {!done ? (
             <TwoDEnv
@@ -215,7 +248,7 @@ const GameEnv = ({
             />
           ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
         </div>
-      ) : <img src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" />}
+      ) : <div className={classes.loader}><img className={classes.loadImage} src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" /></div>}
     </div>
   );
 };

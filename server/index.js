@@ -91,6 +91,10 @@ io.on('connection', (socket) => {
     io.emit(`${enemy}`, array, card);
   });
 
+  socket.on('Spell', (spell, id) => {
+    io.emit(`${id}Spell`, spell);
+  });
+
   socket.on('Name', (name, id) => {
     io.emit(`${id}Name`, name);
   });
@@ -113,7 +117,7 @@ io.on('connection', (socket) => {
       .then(() => {
         io.emit(`${userId} Proceed`);
         io.emit(`${id} Proceed`);
-      });
+      }).catch((err) => console.warn(err));
   });
 
   socket.on('Queue', (id) => {
@@ -126,7 +130,7 @@ io.on('connection', (socket) => {
           io.emit(`${players}`);
           io.emit(`${id}`);
           players = null;
-        });
+        }).catch((err) => console.warn(err));
     }
   });
 

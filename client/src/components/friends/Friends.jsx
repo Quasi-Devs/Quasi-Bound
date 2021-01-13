@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@material-ui/core';
+import 'antd/dist/antd.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,6 +11,20 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     padding: '20px',
+  },
+  main: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'overflow',
+    columnCount: '3',
+  },
+  friend: {
+    margin: '10px',
+    padding: '10px',
+    width: '300px',
+    height: window.innerHeight * 0.75,
+    border: '3px solid blue',
+    backgroundColor: 'gray',
   },
 });
 
@@ -47,8 +62,8 @@ const Friends = ({ setFriendProfile, user }) => {
 
   return (
     <div>
-      <Card className="main">
-        <div className="friend">
+      <Card className={classes.main}>
+        <div className={classes.friend}>
           <div className={classes.userSearch}>
             <input placeholder="Search for users" value={input} onChange={(e) => setInput(e.target.value)} />
           </div>
@@ -90,7 +105,7 @@ const Friends = ({ setFriendProfile, user }) => {
             return null;
           }) : null}
         </div>
-        <div className="following">
+        <div className={classes.friend}>
           <h1>Players in your area</h1>
           {search.map((profile, i) => {
             if (profile.id !== user.id && !friends.includes(profile.id)
@@ -131,7 +146,7 @@ const Friends = ({ setFriendProfile, user }) => {
             return null;
           })}
         </div>
-        <div className="following">
+        <div className={classes.friend}>
           <h1>Following</h1>
           {
             search.map((profile, i) => {
