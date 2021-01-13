@@ -21,6 +21,7 @@
     border: 3px solid black;
     height: 120px;
     width: 60px;
+    overflow: hidden;
 }
 
 .card_title {
@@ -54,7 +55,7 @@
     /* border: 3px solid blue; */
     font-size: 12px;
     position: relative;
-    bottom: 20%;
+    bottom: 10%;
     left: 5%
 }
 
@@ -92,7 +93,7 @@
 
 .hover_img {
     height: 200px;
-    width: 240px;
+    width: 233px;
 }
 
 .card_background {
@@ -135,8 +136,11 @@
 }
 
 .hover_stats {
-    font-weight: bolder;
-    font-size: 18px;
+    font-size: 15px;
+}
+
+.hover_lore {
+  font-size: 12px;
 }
 
 .placements {
@@ -178,8 +182,19 @@
     font-size: 12px;
 }
 
+.cardpos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.playcard {
+  position: absolute;
+  right: 10%;
+  top: -10%;
+}
+
 .discard {
-    position: fixed;
+    position: absolute;
     width: 8%;
     bottom: 10%;
 }
@@ -190,7 +205,9 @@
 }
 
 .todo {
-    border: 2px solid red
+    border: 2px solid red;
+    position: absolute;
+    width: 8%;
 }
 
 .main {

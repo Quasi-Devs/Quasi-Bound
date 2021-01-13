@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { io } from 'socket.io-client';
+import 'antd/dist/antd.css';
+import { Button } from 'antd';
 import Card from '../../Card/Card';
 import './2denv.css';
 
@@ -178,14 +180,14 @@ const TwoDEnv = ({
             {cardInHand.map((val, i) => <Card i={i} setCardIndex={setCardIndex} setTaken={setTaken} resourceCount={resourceCount} setClick={setClick} info={val} key={`${String(i)}`} />)}
           </div>
           <div className="buttonPos">
-            <button type="submit" onClick={() => setHP(0)}>Surrender</button>
-            <button type="submit" onClick={() => handleResource(count + 1, true)}>End Turn</button>
+            <Button type="submit" block onClick={() => setHP(0)}>Surrender</Button>
+            <Button type="submit" block onClick={() => handleResource(count + 1, true)}>End Turn</Button>
           </div>
         </div>
       ) : (
         <div>
           <h1>ENEMY TURN</h1>
-          <button type="submit" onClick={() => setHP(0)}>Surrender</button>
+          <Button type="submit" block onClick={() => setHP(0)}>Surrender</Button>
         </div>
       )}
     </div>
