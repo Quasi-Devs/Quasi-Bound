@@ -93,7 +93,7 @@ const App = () => {
             <Profile user={user} setUser={setUser} />
           </Route>
           <Route path="/deck">
-            <Deck user={user} />
+            <Deck user={user} setUser={setUser} />
           </Route>
           <Route path="/playhub">
             <PlayHub user={user} />

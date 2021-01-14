@@ -11,7 +11,7 @@ import CreateCard from './CreateCard';
 import Search from './Search';
 import MyDecks from './MyDecks';
 
-const Deck = ({ user }) => {
+const Deck = ({ user, setUser }) => {
   const [loaded, setLoaded] = useState(false);
   const [allCardsInDb, setAllCardsInDb] = useState([]);
   const [gotDbCards, setGotDbCards] = useState(false);
@@ -100,12 +100,15 @@ const Deck = ({ user }) => {
       <Route path="/deck/myDecks">
         <MyDecks
           user={user}
+          setUser={setUser}
           displayMode={displayMode}
           setDisplayMode={setDisplayMode}
           decks={userDecks}
           setDecks={setUserDecks}
           allDeckCards={allDeckCards}
+          setAllDeckCards={setAllDeckCards}
           loaded={loaded}
+          sortCards={sortCards}
         />
       </Route>
       <Route path="/deck/createCard">
@@ -132,6 +135,7 @@ const Deck = ({ user }) => {
 
 Deck.propTypes = {
   user: PropTypes.shape().isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default Deck;

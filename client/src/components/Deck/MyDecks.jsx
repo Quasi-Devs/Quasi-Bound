@@ -8,7 +8,8 @@ import Card from './Card';
 import './myDecks.css';
 
 const MyDecks = ({
-  user, displayMode, setDisplayMode, decks, allDeckCards, loaded,
+  user, setUser, displayMode, setDisplayMode, decks, setDecks,
+  allDeckCards, setAllDeckCards, loaded, sortCards,
 }) => {
   const [displayDecks, setDisplayDecks] = useState(decks);
   const [deckCards, setDeckCards] = useState();
@@ -44,11 +45,42 @@ const MyDecks = ({
   };
 
   const getDeckCards = (deck) => {
+    // const cards = allDeckCards[deck.id];
+    // setDeckCards(cards);
+    // const list = cards.map((card) => card.title);
+    // setCardsList(list);
+    setDisplayDecks([deck]);
     const cards = allDeckCards[deck.id];
+    if (cardToRemove.id) {
+      for (let i = 0; i < cards.length; i += 1) {
+        if (cards[i].id === cardToRemove.id) {
+          cards.splice(i, 1);
+        }
+      }
+    }
+    cards.sort(sortCards);
+    const newDeckCardList = {};
+    const newDeckList = [];
+    Object.keys(allDeckCards).forEach((deckId) => {
+      if (deckId === deck.id) {
+        newDeckCardList[deckId] = cards;
+      } else {
+        newDeckCardList[deckId] = allDeckCards[deckId];
+      }
+    });
+    setAllDeckCards(newDeckCardList);
     setDeckCards(cards);
+    decks.forEach((d) => {
+      if (d.id === deck.id) {
+        newDeckList.push({ id: d.id, count_card: cards.length, title: d.title });
+        setDisplayDecks([{ id: d.id, count_card: cards.length, title: d.title }]);
+      } else {
+        newDeckList.push(d);
+      }
+    });
+    setDecks(newDeckList);
     const list = cards.map((card) => card.title);
     setCardsList(list);
-    setDisplayDecks([deck]);
   };
 
   const editDeck = (e) => {
@@ -81,13 +113,13 @@ const MyDecks = ({
     axios.delete('/data/deckCard', {
       data: {
         cardId: cardToRemove.id,
-        deckId: decks[0].id,
-        cardCount: decks[0].count_card,
+        deckId: displayDecks[0].id,
+        cardCount: displayDecks[0].count_card,
       },
     })
       .then(() => {
         cancelRemove();
-        getDeckCards(decks[0]);
+        getDeckCards(displayDecks[0]);
       })
       .catch((err) => console.warn(err));
   };
@@ -101,12 +133,23 @@ const MyDecks = ({
     const card = JSON.parse(element.dataset.card);
     setButtonPosition(element.offsetTop - 302);
     setCardToRemove(card);
-    getDeckCards(decks[0]);
+    // getDeckCards(displayDecks[0]);
   };
 
   const setDefault = () => {
-    axios.put('/data/defaultDeck', { userId: user.id, deckId: decks[0].id })
-      .then(() => setDefaultDeck(decks[0].title))
+    axios.put('/data/defaultDeck', { userId: user.id, deckId: displayDecks[0].id })
+      .then(() => setDefaultDeck(displayDecks[0].title))
+      .then(() => {
+        const updateUser = {};
+        Object.keys(user).forEach((key) => {
+          if (key === 'default_deck') {
+            updateUser.default_deck = displayDecks[0].id;
+          } else {
+            updateUser[key] = user[key];
+          }
+        });
+        setUser(updateUser);
+      })
       .catch((err) => console.warn(err));
   };
 
@@ -121,7 +164,7 @@ const MyDecks = ({
         });
       } else {
         const [myDeck] = decks.filter((deck) => `${deck.id}` === displayMode);
-        getDeckCards(myDeck);
+        setDeckCards(allDeckCards[myDeck.id]);
       }
     }
   }, [user, decks, trigger]);
@@ -189,11 +232,15 @@ const MyDecks = ({
 
 MyDecks.propTypes = {
   user: PropTypes.shape().isRequired,
+  setUser: PropTypes.func.isRequired,
   setDisplayMode: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,
   decks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  setDecks: PropTypes.func.isRequired,
   allDeckCards: PropTypes.PropTypes.shape().isRequired,
+  setAllDeckCards: PropTypes.func.isRequired,
   loaded: PropTypes.bool.isRequired,
+  sortCards: PropTypes.func.isRequired,
 };
 
 export default MyDecks;
