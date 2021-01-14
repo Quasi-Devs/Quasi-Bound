@@ -33,23 +33,22 @@ const useStyles = makeStyles({
 });
 
 const App = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [nav, setNav] = useState(true);
   const [invitee, setInvitee] = useState('');
   const [enemyId, setEnemyId] = useState();
   const [open, setOpen] = useState(false);
   const [friendProfile, setFriendProfile] = useState({});
   const classes = useStyles();
-  if (user) {
-    socket.on(`${user.id} Accept?`, (id, name) => {
-      setEnemyId(id);
-      setOpen(true);
-      setInvitee(name);
-    });
-    socket.on(`${user.id} Proceed`, () => {
-      window.location.href = '/game';
-    });
-  }
+
+  socket.on(`${user.id} Accept?`, (id, name) => {
+    setEnemyId(id);
+    setOpen(true);
+    setInvitee(name);
+  });
+  socket.on(`${user.id} Proceed`, () => {
+    window.location.href = '/game';
+  });
 
   useEffect(() => {
     axios.get('/data/user')
