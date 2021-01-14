@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -79,9 +79,14 @@ const Search = ({ user, cards }) => {
         {buttonVisible
           ? (
             <div className={classes.saveButton}>
-              <button onClick={saveCard} type="button">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveCard}
+                type="button"
+              >
                 {`Save ${cardToSave.title}`}
-              </button>
+              </Button>
               {savedMessage
                 ? <span>{`Saved ${cardToSave.title}`}</span>
                 : null}

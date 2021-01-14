@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '@material-ui/core';
+import { Card, Button } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -108,14 +108,23 @@ const Profile = ({ user, setUser }) => {
             <Card>
               <h1 className={classes.descriptionContainer}>
                 About:
-                <button type="submit" onClick={() => { isEditing(true); }}>Edit</button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  onClick={() => { isEditing(true); }}
+                >
+                  Edit
+                </Button>
               </h1>
               <h4 className={classes.description}>
                 {!editing ? user.description
                   : (
                     <div>
                       <input type="text" value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
-                      <button
+                      <Button
+                        variant="contained"
+                        color="primary"
                         type="submit"
                         onClick={async () => {
                           try {
@@ -128,7 +137,7 @@ const Profile = ({ user, setUser }) => {
                         }}
                       >
                         Save
-                      </button>
+                      </Button>
                     </div>
                   )}
               </h4>

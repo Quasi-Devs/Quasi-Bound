@@ -93,7 +93,14 @@ const CreateCard = () => {
                 </div>
               </Card>
             </Card>
-            <Button onClick={createCard} className={classes.button}>Create Card</Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={createCard}
+              className={classes.button}
+            >
+              Create Card
+            </Button>
           </div>
         )
           : (

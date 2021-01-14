@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -100,9 +100,14 @@ const CardsDisplay = ({
     if (buttonVisible) {
       return (
         <div className={classes.addButton}>
-          <button onClick={addCard} type="button">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addCard}
+            type="button"
+          >
             {`Add ${cardToAdd.title}`}
-          </button>
+          </Button>
           {addedMessage
             ? <span>{`Added ${cardToAdd.title}`}</span>
             : null}
@@ -147,8 +152,14 @@ const CardsDisplay = ({
         ? (
           <div>
             <div id="buttonsContainer">
-              {/* <button type="button" onClick={addCards}>Add Cards</button> */}
-              <button type="button" onClick={quitEdit}>Quit</button>
+              <Button
+                variant="contained"
+                color="primary"
+                type="button"
+                onClick={quitEdit}
+              >
+                Quit
+              </Button>
             </div>
           </div>
         ) : null}
