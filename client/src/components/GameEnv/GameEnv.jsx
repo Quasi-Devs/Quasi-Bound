@@ -4,6 +4,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
@@ -209,6 +210,7 @@ const GameEnv = ({
         setTimeout(() => {
           setEnemySlots([...enemySlots]);
           setYourSlots([...yourSlots]);
+          socket.emit('placed', user.id_enemy, [...yourSlots], [...enemySlots]);
         }, 3000);
         setHandleEnd(false);
       }
@@ -246,7 +248,17 @@ const GameEnv = ({
               HP={HP}
               setHP={setHP}
             />
-          ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
+          ) : (
+            <a href="/home">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
+                Return To Menu
+              </Button>
+            </a>
+          )}
         </div>
       ) : <div className={classes.loader}><img className={classes.loadImage} src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" /></div>}
     </div>

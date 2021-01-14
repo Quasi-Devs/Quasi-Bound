@@ -5,6 +5,7 @@ import 'antd/dist/antd.css';
 import { Button } from 'antd';
 import Card from '../../Card/Card';
 import './2denv.css';
+import EnemySlots from './enemySlots';
 
 const socket = io();
 
@@ -107,6 +108,9 @@ const TwoDEnv = ({
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">
+            {enemySlots.map((val, i) => (
+              <EnemySlots key={`${String(i)}`} val={val} />
+            ))}
             {slots.map((val, i) => (
               <div
                 aria-hidden="true"

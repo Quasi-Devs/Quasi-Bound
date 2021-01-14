@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-// import { Container, Link, Button } from '@material-ui/core';
-// import { makeStyles } from '@material-ui/styles';
 
 import DeckHeader from './DeckHeader';
 import CardsDisplay from './CardsDisplay';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card } from '@material-ui/core';
+import { Card, Button } from '@material-ui/core';
 import 'antd/dist/antd.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -75,7 +75,9 @@ const Friends = ({ setFriendProfile, user }) => {
                     ? (
                       <div>
                         <h1>{`${profile.name_user} #${profile.id}`}</h1>
-                        <button
+                        <Button
+                          variant="contained"
+                          color="primary"
                           type="submit"
                           onClick={() => {
                             setFriendProfile(profile);
@@ -83,8 +85,10 @@ const Friends = ({ setFriendProfile, user }) => {
                           }}
                         >
                           View Profile
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
                           type="submit"
                           onClick={async () => {
                             try {
@@ -96,7 +100,7 @@ const Friends = ({ setFriendProfile, user }) => {
                           }}
                         >
                           follow
-                        </button>
+                        </Button>
                       </div>
                     ) : null}
                 </div>
@@ -116,7 +120,9 @@ const Friends = ({ setFriendProfile, user }) => {
                     ? (
                       <div>
                         <h1>{`${profile.name_user} #${profile.id}`}</h1>
-                        <button
+                        <Button
+                          variant="contained"
+                          color="primary"
                           type="submit"
                           onClick={() => {
                             setFriendProfile(profile);
@@ -124,8 +130,10 @@ const Friends = ({ setFriendProfile, user }) => {
                           }}
                         >
                           View Profile
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
                           type="submit"
                           onClick={async () => {
                             try {
@@ -137,7 +145,7 @@ const Friends = ({ setFriendProfile, user }) => {
                           }}
                         >
                           follow
-                        </button>
+                        </Button>
                       </div>
                     ) : null}
                 </div>
@@ -154,7 +162,9 @@ const Friends = ({ setFriendProfile, user }) => {
                 return (
                   <div key={String(i)}>
                     <h1>{`${profile.name_user} #${profile.id}`}</h1>
-                    <button
+                    <Button
+                      variant="contained"
+                      color="primary"
                       type="submit"
                       onClick={() => {
                         setFriendProfile(profile);
@@ -162,8 +172,10 @@ const Friends = ({ setFriendProfile, user }) => {
                       }}
                     >
                       View Profile
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
                       type="submit"
                       onClick={async () => {
                         try {
@@ -175,7 +187,7 @@ const Friends = ({ setFriendProfile, user }) => {
                       }}
                     >
                       Unfollow
-                    </button>
+                    </Button>
                   </div>
                 );
               }

@@ -48,6 +48,8 @@ const Card = ({
       </div>
       {hover ? (
         <button
+          variant="contained"
+          color="primary"
           onClick={() => {
             if (resourceCount >= info.point_resource) {
               setTaken(info.point_resource);

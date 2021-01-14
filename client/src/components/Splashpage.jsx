@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
   cardContainer: {
-    padding: '5%',
+    padding: '2%',
   },
   cardHeader: {
     fontFamily: 'sans-serif',
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     backgroundImage: 'url(https://c8.alamy.com/comp/T9BXN2/cards-of-game-magic-the-gathering-magic-can-be-played-by-two-or-more-players-in-various-rule-formats-T9BXN2.jpg)',
     opacity: '70%',
     width: '100%',
-    height: '400px',
+    height: window.innerHeight * 0.7,
     objectFit: 'cover',
   },
   descriptionContainer: {

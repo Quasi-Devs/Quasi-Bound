@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './playhub.css';
 import { Redirect } from 'react-router-dom';
-import { Modal, Snackbar } from '@material-ui/core';
+import { Modal, Snackbar, Button } from '@material-ui/core';
 import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
 import { Alert } from '@material-ui/lab';
@@ -64,7 +64,9 @@ const PlayHub = ({ user }) => {
       <div className="find">
         <h1 className="header">{`left ${text}`}</h1>
         <h1>Img slot</h1>
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           type="submit"
           className="button"
           onClick={() => {
@@ -77,8 +79,10 @@ const PlayHub = ({ user }) => {
           }}
         >
           Finding A Match Against Player
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
           type="submit"
           onClick={() => {
             if (!user.id) {
@@ -91,11 +95,13 @@ const PlayHub = ({ user }) => {
           }}
         >
           Start A Match Against Bot
-        </button>
+        </Button>
         <Modal open={Open}>
           <div className={classes.modalStyle}>
             <h1>Finding A Match</h1>
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               type="submit"
               onClick={() => {
                 handleModal();
@@ -103,7 +109,7 @@ const PlayHub = ({ user }) => {
               }}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </Modal>
       </div>
@@ -117,7 +123,9 @@ const PlayHub = ({ user }) => {
           <input placeholder="#(replace with user ID)" value={input} onChange={(e) => setInput(e.target.value)} />
         </div>
         <div className={classes.userSearchButton}>
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             type="submit"
             onClick={() => {
               if (!user.id) {
@@ -129,19 +137,21 @@ const PlayHub = ({ user }) => {
             }}
           >
             Invite User
-          </button>
+          </Button>
         </div>
         <Modal open={Invite}>
           <div className={classes.modalStyle}>
             <h1>Waiting for player</h1>
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               type="submit"
               onClick={() => {
                 handleInvite();
               }}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </Modal>
       </div>
