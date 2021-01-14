@@ -23,6 +23,34 @@ const Deck = ({ user }) => {
   const [gotDeckCards, setGotDeckCards] = useState(false);
   const [displayMode, setDisplayMode] = useState('browse');
 
+  const sortCards = (a, b) => {
+    if (a.point_resource > b.point_resource) {
+      return 1;
+    }
+    if (a.point_resource < b.point_resource) {
+      return -1;
+    }
+    if (a.point_health > b.point_health) {
+      return 1;
+    }
+    if (a.point_health < b.point_health) {
+      return -1;
+    }
+    if (a.point_attack > b.point_attack) {
+      return 1;
+    }
+    if (a.point_attack < b.point_attack) {
+      return -1;
+    }
+    if (a.point_armor > b.point_armor) {
+      return 1;
+    }
+    if (a.point_armor < b.point_armor) {
+      return -1;
+    }
+    return 0;
+  };
+
   useEffect(() => {
     if (user && gotDbCards && gotUserDecks && gotUserCards && gotDeckCards) {
       setLoaded(true);
@@ -45,33 +73,7 @@ const Deck = ({ user }) => {
           const deckCards = {};
           deckData.forEach((deck) => {
             const deckId = deck.config.url.slice(16);
-            deckCards[deckId] = deck.data.sort((a, b) => {
-              if (a.point_resource > b.point_resource) {
-                return 1;
-              }
-              if (a.point_resource < b.point_resource) {
-                return -1;
-              }
-              if (a.point_health > b.point_health) {
-                return 1;
-              }
-              if (a.point_health < b.point_health) {
-                return -1;
-              }
-              if (a.point_attack > b.point_attack) {
-                return 1;
-              }
-              if (a.point_attack < b.point_attack) {
-                return -1;
-              }
-              if (a.point_armor > b.point_armor) {
-                return 1;
-              }
-              if (a.point_armor < b.point_armor) {
-                return -1;
-              }
-              return 0;
-            });
+            deckCards[deckId] = deck.data.sort(sortCards);
           });
           setAllDeckCards(deckCards);
         })
@@ -118,7 +120,10 @@ const Deck = ({ user }) => {
           displayMode={displayMode}
           myCards={userCards}
           myDecks={userDecks}
+          setMyDecks={setUserDecks}
           allDeckCards={allDeckCards}
+          setAllDeckCards={setAllDeckCards}
+          sortCards={sortCards}
         />
       </Route>
     </BrowserRouter>
