@@ -209,6 +209,7 @@ const GameEnv = ({
         setTimeout(() => {
           setEnemySlots([...enemySlots]);
           setYourSlots([...yourSlots]);
+          socket.emit('placed', user.id_enemy, [...yourSlots], [...enemySlots]);
         }, 3000);
         setHandleEnd(false);
       }

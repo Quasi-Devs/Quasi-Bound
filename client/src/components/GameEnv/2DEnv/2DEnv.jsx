@@ -107,6 +107,15 @@ const TwoDEnv = ({
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">
+            {enemySlots.map((val, i) => (
+              <div
+                aria-hidden="true"
+                className={val ? 'enemyPlaced' : 'enemySlots'}
+                key={`${String(i)}`}
+              >
+                {}
+              </div>
+            ))}
             {slots.map((val, i) => (
               <div
                 aria-hidden="true"
