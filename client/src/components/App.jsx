@@ -47,10 +47,12 @@ const App = () => {
   });
 
   useEffect(() => {
+    axios.get('/data/user')
+      .then(({ data }) => setUser(data))
+      .catch((err) => console.warn(err));
     axios.get('https://api.ipify.org')
       .then(({ data }) => axios.get(`http://api.ipstack.com/${data}?access_key=${key}`))
       .then(({ data }) => axios.get(`/data/area/${data.city}`))
-      .then(({ data }) => setUser(data))
       .catch((err) => console.warn(err));
   }, []);
 
@@ -91,7 +93,7 @@ const App = () => {
             <Profile user={user} setUser={setUser} />
           </Route>
           <Route path="/deck">
-            <Deck user={user} />
+            <Deck user={user} setUser={setUser} />
           </Route>
           <Route path="/playhub">
             <PlayHub user={user} />
