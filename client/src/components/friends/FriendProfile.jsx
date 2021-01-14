@@ -108,7 +108,7 @@ const friendProfile = ({ friend }) => {
 };
 
 friendProfile.propTypes = {
-  friend: PropTypes.objectOf.isRequired,
+  friend: PropTypes.shape().isRequired,
 };
 
 export default friendProfile;
