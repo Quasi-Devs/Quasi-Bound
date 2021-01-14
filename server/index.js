@@ -5,16 +5,18 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const http = require('http');
-const socketio = require('socket.io');
 const cloudinary = require('cloudinary');
 const path = require('path');
 const multer = require('multer');
-const User = require('./db/models/user');
 require('./auth/googleStrategy');
 
 const app = express();
-const sever = http.createServer(app);
-const io = socketio(sever, { wsEngine: 'ws' });
+app.set('view engine', 'html');
+const server = http.createServer(app);
+const socketio = require('socket.io');
+const User = require('./db/models/user');
+const uploadImage = require('../config/gcloud_storage.config');
+
 const PORT = process.env.PORT || 8080;
 const dirPath = path.join(__dirname, '..', 'client', 'dist');
 const corsOptions = {
@@ -45,11 +47,9 @@ app.post('/upload', (req, res) => {
   if (req.file) {
     const From = Buffer.from;
     const b64 = new From(req.file.buffer).toString('base64');
-    cloudinary.uploader.upload(`data:${req.file.mimetype};base64,${b64}`)
-      .then((result) => {
-        const img = result.url;
-        res.status(201).send({ image: img, buffer: `data:${req.file.mimetype};base64,${b64}`, file: req.file });
-      }).catch(() => res.sendStatus(500));
+    uploadImage(req.file).then((result) => {
+      res.status(201).send({ image: result, buffer: `data:${req.file.mimetype};base64,${b64}`, file: req.file });
+    }).catch(() => res.sendStatus(500));
   }
 });
 
@@ -61,9 +61,6 @@ const googleRoute = require('./routes/googleAuth');
 app.use(
   session({
     secret: process.env.DISCORD_CLIENT_SECRET,
-    cookie: {
-      maxAge: 60000 * 60 * 24,
-    },
     saveUninitialized: false,
     resave: true,
   }),
@@ -81,9 +78,21 @@ app.get('*', (req, res) => {
 
 let players = null;
 
+if (module === require.main) {
+  server.listen(PORT, () => {
+    console.info(`http://localhost:${PORT}`);
+  });
+}
+
+const io = socketio(server);
+
 io.on('connection', (socket) => {
   socket.on('placed', (enemy, array, card) => {
     io.emit(`${enemy}`, array, card);
+  });
+
+  socket.on('Spell', (spell, id) => {
+    io.emit(`${id}Spell`, spell);
   });
 
   socket.on('Name', (name, id) => {
@@ -108,7 +117,7 @@ io.on('connection', (socket) => {
       .then(() => {
         io.emit(`${userId} Proceed`);
         io.emit(`${id} Proceed`);
-      });
+      }).catch((err) => console.warn(err));
   });
 
   socket.on('Queue', (id) => {
@@ -121,15 +130,11 @@ io.on('connection', (socket) => {
           io.emit(`${players}`);
           io.emit(`${id}`);
           players = null;
-        });
+        }).catch((err) => console.warn(err));
     }
   });
 
   socket.on('DeQueue', () => {
     players = null;
   });
-});
-
-sever.listen(PORT, () => {
-  console.info(`http://localhost:${PORT}`);
 });

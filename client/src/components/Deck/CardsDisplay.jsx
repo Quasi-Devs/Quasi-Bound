@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import Card from './Card';
+import Card from '../Card/Card';
 
 const CardsDisplay = ({
   user, displayMode, myCards, myDecks, setMyDecks, allDeckCards, setAllDeckCards, sortCards,
@@ -140,7 +140,7 @@ const CardsDisplay = ({
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-        {myCards.map((card, i) => <Card key={String(i)} card={card} onClick={clickCard} />)}
+        {myCards.map((card, i) => <Card key={String(i)} info={card} onClick={clickCard} />)}
       </Grid>
       {displayMode !== 'browse' ? renderButton() : null}
       {displayMode !== 'browse'

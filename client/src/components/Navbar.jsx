@@ -60,7 +60,7 @@ const Navbar = ({ user }) => {
         >
           Play
         </Button>
-        {!user ? (
+        {!user.id ? (
           <Button
             variant="contained"
             color="primary"
@@ -81,7 +81,9 @@ const Navbar = ({ user }) => {
 };
 
 Navbar.propTypes = {
-  user: PropTypes.shape().isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
 };
 
 export default Navbar;

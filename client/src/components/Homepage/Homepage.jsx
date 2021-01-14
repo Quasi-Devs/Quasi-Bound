@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import './Homepage.css';
 import TranslateIcon from '@material-ui/icons/Translate';
 import clsx from 'clsx';
+import LeaderBoard from './LeaderBoard';
 
 const useStyles = makeStyles({
   mainDiv: {
@@ -61,7 +62,7 @@ const Homepage = ({ user, setNav }) => {
   const { newuser } = query.parse(window.location.search);
   useEffect(() => setNav(true), []);
   let greeting;
-  if (user) {
+  if (user.id) {
     greeting = `Welcome, ${user.name_user}`;
   }
   return (
@@ -84,16 +85,17 @@ const Homepage = ({ user, setNav }) => {
           sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
         />
         <Box borderLeft={1} />
-        <div className={clsx(classes.rightDiv)}>
-          <h1 className={clsx(classes.header)}>My Stats</h1>
-        </div>
+        <LeaderBoard user={user} />
       </div>
     </div>
   );
 };
 
 Homepage.propTypes = {
-  user: PropTypes.shape().isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+  }).isRequired,
   setNav: PropTypes.func.isRequired,
 };
 

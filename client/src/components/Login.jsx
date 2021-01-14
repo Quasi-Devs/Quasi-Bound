@@ -10,6 +10,7 @@ const Login = () => (
         type="button"
         // className={classes.profileButton}
       >
+        <img src="https://img.icons8.com/fluent/48/000000/discord-new-logo.png" alt="" />
         Discord Login
       </Button>
     </a>
@@ -20,6 +21,7 @@ const Login = () => (
         type="button"
         // className={classes.profileButton}
       >
+        <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="" />
         Google Login
       </Button>
     </a>

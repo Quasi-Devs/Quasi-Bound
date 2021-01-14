@@ -76,7 +76,7 @@ const Profile = ({ user, setUser }) => {
   const [newDescription, setNewDescription] = useState('');
   const [update, setUpdate] = useState(false);
 
-  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)), [update]);
+  useEffect(() => axios.get('/data/user').then(({ data }) => setUser(data)).catch((err) => console.warn(err)), [update]);
 
   useEffect(() => {
     setNewDescription(user.description);
@@ -141,7 +141,16 @@ const Profile = ({ user, setUser }) => {
 };
 
 Profile.propTypes = {
-  user: PropTypes.shape().isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+    description: PropTypes.string,
+    total_win: PropTypes.number,
+    total_games: PropTypes.number,
+    count_rating: PropTypes.number,
+    thumbnail: PropTypes.string,
+  }).isRequired,
   setUser: PropTypes.func.isRequired,
 };
 

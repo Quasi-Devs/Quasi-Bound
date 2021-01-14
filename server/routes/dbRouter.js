@@ -28,6 +28,17 @@ dbRouter.get('/user', async (req, res) => {
   }
 });
 
+dbRouter.get('/area/:city', async (req, res) => {
+  const data = await User.getUser(req.cookies.QuasiBoundId).catch((err) => console.warn(err));
+  const info = await User.updateArea(data.rows[0].id, req.params.city)
+    .catch((err) => console.warn(err));
+  if (data.rows[0]) {
+    res.json(data.rows[0]);
+  } else {
+    res.json(info);
+  }
+});
+
 dbRouter.get('/allUser', async (req, res) => {
   const info = await User.getAllUser();
   res.json(info.rows);
@@ -85,13 +96,21 @@ dbRouter.put('/defaultDeck', async (req, res) => {
   res.sendStatus(200);
 });
 
-dbRouter.get('/wins/:userId', async (req, res) => {
-  const cards = await User.getCards(req.params.userId).catch((err) => console.warn(err));
+dbRouter.get('/wins/:userId/:num', async (req, res) => {
+  const cards = await User.updateWins(req.params.userId, req.params.num)
+    .catch((err) => console.warn(err));
   res.status(200).send(cards);
 });
 
-dbRouter.get('/games/:userId', async (req, res) => {
-  const cards = await User.getCards(req.params.userId).catch((err) => console.warn(err));
+dbRouter.get('/games/:userId/:num', async (req, res) => {
+  const cards = await User.updateGames(req.params.userId, req.params.num)
+    .catch((err) => console.warn(err));
+  res.status(200).send(cards);
+});
+
+dbRouter.get('/elo/:userId/:num', async (req, res) => {
+  const cards = await User.updateELO(req.params.userId, req.params.num)
+    .catch((err) => console.warn(err));
   res.status(200).send(cards);
 });
 

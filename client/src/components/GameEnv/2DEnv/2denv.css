@@ -9,7 +9,6 @@
 .Resourceholder {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 1%;
     width: 10%;
     height: 10%;
     /* border: 3px solid blue; */
@@ -21,6 +20,7 @@
     border: 3px solid black;
     height: 120px;
     width: 60px;
+    overflow: hidden;
 }
 
 .card_title {
@@ -45,21 +45,20 @@
     position: relative;
     height: 50px;
     width: 30px;
-    bottom: 20%
+    bottom: 0%;
 }
 
 .card_stats {
     display: table-column;
-    width: 20px;
-    /* border: 3px solid blue; */
+    width: 22px;
     font-size: 12px;
     position: relative;
-    bottom: 20%;
-    left: 5%
+    bottom: 0%;
+    left: -5%
 }
 
 .cardClass {
-    position: absolute;
+    position: relative;
     bottom: 10%;
 }
 
@@ -75,9 +74,9 @@
 .cards {
     display: flex;
     flex-wrap: wrap;
-    width: 50%;
-    margin-left: 15%;
-    margin-right: 5%;
+    justify-content: center;
+    width: 70%;
+    margin-left: 10%;
     /* border: 3px solid blue; */
 }
 
@@ -92,29 +91,67 @@
 
 .hover_img {
     height: 200px;
-    width: 240px;
+    width: 233px;
+}
+
+.card_background {
+    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/000/093/695/small/marble-background-vector.jpg');
 }
 
 .hover_title{
     font-weight: bolder;
     font-size: 18px;
+    background-color: white;
+    opacity: 90%;
+}
+
+.top_stats {
+    display: flex;
+    height: 30px;
+    align-content: space-between;
+    justify-content: center;
+    background-color: white;
+    opacity: 90%;
+}
+.is_character {
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    opacity: 90%;
+}
+.stat {
+    margin-left: 10px;
+    background-color: white;
+    opacity: 90%;
+    vertical-align: text-bottom;
 }
 
 .hover_resource {
     font-weight: bolder;
     font-size: 18px;
+    background-color: rgb(30, 30, 74);
+    color: white;
 }
 
 .hover_stats {
-    font-weight: bolder;
-    font-size: 18px;
+    font-size: 15px;
+    vertical-align: text-bottom;
+}
+
+.hover_lore {
+  font-size: 12px;
 }
 
 .placements {
     display: flex;
     flex-wrap: wrap;
-    position: fixed;
-    right: 25%;
+    position: absolute;
+    right: 15%;
+}
+
+.twodenv {
+    position: relative;
 }
 
 .slots {
@@ -145,21 +182,40 @@
     font-size: 12px;
 }
 
+.cardpos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.playcard {
+  position: absolute;
+  right: 10%;
+  top: -10%;
+}
+
 .discard {
-    display: flex;
-    flex-wrap: wrap;
+    position: relative;
+    width: 8%;
+    bottom: 10%;
+}
+
+.buttonPos {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+}
+
+.todo {
+    border: 2px solid red;
     position: absolute;
-    border: 3px solid black;
-    height: 120px;
-    left: 8.5%;
-    width: 60px;
+    width: 50%;
 }
 
 .main {
     display: flex;
     flex-wrap: wrap;
     margin-top: 1%;
-    width: 85%;
+    width: 100%;
     left: 10%;
     /* border: 5px solid #ac4f22; */
 }

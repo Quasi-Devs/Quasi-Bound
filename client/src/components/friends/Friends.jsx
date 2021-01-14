@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@material-ui/core';
+import 'antd/dist/antd.css';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -10,6 +11,20 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     padding: '20px',
+  },
+  main: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'overflow',
+    columnCount: '3',
+  },
+  friend: {
+    margin: '10px',
+    padding: '10px',
+    width: '300px',
+    height: window.innerHeight * 0.75,
+    border: '3px solid blue',
+    backgroundColor: 'gray',
   },
 });
 
@@ -47,15 +62,15 @@ const Friends = ({ setFriendProfile, user }) => {
 
   return (
     <div>
-      <Card className="main">
-        <div className="find">
+      <Card className={classes.main}>
+        <div className={classes.friend}>
           <div className={classes.userSearch}>
             <input placeholder="Search for users" value={input} onChange={(e) => setInput(e.target.value)} />
           </div>
-          {input ? search.map((profile) => {
+          {input ? search.map((profile, i) => {
             if (profile.id !== user.id && !friends.includes(profile.id)) {
               return (
-                <div>
+                <div key={String(i)}>
                   {(profile.name_user.toLowerCase().includes(input.toLowerCase()))
                     ? (
                       <div>
@@ -90,13 +105,54 @@ const Friends = ({ setFriendProfile, user }) => {
             return null;
           }) : null}
         </div>
-        <div className="create">
+        <div className={classes.friend}>
+          <h1>Players in your area</h1>
+          {search.map((profile, i) => {
+            if (profile.id !== user.id && !friends.includes(profile.id)
+            && user.area === profile.area) {
+              return (
+                <div key={String(i)}>
+                  {(profile.name_user.toLowerCase().includes(input.toLowerCase()))
+                    ? (
+                      <div>
+                        <h1>{`${profile.name_user} #${profile.id}`}</h1>
+                        <button
+                          type="submit"
+                          onClick={() => {
+                            setFriendProfile(profile);
+                            history.push('/friendProfile');
+                          }}
+                        >
+                          View Profile
+                        </button>
+                        <button
+                          type="submit"
+                          onClick={async () => {
+                            try {
+                              await axios.post('/data/friends', { userID: user.id, friendID: profile.id });
+                              setUpdate(!update);
+                            } catch (err) {
+                              console.error(err);
+                            }
+                          }}
+                        >
+                          follow
+                        </button>
+                      </div>
+                    ) : null}
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+        <div className={classes.friend}>
           <h1>Following</h1>
           {
-            search.map((profile) => {
+            search.map((profile, i) => {
               if (friends.includes(profile.id)) {
                 return (
-                  <div>
+                  <div key={String(i)}>
                     <h1>{`${profile.name_user} #${profile.id}`}</h1>
                     <button
                       type="submit"
@@ -134,7 +190,11 @@ const Friends = ({ setFriendProfile, user }) => {
 
 Friends.propTypes = {
   setFriendProfile: PropTypes.func.isRequired,
-  user: PropTypes.shape().isRequired,
+  user: PropTypes.shape({
+    name_user: PropTypes.string,
+    id: PropTypes.number,
+    area: PropTypes.string,
+  }).isRequired,
 };
 
 export default Friends;

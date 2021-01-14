@@ -43,16 +43,26 @@ const CreateCard = () => {
   const classes = useStyles();
   const [cardImage, setCardImage] = useState('');
   const [title, setTitle] = useState('');
+  const [Lore, setLore] = useState('');
   const [stats, setStats] = useState({});
 
   const createCard = async () => {
+    stats.description += ` (${Lore})`;
+    console.info(stats);
     await axios.post('/data/cards', stats);
   };
 
   return (
     <div className="createCard">
       <div className="uploader">
-        <Upload setCardImage={setCardImage} setTitle={setTitle} title={title} setStats={setStats} />
+        <Upload
+          setCardImage={setCardImage}
+          Lore={Lore}
+          setLore={setLore}
+          setTitle={setTitle}
+          title={title}
+          setStats={setStats}
+        />
       </div>
       <div>
         {Object.keys(stats).length ? (
@@ -79,7 +89,7 @@ const CreateCard = () => {
               <Card>
                 <div className={classes.cardDesc}>
                   <h5>{stats.isCharacter ? `character ${stats.size}` : 'ability'}</h5>
-                  <h4>{stats.description}</h4>
+                  <h4>{`${stats.description} ${Lore}`}</h4>
                 </div>
               </Card>
             </Card>
