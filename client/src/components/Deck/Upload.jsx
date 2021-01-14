@@ -3,6 +3,7 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import PropTypes from 'prop-types';
+import { Button } from '@material-ui/core';
 import ml5 from 'ml5';
 import axios from 'axios';
 import 'regenerator-runtime/runtime';
@@ -39,7 +40,14 @@ const Upload = ({
       {counter ? (
         <div>
           <h3>{counter}</h3>
-          <button type="submit" onClick={() => setCounter(false)}>I Understand</button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            onClick={() => setCounter(false)}
+          >
+            I Understand
+          </Button>
         </div>
       ) : null}
       <span className="title">Upload Files</span>
@@ -54,7 +62,15 @@ const Upload = ({
           />
           <input type="text" id="name" name="name" value={title} placeholder="Name of card" onChange={(e) => setTitle(e.target.value)} />
           <input type="text" id="name" name="name" value={Lore} placeholder="Lore of card (optional)" onChange={(e) => setLore(e.target.value)} />
-          <button type="submit" className="daakfsfabfk" onClick={uploadFile}>Upload</button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            className="daakfsfabfk"
+            onClick={uploadFile}
+          >
+            Upload
+          </Button>
         </div>
       </div>
     </div>

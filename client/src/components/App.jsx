@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { io } from 'socket.io-client';
 import { makeStyles } from '@material-ui/core/styles';
@@ -66,15 +66,24 @@ const App = () => {
       >
         <Alert severity="info">
           <h2>{`${invitee} has invited you. Join Game?`}</h2>
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             type="submit"
             onClick={() => {
               socket.emit('Accept', enemyId, user.id);
             }}
           >
             Accept
-          </button>
-          <button type="submit" onClick={() => setOpen(false)}>Decline</button>
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            onClick={() => setOpen(false)}
+          >
+            Decline
+          </Button>
         </Alert>
       </Snackbar>
       <BrowserRouter>

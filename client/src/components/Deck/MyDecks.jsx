@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -175,7 +175,14 @@ const MyDecks = ({
       {inputShow && (
         <input value={title} placeholder="Deck Title" onChange={(e) => setTitle(e.target.value)} />
       )}
-      <button type="button" onClick={createDeck}>Create Deck</button>
+      <Button
+        variant="contained"
+        color="primary"
+        type="button"
+        onClick={createDeck}
+      >
+        Create Deck
+      </Button>
       <h2>{`Default Deck: ${defaultDeck || 'none'}`}</h2>
       {cardsList.length > 0
         ? (
@@ -210,17 +217,52 @@ const MyDecks = ({
             {buttonVisible
               ? (
                 <div className={classes.removeButton}>
-                  <button type="button" onClick={removeCard}>{`Remove ${cardToRemove.title}`}</button>
-                  <button type="button" onClick={cancelRemove}>Cancel</button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={removeCard}
+                  >
+                    {`Remove ${cardToRemove.title}`}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={cancelRemove}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               ) : null}
             <div id="buttonsContainer">
               <div>
-                <button type="button" onClick={setDefault}>Set Deck as Default</button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={setDefault}
+                >
+                  Set Deck as Default
+                </Button>
               </div>
               <div>
-                <button type="button" onClick={addCards}>Add Cards</button>
-                <button type="button" onClick={quitEdit}>Done</button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={addCards}
+                >
+                  Add Cards
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={quitEdit}
+                >
+                  Done
+                </Button>
               </div>
             </div>
           </div>
