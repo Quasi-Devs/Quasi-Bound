@@ -58,7 +58,7 @@ const MyDecks = ({
     }
     const deck = JSON.parse(element.dataset.deck);
     getDeckCards(deck);
-    setDisplayMode(deck.id);
+    setDisplayMode(`${deck.id}`);
   };
 
   const quitEdit = () => {
@@ -111,7 +111,7 @@ const MyDecks = ({
   };
 
   useLayoutEffect(() => {
-    if (user && decks) {
+    if (user.id && decks) {
       if (displayMode === 'browse') {
         setDisplayDecks(decks);
         decks.forEach((deck) => {
@@ -120,7 +120,7 @@ const MyDecks = ({
           }
         });
       } else {
-        const [myDeck] = decks.filter((deck) => deck.id === displayMode);
+        const [myDeck] = decks.filter((deck) => `${deck.id}` === displayMode);
         getDeckCards(myDeck);
       }
     }
@@ -137,7 +137,7 @@ const MyDecks = ({
       {cardsList.length > 0
         ? (
           <div className="cardsList">
-            {cardsList.map((name) => <div>{name}</div>)}
+            {cardsList.map((name, i) => <div key={String(i)}>{name}</div>)}
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
@@ -156,7 +156,13 @@ const MyDecks = ({
         ? (
           <div className="deckCards">
             <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-              {deckCards.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
+              {deckCards.map((card, i) => (
+                <Card
+                  key={String(i)}
+                  card={card}
+                  onClick={showButton}
+                />
+              ))}
             </Grid>
             {buttonVisible
               ? (
@@ -185,8 +191,8 @@ MyDecks.propTypes = {
   user: PropTypes.shape().isRequired,
   setDisplayMode: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,
-  decks: PropTypes.arrayOf().isRequired,
-  allDeckCards: PropTypes.arrayOf().isRequired,
+  decks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  allDeckCards: PropTypes.PropTypes.shape().isRequired,
   loaded: PropTypes.bool.isRequired,
 };
 

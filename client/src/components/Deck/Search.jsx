@@ -95,7 +95,7 @@ const Search = ({ user, cards }) => {
 
 Search.propTypes = {
   user: PropTypes.shape().isRequired,
-  cards: PropTypes.arrayOf().isRequired,
+  cards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default Search;

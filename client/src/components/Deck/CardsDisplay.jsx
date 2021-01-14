@@ -134,11 +134,11 @@ const CardsDisplay = ({
       {cardsList.length > 0
         ? (
           <div className="cardsList">
-            {cardsList.map((name) => <div>{name}</div>)}
+            {cardsList.map((name, i) => <div key={String(i)}>{name}</div>)}
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-        {myCards.map((card) => <Card key={card} card={card} onClick={clickCard} />)}
+        {myCards.map((card, i) => <Card key={String(i)} card={card} onClick={clickCard} />)}
       </Grid>
       {displayMode !== 'browse' ? renderButton() : null}
       {displayMode !== 'browse'
@@ -156,9 +156,9 @@ const CardsDisplay = ({
 
 CardsDisplay.propTypes = {
   user: PropTypes.shape().isRequired,
-  displayMode: PropTypes.number.isRequired,
-  myCards: PropTypes.arrayOf().isRequired,
-  myDecks: PropTypes.arrayOf().isRequired,
+  displayMode: PropTypes.string.isRequired,
+  myCards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  myDecks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default CardsDisplay;

@@ -30,7 +30,7 @@ const Deck = ({ user }) => {
   }, [user, gotDbCards, gotUserDecks, gotUserCards, gotDeckCards]);
 
   useEffect(() => {
-    if (user) {
+    if (user.id) {
       axios.get(`/data/decks/${user.id}`)
         .then(({ data }) => {
           setUserDecks(data);

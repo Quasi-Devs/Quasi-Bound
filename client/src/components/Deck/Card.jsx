@@ -25,7 +25,7 @@ Card.propTypes = {
     point_attack: PropType.number,
     point_health: PropType.number,
     point_armor: PropType.number,
-    point_resource: PropType.string,
+    point_resource: PropType.number,
     is_character: PropType.bool,
     description: PropType.string,
   }).isRequired,
