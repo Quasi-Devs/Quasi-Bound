@@ -96,6 +96,8 @@ let abilityType = '';
 let totalPoints = 0;
 
 const setup = async (thumbnail, ml5, Prob, title) => {
+  description = '';
+  totalPoints = 0;
   const img = document.getElementById('image');
   await preload(ml5);
   /**

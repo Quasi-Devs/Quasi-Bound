@@ -20,3 +20,18 @@
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
+
+.cardResult {
+  display: flex;
+  align-items: center;
+}
+
+.images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading {
+  filter: invert(97%) sepia(1%) saturate(4748%) hue-rotate(182deg) brightness(87%) contrast(102%);
+}
