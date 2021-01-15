@@ -26,26 +26,28 @@ function DOMObject({
   const opacity = opaque;
   const currentpos = position[1] * 10;
   CSSFrame(({ mouse }) => {
-    if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
-      opacity[index] -= 2;
-      setOpaque({ ...opacity });
-    } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
-      opacity[index] = 100;
-      setOpaque({ ...opacity });
-    }
-    if (slot && slot.description.includes('Fly') && !clicked) {
-      ref.current.castShadow = true;
-      if (ref.current.position.y >= currentpos + 200) {
-        elevated = true;
+    if (slot.point_health !== undefined) {
+      if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
+        opacity[index] -= 2;
+        setOpaque({ ...opacity });
+      } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
+        opacity[index] = 100;
+        setOpaque({ ...opacity });
       }
-      if (ref.current.position.y >= currentpos) {
-        if (elevated) {
-          ref.current.position.y -= 1;
-          if (ref.current.position.y === currentpos + 100) {
-            elevated = false;
+      if (slot && slot.description.includes('Fly') && !clicked) {
+        ref.current.castShadow = true;
+        if (ref.current.position.y >= currentpos + 200) {
+          elevated = true;
+        }
+        if (ref.current.position.y >= currentpos) {
+          if (elevated) {
+            ref.current.position.y -= 1;
+            if (ref.current.position.y === currentpos + 100) {
+              elevated = false;
+            }
+          } else {
+            ref.current.position.y += 1;
           }
-        } else {
-          ref.current.position.y += 1;
         }
       }
     }
@@ -283,21 +285,6 @@ const ThreeDEnv = ({
               <div className="top_stats">
                 <div className="stats">
                   <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
-                  {
-                      ` ${spellSlot.point_attack || 0}`
-                      }
-                </div>
-                <div className="stat">
-                  <FavoriteTwoToneIcon />
-                  {
-                        ` ${spellSlot.point_health || 0}`
-                      }
-                </div>
-                <div className="stat">
-                  <SecurityTwoToneIcon />
-                  {
-                        ` ${spellSlot.point_armor || 0}`
-                      }
                 </div>
               </div>
               <div className="is_character">{spellSlot.is_character ? `Character - ${spellSlot.size}` : 'Spell' }</div>
