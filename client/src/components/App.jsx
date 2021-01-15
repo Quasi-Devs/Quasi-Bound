@@ -48,7 +48,13 @@ const App = () => {
 
   useEffect(() => {
     axios.get('/data/user')
-      .then(({ data }) => setUser(data))
+      .then(({ data }) => {
+        if (data === null) {
+          setUser({});
+        } else {
+          setUser(data);
+        }
+      })
       .catch((err) => console.warn(err));
     axios.get('https://api.ipify.org')
       .then(({ data }) => axios.get(`http://api.ipstack.com/${data}?access_key=${key}`))
