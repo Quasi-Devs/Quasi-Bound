@@ -92,20 +92,6 @@ const CreateCard = () => {
   return (
     <div className="createCard">
       {whatToRender()}
-      {/* <div>
-        {Object.keys(stats).length ? (
-          <div>
-            <Card info={stats} />
-            <Button onClick={createCard} className={classes.button}>Create Card</Button>
-          </div>
-        )
-          : (
-            <div>
-              <h1>{title}</h1>
-              {cardImage !== '' && <img src={cardImage} id="image" alt="" width="300" />}
-            </div>
-          )}
-      </div> */}
     </div>
   );
 };

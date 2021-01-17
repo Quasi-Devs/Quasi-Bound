@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import ml5 from 'ml5';
 import axios from 'axios';
 import 'regenerator-runtime/runtime';
+import { makeStyles } from '@material-ui/core/styles';
 
 import './upload.css';
 import 'filepond/dist/filepond.min.css';
@@ -19,15 +20,28 @@ const Upload = ({
   setCardImage, setTitle, title, setStats,
 }) => {
   const [files, setFiles] = useState([]);
-  const [error, setError] = useState(false);
   const [lore, setLore] = useState('');
+  const [error, setError] = useState(false);
+  const [titleError, setTitleError] = useState(false);
+  const [loreError, setLoreError] = useState(false);
+  const useStyles = makeStyles({
+    titleInput: {
+      border: `solid 1px ${titleError ? 'red' : '#ccc'}`,
+    },
+    loreInput: {
+      border: `solid 1px ${loreError ? 'red' : '#ccc'}`,
+    },
+  });
+  const classes = useStyles();
 
   const uploadFile = async () => {
     const badWords = lore.match(/(damage)|(Fly)|(Provoke)|(Charge)|(resource)/g);
     if (title === '') {
       setError('Card name is required.');
+      setTitleError(true);
     } else if (badWords) {
       setError(`Invalid use of keyword: ${badWords.join(', ')}.`);
+      setLoreError(true);
     } else {
       const form = new FormData();
       form.append('file', files[0].file, files[0].file.name);
@@ -53,24 +67,19 @@ const Upload = ({
 
   return (
     <div className="upload">
-      {error ? (
-        <div>
-          <h3>{error}</h3>
-          <button type="submit" onClick={() => setError(false)}>I Understand</button>
-        </div>
-      ) : null}
       <span className="title">Upload Files</span>
       <div className="content">
+        <FilePond
+          files={files}
+          onupdatefiles={setFiles}
+          allowMultiple={false}
+          name="files"
+          labelIdle={'Drag & Drop your files or <span class="filepond--label-action">Browse</span>'}
+        />
+        <input type="text" className={classes.titleInput} name="name" value={title} placeholder="Card Name" onChange={(e) => setTitle(e.target.value)} />
+        <input type="text" className={classes.loreInput} name="name" value={lore} placeholder="Card Description (Optional)" onChange={(e) => setLore(e.target.value)} />
+        {error && <p><b>{error}</b></p>}
         <div>
-          <FilePond
-            files={files}
-            onupdatefiles={setFiles}
-            allowMultiple={false}
-            name="files"
-            labelIdle={'Drag & Drop your files or <span class="filepond--label-action">Browse</span>'}
-          />
-          <input type="text" id="title" name="name" value={title} placeholder="Card Name" onChange={(e) => setTitle(e.target.value)} />
-          <input type="text" id="lore" name="name" value={lore} placeholder="Card Description (Optional)" onChange={(e) => setLore(e.target.value)} />
           <button type="submit" className="daakfsfabfk" onClick={uploadFile}>Upload</button>
         </div>
       </div>
