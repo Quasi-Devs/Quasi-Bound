@@ -53,6 +53,78 @@ const TwoDEnv = ({
       setResourceCount(resource.join('').split('true').length - 1);
     }
   };
+
+  const placeCard = (val, i) => {
+    if (user) {
+      if (clicked && !val) {
+        const arr = slots;
+        arr[i] = clicked;
+        if (arr[i].description.includes('Charge')) {
+          arr[i].turn = 0;
+        } else {
+          arr[i].turn = 1;
+        }
+        const number = clicked.description.match(/\d+/g);
+        const currentEnemySlots = enemySlots;
+        if (!clicked.is_character) {
+          socket.emit('Spell', clicked, user.id_enemy);
+          arr[i] = false;
+        }
+        if (clicked.description.includes('damage')) {
+          if (currentEnemySlots[i]) {
+            currentEnemySlots[i].point_health -= Number(number);
+          } else {
+            socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+            setEnemyHP(enemyHP - Number(number));
+          }
+        }
+        socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+        setEnemySlots([...currentEnemySlots]);
+        setSlots([...arr]);
+        setClick(false);
+        cardInHand.splice(cardIndex, 1);
+        setCardInHand(cardInHand);
+        handleResource(resourceCount - taken - 1);
+        if (clicked.description.includes('resource')) {
+          handleResource(number - 1);
+        }
+      } else if (clicked) {
+        // change to handle spell cards
+        const currentEnemySlots = enemySlots;
+        if (!clicked.is_character) {
+          if (slots[i]) {
+            const number = clicked.description.match(/\d+/g);
+            const arr = slots;
+            if (clicked.description.includes('Health')) {
+              arr[i].point_health += Number(number);
+            }
+            if (clicked.description.includes('attack')) {
+              arr[i].point_attack += Number(number);
+            }
+            if (clicked.description.includes('armor')) {
+              arr[i].point_armor += Number(number);
+            }
+            if (clicked.description.includes('damage')) {
+              if (currentEnemySlots[i]) {
+                currentEnemySlots[i].point_health -= Number(number);
+              } else {
+                socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+                setEnemyHP(enemyHP - Number(number));
+              }
+            }
+            socket.emit('Spell', clicked, user.id_enemy);
+            socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+            setSlots([...arr]);
+            cardInHand.splice(cardIndex, 1);
+            setCardInHand(cardInHand);
+            setResourceCount(resourceCount - taken);
+            handleResource(resourceCount - taken - 1);
+            setClick(false);
+          }
+        }
+      }
+    }
+  };
   // handle bot moves here
   useEffect(() => {
     setTimeout(() => {
@@ -108,89 +180,23 @@ const TwoDEnv = ({
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
           <div className="placements">
-            {enemySlots.map((val, i) => (
-              <EnemySlots key={`${String(i)}`} val={val} />
-            ))}
-            {slots.map((val, i) => (
-              <div
-                aria-hidden="true"
-                onClick={() => {
-                  if (user) {
-                    if (clicked && !val) {
-                      const arr = slots;
-                      arr[i] = clicked;
-                      if (arr[i].description.includes('Charge')) {
-                        arr[i].turn = 0;
-                      } else {
-                        arr[i].turn = 1;
-                      }
-                      const number = clicked.description.match(/\d+/g);
-                      const currentEnemySlots = enemySlots;
-                      if (!clicked.is_character) {
-                        socket.emit('Spell', clicked, user.id_enemy);
-                        arr[i] = false;
-                      }
-                      if (clicked.description.includes('damage')) {
-                        if (currentEnemySlots[i]) {
-                          currentEnemySlots[i].point_health -= Number(number);
-                        } else {
-                          socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
-                          setEnemyHP(enemyHP - Number(number));
-                        }
-                      }
-                      socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-                      setEnemySlots([...currentEnemySlots]);
-                      setSlots([...arr]);
-                      setClick(false);
-                      cardInHand.splice(cardIndex, 1);
-                      setCardInHand(cardInHand);
-                      handleResource(resourceCount - taken - 1);
-                      if (clicked.description.includes('resource')) {
-                        handleResource(number - 1);
-                      }
-                    } else if (clicked) {
-                      // change to handle spell cards
-                      const currentEnemySlots = enemySlots;
-                      if (!clicked.is_character) {
-                        if (slots[i]) {
-                          const number = clicked.description.match(/\d+/g);
-                          const arr = slots;
-                          if (clicked.description.includes('Health')) {
-                            arr[i].point_health += Number(number);
-                          }
-                          if (clicked.description.includes('attack')) {
-                            arr[i].point_attack += Number(number);
-                          }
-                          if (clicked.description.includes('armor')) {
-                            arr[i].point_armor += Number(number);
-                          }
-                          if (clicked.description.includes('damage')) {
-                            if (currentEnemySlots[i]) {
-                              currentEnemySlots[i].point_health -= Number(number);
-                            } else {
-                              socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
-                              setEnemyHP(enemyHP - Number(number));
-                            }
-                          }
-                          socket.emit('Spell', clicked, user.id_enemy);
-                          socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-                          setSlots([...arr]);
-                          cardInHand.splice(cardIndex, 1);
-                          setCardInHand(cardInHand);
-                          setResourceCount(resourceCount - taken);
-                          handleResource(resourceCount - taken - 1);
-                          setClick(false);
-                        }
-                      }
-                    }
-                  }
-                }}
-                className={val ? 'placed' : 'slots'}
-                key={`${String(i)}`}
-              >
-                {}
-              </div>
-            ))}
+            <div className="enemySlots">
+              {enemySlots.map((val, i) => (
+                <EnemySlots key={`${String(i)}`} val={val} />
+              ))}
+            </div>
+            <div className="slots">
+              {slots.map((val, i) => (
+                <div
+                  aria-hidden="true"
+                  onClick={() => placeCard(val, i)}
+                  className={val ? 'placed' : 'slot'}
+                  key={`${String(i)}`}
+                >
+                  {}
+                </div>
+              ))}
+            </div>
             <div className="discard">{clicked ? <div className="todo">Click square above to place card</div> : null}</div>
           </div>
           <div className="cards">

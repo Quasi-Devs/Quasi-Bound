@@ -144,63 +144,67 @@
 }
 
 .placements {
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    right: 15%;
-    width: 8%;
+  /* display: flex;
+  flex-wrap: wrap; */
+  position: absolute;
+  right: 15%;
+  /* width: 8%; */
 }
 
 .twodenv {
     position: relative;
 }
 
-.slots {
-    border: 3px solid blue;
-    height: 20px;
-    background-color: gray;
-    width: 20px;
-    margin-top: 2%;
-    margin-right: 3px;
+.slots, .enemySlots {
+  display: flex;
 }
 
-.enemySlots {
-    border: 3px solid red;
-    height: 20px;
-    background-color: gray;
-    width: 20px;
-    margin-top: 2%;
-    margin-right: 3px;
+.slot {
+  border: 3px solid blue;
+  height: 20px;
+  background-color: gray;
+  width: 20px;
+  margin-top: 2%;
+  margin-right: 3px;
+}
+
+.enemySlot {
+  border: 3px solid red;
+  height: 20px;
+  background-color: gray;
+  width: 20px;
+  margin-top: 2%;
+  margin-right: 3px;
 }
 
 .enemyPlaced {
-    border: 3px solid red;
-    height: 20px;
-    background-color: black;
-    width: 20px;
-    margin-top: 2%;
-    margin-right: 3px;
+  border: 3px solid red;
+  height: 20px;
+  background-color: black;
+  width: 20px;
+  margin-top: 2%;
+  margin-right: 3px;
 }
 
 .placed {
-    border: 3px solid blue;
-    height: 20px;
-    background-color: black;
-    width: 20px;
-    margin-top: 2%;
-    margin-right: 3px;
+  border: 3px solid blue;
+  height: 20px;
+  background-color: black;
+  width: 20px;
+  margin-top: 2%;
+  margin-right: 3px;
 }
 
 .deck {
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    border: 3px solid black;
-    height: 120px;
-    left: 2.6%;
-    width: 60px;
-    font-weight: bolder;
-    font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  border: 3px solid black;
+  height: 120px;
+  left: 2.6%;
+  width: 60px;
+  font-weight: bolder;
+  font-size: 12px;
 }
 
 .cardpos {

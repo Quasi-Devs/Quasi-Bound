@@ -4,7 +4,7 @@ import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import Card from './Card';
+import Card from '../Card/Card';
 import './myDecks.css';
 
 const MyDecks = ({
@@ -131,6 +131,7 @@ const MyDecks = ({
       element = element.parentElement;
     }
     const card = JSON.parse(element.dataset.card);
+    console.info(card);
     setButtonPosition(element.offsetTop - 302);
     setCardToRemove(card);
     // getDeckCards(displayDecks[0]);
@@ -209,7 +210,7 @@ const MyDecks = ({
               {deckCards.map((card, i) => (
                 <Card
                   key={String(i)}
-                  card={card}
+                  info={card}
                   onClick={showButton}
                 />
               ))}
