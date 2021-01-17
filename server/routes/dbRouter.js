@@ -15,8 +15,8 @@ dbRouter.get('/cards', async (req, res) => {
 });
 
 dbRouter.post('/cards', async (req, res) => {
-  await Card.createCard(req.body).catch((err) => console.warn(err));
-  res.sendStatus(201);
+  const card = await Card.createCard(req.body).catch((err) => console.warn(err));
+  res.status(201).send(card.rows[0]);
 });
 
 dbRouter.get('/user', async (req, res) => {
