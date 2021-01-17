@@ -113,7 +113,7 @@ const SidebarDrawer = () => {
         <Divider />
         <ListItem>
           <Typography className={clsx(classes.copyright)}>
-            Copyright 2020 Quasi Bound
+            © Copyright 2021 Quasi Bound
           </Typography>
         </ListItem>
       </div>
