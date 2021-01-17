@@ -5,14 +5,14 @@ import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import '../GameEnv/2DEnv/2denv.css';
 
 const Card = ({
-  info, setClick, resourceCount, setTaken, i, setCardIndex,
+  info, setClick, resourceCount, setTaken, i, setCardIndex, onClick,
 }) => {
   const [hover, setHover] = useState(!setClick);
   const handleHover = () => setClick && setHover(!hover);
   const attributes = info ? info.description.split('(')[0] : info.description;
   const lore = info && info.description.split('(')[1];
   return (
-    <div className="cardpos">
+    <div className="cardpos" data-card={JSON.stringify(info)} onClick={onClick}>
       <div aria-hidden="true" className={hover ? 'hover card_background' : 'card card_background'} onClick={handleHover}>
         <div className={hover ? 'hover_title' : 'card_title'}>{info.title}</div>
         <div className={hover ? 'hover_resource' : 'card_resource'}>{hover ? `cost: ${info.point_resource}` : info.point_resource}</div>
@@ -80,6 +80,7 @@ Card.propTypes = {
   setTaken: PropType.func.isRequired,
   i: PropType.number.isRequired,
   setCardIndex: PropType.func.isRequired,
+  onClick: PropType.func.isRequired,
 };
 
 export default Card;
