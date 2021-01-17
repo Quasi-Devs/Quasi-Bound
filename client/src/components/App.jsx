@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { io } from 'socket.io-client';
+import { Layout } from 'antd';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from './Navbar';
 
@@ -26,6 +27,15 @@ const useStyles = makeStyles({
     position: 'absolute',
     top: '0',
   },
+  root: {
+    backgroundImage: 'url(https://i.imgur.com/0ITKs6M.jpg)',
+  },
+  footer: {
+    backgroundColor: '#5a6ad4',
+    display: 'flex',
+    justifyContent: 'center',
+    color: 'white',
+  },
 });
 
 const App = () => {
@@ -46,6 +56,8 @@ const App = () => {
     window.location.href = '/game';
   });
 
+  const { Footer } = Layout;
+
   useEffect(() => {
     axios.get('https://api.ipify.org')
       .then(({ data }) => axios.get(`http://api.ipstack.com/${data}?access_key=${key}`))
@@ -55,7 +67,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="root">
+    <div className={classes.root}>
       <Snackbar
         open={open}
         className={classes.alertFormat}
@@ -110,6 +122,7 @@ const App = () => {
           </Route>
         </Switch>
       </BrowserRouter>
+      {(window.location.pathname !== '/game' && nav) ? <Footer><span className={classes.footer}>© QuasiBound - QuasiDevs 2021</span></Footer> : null}
     </div>
   );
 };
