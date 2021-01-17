@@ -18,7 +18,7 @@ import statCollector from '../../../helpers/statCollector';
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
 const Upload = ({
-  setCardImage, setTitle, title, setStats,
+  setCardImage, setTitle, title, setStats, setUploadStats,
 }) => {
   const [files, setFiles] = useState([]);
   const [lore, setLore] = useState('');
@@ -49,7 +49,7 @@ const Upload = ({
       const { data: url } = await axios.post('/upload', form, { 'Content-Type': 'multipart/form-data' });
       setCardImage(url.buffer);
       const stats = await statCollector(url.image, ml5, Prob, title);
-      console.info(stats);
+      setUploadStats(stats);
       const card = {
         title: stats.title,
         description: lore ? `${stats.description}/${lore}` : stats.description,
@@ -61,7 +61,6 @@ const Upload = ({
         size: stats.size,
         thumbnail: stats.thumbnail,
       };
-      console.info(card);
       setStats(card);
     }
   };
@@ -101,6 +100,7 @@ Upload.propTypes = {
   setTitle: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   setStats: PropTypes.func.isRequired,
+  setUploadStats: PropTypes.func.isRequired,
 };
 
 export default Upload;

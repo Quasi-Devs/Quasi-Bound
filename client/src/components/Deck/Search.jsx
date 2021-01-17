@@ -7,7 +7,9 @@ import axios from 'axios';
 import Card from '../Card/Card';
 import './search.css';
 
-const Search = ({ user, cards }) => {
+const Search = ({
+  user, cards, myCards, setMyCards,
+}) => {
   // const [cards, setCards] = useState();
   const [subset, setSubset] = useState(cards);
   const [buttonVisible, setButtonVisible] = useState(false);
@@ -38,6 +40,7 @@ const Search = ({ user, cards }) => {
       element = element.parentElement;
     }
     const card = JSON.parse(element.dataset.card);
+    console.info(card);
     setButtonPosition(element.offsetTop);
     setCardToSave(card);
   };
@@ -48,6 +51,7 @@ const Search = ({ user, cards }) => {
       .then(() => {
         setSavedMessage(true);
         setTrigger(!trigger);
+        setMyCards([...myCards, cardToSave]);
       })
       .catch((err) => console.warn(err));
   };
@@ -101,6 +105,8 @@ const Search = ({ user, cards }) => {
 Search.propTypes = {
   user: PropTypes.shape().isRequired,
   cards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  myCards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  setMyCards: PropTypes.func.isRequired,
 };
 
 export default Search;

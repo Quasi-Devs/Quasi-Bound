@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './createCard.css';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import Upload from './Upload';
 import Card from '../Card/Card';
@@ -41,14 +42,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CreateCard = () => {
+const CreateCard = ({ cards, setCards }) => {
   const classes = useStyles();
   const [cardImage, setCardImage] = useState('');
   const [title, setTitle] = useState('');
   const [stats, setStats] = useState({});
+  const [uploadStats, setUploadStats] = useState({});
 
-  const createCard = async () => {
-    await axios.post('/data/cards', stats);
+  const createCard = () => {
+    axios.post('/data/cards', uploadStats)
+      .then(({ data }) => setCards([...cards, data]))
+      .catch((err) => console.warn(err));
   };
 
   const reset = () => {
@@ -66,6 +70,7 @@ const CreateCard = () => {
             setTitle={setTitle}
             title={title}
             setStats={setStats}
+            setUploadStats={setUploadStats}
           />
         </div>
       );
@@ -94,6 +99,11 @@ const CreateCard = () => {
       {whatToRender()}
     </div>
   );
+};
+
+CreateCard.propTypes = {
+  cards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  setCards: PropTypes.func.isRequired,
 };
 
 export default CreateCard;

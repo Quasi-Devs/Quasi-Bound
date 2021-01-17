@@ -110,10 +110,10 @@ const Deck = ({ user, setUser }) => {
         />
       </Route>
       <Route path="/deck/createCard">
-        <CreateCard />
+        <CreateCard cards={allCardsInDb} setCards={setAllCardsInDb} />
       </Route>
       <Route path="/deck/search">
-        <Search user={user} cards={allCardsInDb} />
+        <Search user={user} cards={allCardsInDb} myCards={userCards} setMyCards={setUserCards} />
       </Route>
       <Route path="/deck/cards">
         <CardsDisplay

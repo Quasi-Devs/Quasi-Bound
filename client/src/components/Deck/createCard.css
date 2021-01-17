@@ -34,5 +34,5 @@
 }
 
 .loading {
-  filter: invert(97%) sepia(1%) saturate(4748%) hue-rotate(182deg) brightness(87%) contrast(102%);
+  filter: invert(100%);
 }
