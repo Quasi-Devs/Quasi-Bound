@@ -3,6 +3,8 @@ import { Card } from '@material-ui/core';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
 
 const useStyles = makeStyles(() => ({
   /**
@@ -19,7 +21,8 @@ const useStyles = makeStyles(() => ({
   imgContainer: {
     display: 'flex',
     justifyContent: 'center',
-    padding: '20px',
+    marginTop: '40px',
+    padding: '10px',
   },
   /**
    * Container contains margin styles
@@ -32,23 +35,29 @@ const useStyles = makeStyles(() => ({
    */
   descriptionContainer: {
     margin: '3%',
-    opacity: '80%',
     backgroundColor: '#3F51B5',
     color: 'white',
     bottom: '50%',
     display: 'flex',
     justifyContent: 'center',
     verticalAlign: 'bottom',
-    fontFamily: 'sans-serif',
   },
   /**
    * Styles for the cardHeader of username
    */
+  buttonEdit: {
+    marginTop: '6px',
+    marginLeft: '10px',
+  },
+
   cardHeader: {
     backgroundColor: '#3F51B5',
-    color: 'white',
     display: 'flex',
     justifyContent: 'center',
+  },
+  cardText: {
+    color: 'white',
+    marginTop: '10px',
   },
   /**
    * Stats descriptions for stats card component.
@@ -57,6 +66,7 @@ const useStyles = makeStyles(() => ({
     margin: '5%',
     display: 'flex',
     justifyContent: 'center',
+    fontSize: '150%',
   },
   underHead: {
     margin: '3%',
@@ -66,7 +76,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   statsContainer: {
-    height: '400px',
+    height: '450px',
   },
 }));
 
@@ -88,7 +98,7 @@ const Profile = ({ user, setUser }) => {
         <div className={classes.profileContainer}>
           <Card className={classes.statsContainer}>
             <Card className={classes.cardHeader}>
-              <h1>{`${user.name_user} #${user.id}`}</h1>
+              <h1 className={classes.cardText}>{`${user.name_user} #${user.id}`}</h1>
             </Card>
             <h1 className={classes.underHead}>My Stats:</h1>
             <h4 className={classes.description}>{`Games Won: ${user.total_win || 0}`}</h4>
@@ -108,7 +118,7 @@ const Profile = ({ user, setUser }) => {
             <Card>
               <h1 className={classes.descriptionContainer}>
                 About:
-                <button type="submit" onClick={() => { isEditing(true); }}>Edit</button>
+                <Button type="submit" className={classes.buttonEdit} onClick={() => { isEditing(true); }}>Edit</Button>
               </h1>
               <h4 className={classes.description}>
                 {!editing ? user.description
