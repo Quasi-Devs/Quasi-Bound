@@ -8,6 +8,7 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
+import gif from '../../models/ezgif-4-462b92d9253b.gif';
 
 const socket = io();
 
@@ -239,7 +240,7 @@ const GameEnv = ({
             />
           ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
         </div>
-      ) : <div className={classes.loader}><img className={classes.loadImage} src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" /></div>}
+      ) : <div className={classes.loader}><img src={gif} alt="" /></div>}
     </div>
   );
 };
