@@ -9,6 +9,7 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
+import loadingGif from './loadingGif.gif';
 
 const socket = io();
 
@@ -260,7 +261,7 @@ const GameEnv = ({
             </a>
           )}
         </div>
-      ) : <div className={classes.loader}><img className={classes.loadImage} src="https://miro.medium.com/max/1600/1*e_Loq49BI4WmN7o9ItTADg.gif" alt="" /></div>}
+      ) : <div className={classes.loader}><img className={classes.loadImage} src={loadingGif} alt="" /></div>}
     </div>
   );
 };
