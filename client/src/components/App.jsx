@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { io } from 'socket.io-client';
 import { Layout } from 'antd';
@@ -59,10 +59,18 @@ const App = () => {
   const { Footer } = Layout;
 
   useEffect(() => {
+    axios.get('/data/user')
+      .then(({ data }) => {
+        if (data === null) {
+          setUser({});
+        } else {
+          setUser(data);
+        }
+      })
+      .catch((err) => console.warn(err));
     axios.get('https://api.ipify.org')
       .then(({ data }) => axios.get(`http://api.ipstack.com/${data}?access_key=${key}`))
       .then(({ data }) => axios.get(`/data/area/${data.city}`))
-      .then(({ data }) => setUser(data))
       .catch((err) => console.warn(err));
   }, []);
 
@@ -76,15 +84,24 @@ const App = () => {
       >
         <Alert severity="info">
           <h2>{`${invitee} has invited you. Join Game?`}</h2>
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             type="submit"
             onClick={() => {
               socket.emit('Accept', enemyId, user.id);
             }}
           >
             Accept
-          </button>
-          <button type="submit" onClick={() => setOpen(false)}>Decline</button>
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            onClick={() => setOpen(false)}
+          >
+            Decline
+          </Button>
         </Alert>
       </Snackbar>
       <BrowserRouter>
@@ -103,7 +120,7 @@ const App = () => {
             <Profile user={user} setUser={setUser} />
           </Route>
           <Route path="/deck">
-            <Deck user={user} />
+            <Deck user={user} setUser={setUser} />
           </Route>
           <Route path="/playhub">
             <PlayHub user={user} />

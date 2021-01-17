@@ -1,14 +1,17 @@
 import React, { useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import Card from './Card';
+import Card from '../Card/Card';
 import './myDecks.css';
 
-const MyDecks = ({ user, displayMode, setDisplayMode }) => {
-  const [decks, setDecks] = useState([]);
+const MyDecks = ({
+  user, setUser, displayMode, setDisplayMode, decks, setDecks,
+  allDeckCards, setAllDeckCards, loaded, sortCards,
+}) => {
+  const [displayDecks, setDisplayDecks] = useState(decks);
   const [deckCards, setDeckCards] = useState();
   const [cardsList, setCardsList] = useState([]);
   const [title, setTitle] = useState('');
@@ -42,41 +45,42 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
   };
 
   const getDeckCards = (deck) => {
-    axios.get(`/data/deckCards/${deck.id}`)
-      .then(({ data }) => {
-        data.sort((a, b) => {
-          if (a.point_resource > b.point_resource) {
-            return 1;
-          }
-          if (a.point_resource < b.point_resource) {
-            return -1;
-          }
-          if (a.point_health > b.point_health) {
-            return 1;
-          }
-          if (a.point_health < b.point_health) {
-            return -1;
-          }
-          if (a.point_attack > b.point_attack) {
-            return 1;
-          }
-          if (a.point_attack < b.point_attack) {
-            return -1;
-          }
-          if (a.point_armor > b.point_armor) {
-            return 1;
-          }
-          if (a.point_armor < b.point_armor) {
-            return -1;
-          }
-          return 0;
-        });
-        setDeckCards(data);
-        const list = data.map((card) => card.title);
-        setCardsList(list);
-        setDecks([deck]);
-      })
-      .catch((err) => console.warn(err));
+    // const cards = allDeckCards[deck.id];
+    // setDeckCards(cards);
+    // const list = cards.map((card) => card.title);
+    // setCardsList(list);
+    setDisplayDecks([deck]);
+    const cards = allDeckCards[deck.id];
+    if (cardToRemove.id) {
+      for (let i = 0; i < cards.length; i += 1) {
+        if (cards[i].id === cardToRemove.id) {
+          cards.splice(i, 1);
+        }
+      }
+    }
+    cards.sort(sortCards);
+    const newDeckCardList = {};
+    const newDeckList = [];
+    Object.keys(allDeckCards).forEach((deckId) => {
+      if (deckId === deck.id) {
+        newDeckCardList[deckId] = cards;
+      } else {
+        newDeckCardList[deckId] = allDeckCards[deckId];
+      }
+    });
+    setAllDeckCards(newDeckCardList);
+    setDeckCards(cards);
+    decks.forEach((d) => {
+      if (d.id === deck.id) {
+        newDeckList.push({ id: d.id, count_card: cards.length, title: d.title });
+        setDisplayDecks([{ id: d.id, count_card: cards.length, title: d.title }]);
+      } else {
+        newDeckList.push(d);
+      }
+    });
+    setDecks(newDeckList);
+    const list = cards.map((card) => card.title);
+    setCardsList(list);
   };
 
   const editDeck = (e) => {
@@ -86,13 +90,13 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
     }
     const deck = JSON.parse(element.dataset.deck);
     getDeckCards(deck);
-    setDisplayMode(deck.id);
+    setDisplayMode(`${deck.id}`);
   };
 
   const quitEdit = () => {
+    setDisplayMode('browse');
     setDeckCards();
     setCardsList([]);
-    setDisplayMode('browse');
     setTrigger(!trigger);
   };
 
@@ -109,13 +113,13 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
     axios.delete('/data/deckCard', {
       data: {
         cardId: cardToRemove.id,
-        deckId: decks[0].id,
-        cardCount: decks[0].count_card,
+        deckId: displayDecks[0].id,
+        cardCount: displayDecks[0].count_card,
       },
     })
       .then(() => {
         cancelRemove();
-        getDeckCards(decks[0]);
+        getDeckCards(displayDecks[0]);
       })
       .catch((err) => console.warn(err));
   };
@@ -127,56 +131,68 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
       element = element.parentElement;
     }
     const card = JSON.parse(element.dataset.card);
+    console.info(card);
     setButtonPosition(element.offsetTop - 302);
     setCardToRemove(card);
-    getDeckCards(decks[0]);
+    // getDeckCards(displayDecks[0]);
   };
 
   const setDefault = () => {
-    axios.put('/data/defaultDeck', { userId: user.id, deckId: decks[0].id })
-      .then(() => setDefaultDeck(decks[0].title))
+    axios.put('/data/defaultDeck', { userId: user.id, deckId: displayDecks[0].id })
+      .then(() => setDefaultDeck(displayDecks[0].title))
+      .then(() => {
+        const updateUser = {};
+        Object.keys(user).forEach((key) => {
+          if (key === 'default_deck') {
+            updateUser.default_deck = displayDecks[0].id;
+          } else {
+            updateUser[key] = user[key];
+          }
+        });
+        setUser(updateUser);
+      })
       .catch((err) => console.warn(err));
   };
 
   useLayoutEffect(() => {
-    if (user) {
+    if (user.id && decks) {
       if (displayMode === 'browse') {
-        axios.get(`/data/decks/${user.id}`)
-          .then(({ data }) => {
-            data.forEach((deck) => {
-              if (deck.id === user.default_deck) {
-                setDefaultDeck(deck.title);
-              }
-            });
-            setDecks(data);
-          })
-          .catch((err) => console.warn(err));
+        setDisplayDecks(decks);
+        decks.forEach((deck) => {
+          if (deck.id === user.default_deck) {
+            setDefaultDeck(deck.title);
+          }
+        });
       } else {
-        axios.get(`/data/decks/${user.id}`)
-          .then(({ data }) => {
-            const [myDeck] = data.filter((deck) => deck.id === displayMode);
-            getDeckCards(myDeck);
-          })
-          .catch((err) => console.warn(err));
+        const [myDeck] = decks.filter((deck) => `${deck.id}` === displayMode);
+        setDeckCards(allDeckCards[myDeck.id]);
       }
     }
-  }, [user, trigger]);
+  }, [user, decks, trigger]);
 
   return (
     <div>
+      {!loaded ? <h1>Loading...</h1> : null}
       {inputShow && (
         <input value={title} placeholder="Deck Title" onChange={(e) => setTitle(e.target.value)} />
       )}
-      <button type="button" onClick={createDeck}>Create Deck</button>
+      <Button
+        variant="contained"
+        color="primary"
+        type="button"
+        onClick={createDeck}
+      >
+        Create Deck
+      </Button>
       <h2>{`Default Deck: ${defaultDeck || 'none'}`}</h2>
       {cardsList.length > 0
         ? (
           <div className="cardsList">
-            {cardsList.map((name) => <div>{name}</div>)}
+            {cardsList.map((name, i) => <div key={String(i)}>{name}</div>)}
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-        {decks.map((deck) => (
+        {displayDecks.map((deck) => (
           <div key={deck.id} className="deckCover" data-deck={JSON.stringify(deck)} onClick={editDeck}>
             <Typography variant="h4">
               {deck.title}
@@ -191,22 +207,63 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
         ? (
           <div className="deckCards">
             <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-              {deckCards.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
+              {deckCards.map((card, i) => (
+                <Card
+                  key={String(i)}
+                  info={card}
+                  onClick={showButton}
+                />
+              ))}
             </Grid>
             {buttonVisible
               ? (
                 <div className={classes.removeButton}>
-                  <button type="button" onClick={removeCard}>{`Remove ${cardToRemove.title}`}</button>
-                  <button type="button" onClick={cancelRemove}>Cancel</button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={removeCard}
+                  >
+                    {`Remove ${cardToRemove.title}`}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={cancelRemove}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               ) : null}
             <div id="buttonsContainer">
               <div>
-                <button type="button" onClick={setDefault}>Set Deck as Default</button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={setDefault}
+                >
+                  Set Deck as Default
+                </Button>
               </div>
               <div>
-                <button type="button" onClick={addCards}>Add Cards</button>
-                <button type="button" onClick={quitEdit}>Done</button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={addCards}
+                >
+                  Add Cards
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  onClick={quitEdit}
+                >
+                  Done
+                </Button>
               </div>
             </div>
           </div>
@@ -218,8 +275,15 @@ const MyDecks = ({ user, displayMode, setDisplayMode }) => {
 
 MyDecks.propTypes = {
   user: PropTypes.shape().isRequired,
+  setUser: PropTypes.func.isRequired,
   setDisplayMode: PropTypes.func.isRequired,
   displayMode: PropTypes.string.isRequired,
+  decks: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  setDecks: PropTypes.func.isRequired,
+  allDeckCards: PropTypes.PropTypes.shape().isRequired,
+  setAllDeckCards: PropTypes.func.isRequired,
+  loaded: PropTypes.bool.isRequired,
+  sortCards: PropTypes.func.isRequired,
 };
 
 export default MyDecks;

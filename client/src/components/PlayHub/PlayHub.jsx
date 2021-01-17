@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './playhub.css';
 import { Redirect } from 'react-router-dom';
-import { Modal, Snackbar } from '@material-ui/core';
+import { Modal, Snackbar, Button } from '@material-ui/core';
 import { io } from 'socket.io-client';
 import PropTypes from 'prop-types';
 import { Alert } from '@material-ui/lab';
@@ -28,13 +28,17 @@ const useStyles = makeStyles({
     position: 'absolute',
     top: '0',
   },
+  pvf: {
+    width: '30%',
+    height: '30%',
+    paddingBottom: '5%',
+  },
 });
 
 const socket = io();
 
 const PlayHub = ({ user }) => {
   const classes = useStyles();
-  const text = 'play hub';
   const [Invite, setInvite] = useState(false);
   const [Open, setOpen] = useState(false);
   const [Error, setError] = useState(false);
@@ -62,40 +66,52 @@ const PlayHub = ({ user }) => {
       </Snackbar>
       {GoOn ? <Redirect to="/game" /> : null}
       <div className="find">
-        <h1 className="header">{`left ${text}`}</h1>
-        <h1>Img slot</h1>
-        <button
-          type="submit"
-          className="button"
-          onClick={() => {
-            if (!user.id) {
-              setError(true);
-            } else {
-              handleModal();
-              socket.emit('Queue', user.id);
-            }
-          }}
-        >
-          Finding A Match Against Player
-        </button>
-        <button
-          type="submit"
-          onClick={() => {
-            if (!user.id) {
-              setError(true);
-            } else {
-              axios.get('/data/addEnemy')
-                .then(() => setGoOn(true))
-                .catch((err) => console.warn(err));
-            }
-          }}
-        >
-          Start A Match Against Bot
-        </button>
+        <h1 className="header">Find a Match</h1>
+        <div className={classes.userSearch}>
+          <img className={classes.pvf} src="https://image.flaticon.com/icons/png/128/3069/3069052.png" alt="playervfriend" />
+        </div>
+        <div className={classes.userSearch}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            // className="button"
+            onClick={() => {
+              if (!user.id) {
+                setError(true);
+              } else {
+                handleModal();
+                socket.emit('Queue', user.id);
+              }
+            }}
+          >
+            Find a Match
+          </Button>
+        </div>
+        <div className={classes.userSearchButton}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            onClick={() => {
+              if (!user.id) {
+                setError(true);
+              } else {
+                axios.get('/data/addEnemy')
+                  .then(() => setGoOn(true))
+                  .catch((err) => console.warn(err));
+              }
+            }}
+          >
+            Start A Match Against Bot
+          </Button>
+        </div>
         <Modal open={Open}>
           <div className={classes.modalStyle}>
             <h1>Finding A Match</h1>
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               type="submit"
               onClick={() => {
                 handleModal();
@@ -103,13 +119,15 @@ const PlayHub = ({ user }) => {
               }}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </Modal>
       </div>
       <div className="create">
-        <h1 className="header">{`right ${text}`}</h1>
-        <h1>Img slot</h1>
+        <h1 className="header">Create a Match</h1>
+        <div className={classes.userSearch}>
+          <img src="https://image.flaticon.com/icons/png/128/2619/2619029.png" alt="playervfriend" />
+        </div>
         <div className={classes.userSearch}>
           <h3>Search for player (ID can be found in profile)</h3>
         </div>
@@ -117,7 +135,9 @@ const PlayHub = ({ user }) => {
           <input placeholder="#(replace with user ID)" value={input} onChange={(e) => setInput(e.target.value)} />
         </div>
         <div className={classes.userSearchButton}>
-          <button
+          <Button
+            variant="contained"
+            color="primary"
             type="submit"
             onClick={() => {
               if (!user.id) {
@@ -129,19 +149,21 @@ const PlayHub = ({ user }) => {
             }}
           >
             Invite User
-          </button>
+          </Button>
         </div>
         <Modal open={Invite}>
           <div className={classes.modalStyle}>
             <h1>Waiting for player</h1>
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               type="submit"
               onClick={() => {
                 handleInvite();
               }}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </Modal>
       </div>

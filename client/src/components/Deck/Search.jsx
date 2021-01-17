@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 // import cards from '../../../../cardSampleData.json';
-import Card from './Card';
+import Card from '../Card/Card';
 import './search.css';
 
-const Search = ({ user }) => {
-  const [cards, setCards] = useState();
-  const [subset, setSubset] = useState([]);
+const Search = ({ user, cards }) => {
+  // const [cards, setCards] = useState();
+  const [subset, setSubset] = useState(cards);
   const [buttonVisible, setButtonVisible] = useState(false);
   const [buttonPosition, setButtonPosition] = useState();
   const [cardToSave, setCardToSave] = useState({});
@@ -57,13 +57,8 @@ const Search = ({ user }) => {
   }, [trigger]);
 
   useLayoutEffect(() => {
-    const fetchData = async () => {
-      const { data: cardData } = await axios.get('/data/cards');
-      setCards(cardData.rows);
-      setSubset(cardData.rows);
-    };
-    fetchData();
-  }, []);
+    setSubset(cards);
+  }, [cards]);
 
   return (
     <div>
@@ -79,14 +74,19 @@ const Search = ({ user }) => {
       />
       <div className="allCards">
         <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-          {subset.map((card) => <Card key={card.id} card={card} onClick={showButton} />)}
+          {subset.map((card) => <Card key={card.id} info={card} onClick={showButton} />)}
         </Grid>
         {buttonVisible
           ? (
             <div className={classes.saveButton}>
-              <button onClick={saveCard} type="button">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={saveCard}
+                type="button"
+              >
                 {`Save ${cardToSave.title}`}
-              </button>
+              </Button>
               {savedMessage
                 ? <span>{`Saved ${cardToSave.title}`}</span>
                 : null}
@@ -100,6 +100,7 @@ const Search = ({ user }) => {
 
 Search.propTypes = {
   user: PropTypes.shape().isRequired,
+  cards: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default Search;

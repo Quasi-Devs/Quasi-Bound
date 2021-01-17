@@ -38,6 +38,12 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     marginLeft: '10px',
   },
+  header: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: '#3f51b5',
+    color: 'white',
+  },
 });
 
 const Friends = ({ setFriendProfile, user }) => {
@@ -76,6 +82,9 @@ const Friends = ({ setFriendProfile, user }) => {
     <div>
       <Card className={classes.main}>
         <div className={classes.friend}>
+          <div className={classes.header}>
+            <h1 className={classes.header}>Search for Friends</h1>
+          </div>
           <div className={classes.userSearch}>
             <input placeholder="Search for users" value={input} onChange={(e) => setInput(e.target.value)} />
           </div>
@@ -90,7 +99,6 @@ const Friends = ({ setFriendProfile, user }) => {
                   && profile.name_user.includes(input)) {
                     return (
                       <Card className={classes.item}>
-
                         <List.Item
                           actions={[
                             <div className={classes.btngroup}>
@@ -134,7 +142,9 @@ const Friends = ({ setFriendProfile, user }) => {
             ) : null}
         </div>
         <div className={classes.friend}>
-          <h1>Players in your area</h1>
+          <div className={classes.header}>
+            <h1 className={classes.header}>Players in your area</h1>
+          </div>
           <List
             className={classes.main}
             itemLayout="horizontal"
@@ -144,7 +154,6 @@ const Friends = ({ setFriendProfile, user }) => {
               && user.area === profile.area) {
                 return (
                   <Card className={classes.item}>
-
                     <List.Item
                       actions={[
                         <div className={classes.btngroup}>
@@ -187,7 +196,9 @@ const Friends = ({ setFriendProfile, user }) => {
           />
         </div>
         <div className={classes.friend}>
-          <h1>Following</h1>
+          <div className={classes.header}>
+            <h1 className={classes.header}>Following</h1>
+          </div>
           <List
             className={classes.main}
             itemLayout="horizontal"
@@ -210,17 +221,19 @@ const Friends = ({ setFriendProfile, user }) => {
                             View Profile
                           </Button>
                           <Button
+                            variant="contained"
+                            color="primary"
                             type="submit"
                             onClick={async () => {
                               try {
-                                await axios.post('/data/friends', { userID: user.id, friendID: profile.id });
+                                await axios.put('/data/friends', { friendID: profile.id, userID: user.id });
                                 setUpdate(!update);
                               } catch (err) {
                                 console.error(err);
                               }
                             }}
                           >
-                            follow
+                            Unfollow
                           </Button>
                         </div>]}
                     >

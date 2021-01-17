@@ -9,8 +9,8 @@ const Card = ({
 }) => {
   const [hover, setHover] = useState(!setClick);
   const handleHover = () => setClick && setHover(!hover);
-  const attributes = info ? info.description.split('(')[0] : info.description;
-  const lore = info && info.description.split('(')[1];
+  const attributes = info ? info.description.split('/')[0] : info.description;
+  const lore = info && info.description.split('/')[1];
   return (
     <div className="cardpos" data-card={JSON.stringify(info)} onClick={onClick}>
       <div aria-hidden="true" className={hover ? 'hover card_background' : 'card card_background'} onClick={handleHover}>
@@ -48,6 +48,8 @@ const Card = ({
       </div>
       {hover ? (
         <button
+          variant="contained"
+          color="primary"
           onClick={() => {
             if (resourceCount >= info.point_resource) {
               setTaken(info.point_resource);
@@ -76,11 +78,11 @@ Card.propTypes = {
     description: PropType.string,
   }).isRequired,
   setClick: PropType.func.isRequired,
+  onClick: PropType.func.isRequired,
   resourceCount: PropType.number.isRequired,
   setTaken: PropType.func.isRequired,
   i: PropType.number.isRequired,
   setCardIndex: PropType.func.isRequired,
-  onClick: PropType.func.isRequired,
 };
 
 export default Card;

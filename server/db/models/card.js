@@ -12,13 +12,13 @@ const createCard = async (
 };
 
 const getCards = async ({ key, value }) => {
-  let cards;
+  let cardData;
   if (key && value) {
-    cards = await db.query(`SELECT * FROM "card" WHERE ${key} = ${value}`).catch((err) => console.warn(err));
+    cardData = await db.query(`SELECT * FROM "card" WHERE ${key} = ${value}`).catch((err) => console.warn(err));
   } else {
-    cards = await db.query('SELECT * FROM "card"').catch((err) => console.warn(err));
+    cardData = await db.query('SELECT * FROM "card"').catch((err) => console.warn(err));
   }
-  return cards;
+  return cardData.rows;
 };
 
 const saveCard = async ({ userId, card }) => {

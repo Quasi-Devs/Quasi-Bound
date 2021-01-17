@@ -26,26 +26,28 @@ function DOMObject({
   const opacity = opaque;
   const currentpos = position[1] * 10;
   CSSFrame(({ mouse }) => {
-    if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
-      opacity[index] -= 2;
-      setOpaque({ ...opacity });
-    } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
-      opacity[index] = 100;
-      setOpaque({ ...opacity });
-    }
-    if (slot && slot.description.includes('Fly') && !clicked) {
-      ref.current.castShadow = true;
-      if (ref.current.position.y >= currentpos + 200) {
-        elevated = true;
+    if (slot.point_health !== undefined) {
+      if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
+        opacity[index] -= 2;
+        setOpaque({ ...opacity });
+      } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
+        opacity[index] = 100;
+        setOpaque({ ...opacity });
       }
-      if (ref.current.position.y >= currentpos) {
-        if (elevated) {
-          ref.current.position.y -= 1;
-          if (ref.current.position.y === currentpos + 100) {
-            elevated = false;
+      if (slot && slot.description.includes('Fly') && !clicked) {
+        ref.current.castShadow = true;
+        if (ref.current.position.y >= currentpos + 200) {
+          elevated = true;
+        }
+        if (ref.current.position.y >= currentpos) {
+          if (elevated) {
+            ref.current.position.y -= 1;
+            if (ref.current.position.y === currentpos + 100) {
+              elevated = false;
+            }
+          } else {
+            ref.current.position.y += 1;
           }
-        } else {
-          ref.current.position.y += 1;
         }
       }
     }
@@ -134,7 +136,7 @@ const opa = {
 // };
 
 const ThreeDEnv = ({
-  slots, user, enemyHP, HP, done,
+  slots, user, enemyHP, HP, done, spellSlot,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
@@ -143,6 +145,7 @@ const ThreeDEnv = ({
     0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
   });
 
+  const spell = useRef(null);
   const refs = [useRef(null), useRef(null), useRef(null),
     useRef(null), useRef(null), useRef(null), useRef(null), useRef(null)];
   const [cameraY] = useState(30);
@@ -214,6 +217,13 @@ const ThreeDEnv = ({
                 );
               })
             }
+            <DOMObject
+              dom={spell}
+              position={[0, 4, -4]}
+              scale={new THREE.Vector3(1.6, 1.6, 1.6)}
+              rotation={[-0.2, 0, 0]}
+              slot={spellSlot}
+            />
           </CanvasCSS3D>
           {
               slots.map((slot, i) => {
@@ -263,7 +273,34 @@ const ThreeDEnv = ({
                 );
               })
             }
-          <span className="you">{user ? `${user.name_user}: ${HP}` : null}</span>
+          <div styles={{ width: '1px', height: '1px' }}>
+            <div
+              aria-hidden="true"
+              className="hover card_background"
+              ref={spell}
+            >
+              <div className="hover_title">{spellSlot.title}</div>
+              <div className="hover_resource">{`cost: ${spellSlot.point_resource}`}</div>
+              <img className="hover_img" src={spellSlot.thumbnail} alt="thumbnail" />
+              <div className="top_stats">
+                <div className="stats">
+                  <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
+                </div>
+              </div>
+              <div className="is_character">{spellSlot.is_character ? `Character - ${spellSlot.size}` : 'Spell' }</div>
+              <div className="hover_stats">{spellSlot ? spellSlot.description.split('(')[0] : spellSlot.description}</div>
+              <hr />
+              <div className="hover_stats"><i>{spellSlot && spellSlot.description.split('(')[1] ? spellSlot.description.split('(')[1] : null}</i></div>
+            </div>
+          </div>
+          <span className="you">
+            <p>
+              {`${user.name_user}: `}
+              <p className={(HP > 167) ? 'good' : 'okay'}>{HP}</p>
+              <p className="bad">{(HP > 83) ? null : HP}</p>
+            </p>
+          </span>
+          <span className="spell">{spellSlot ? `${enemyName} use spell` : null}</span>
           {(HP <= 0 && done) ? (
             <>
               {(HP <= 0 && enemyHP <= 0 && done) ? (
@@ -292,7 +329,13 @@ const ThreeDEnv = ({
               )}
             </>
           ) : null}
-          <span className="enemy">{`${enemyName}: ${enemyHP}`}</span>
+          <span className="enemy">
+            <p>
+              {`${enemyName}: `}
+              <p className={(enemyHP > 167) ? 'good' : 'okay'}>{enemyHP}</p>
+              <p className="bad">{(enemyHP > 83) ? null : enemyHP}</p>
+            </p>
+          </span>
         </div>
       </div>
     </>
@@ -314,6 +357,7 @@ ThreeDEnv.propTypes = {
   enemyHP: PropTypes.number.isRequired,
   HP: PropTypes.number.isRequired,
   done: PropTypes.bool.isRequired,
+  spellSlot: PropTypes.bool.isRequired,
 };
 
 export default ThreeDEnv;

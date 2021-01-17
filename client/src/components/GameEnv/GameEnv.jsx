@@ -4,6 +4,7 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import _ from 'underscore';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@material-ui/core';
 import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
@@ -35,7 +36,15 @@ const GameEnv = ({
   const [HP, setHP] = useState(250);
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
+  const [spellSlot, setSpellSlot] = useState(false);
   const classes = useStyles();
+
+  socket.on(`${user.id}Spell`, (spell) => {
+    setSpellSlot(spell);
+    setTimeout(() => {
+      setSpellSlot(false);
+    }, 3000);
+  });
 
   socket.on(`${user.id}Turn`, () => {
     setHandleEnd(true);
@@ -105,47 +114,6 @@ const GameEnv = ({
     if (user) {
       if (handleEnd && turn) {
         let hp = enemyHP;
-        if (user.id_enemy === null) {
-          yourSlots.map((val, i) => {
-            if (val && val.turn === 0) {
-              if (enemySlots[i]) {
-                if (val.point_attack && enemySlots[i].point_armor < val.point_attack
-                  && val.point_health > 0) {
-                  enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
-                }
-                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack
-                  && enemySlots[i].point_health > 0) {
-                  yourSlots[i].point_health
-                  -= (enemySlots[i].point_attack - yourSlots[i].point_armor);
-                }
-              } else if (val.point_attack) {
-                let counter = true;
-                for (let j = 0; j <= 3; j += 1) {
-                  if (enemySlots[j]) {
-                    if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
-                      if (enemySlots[j].point_armor < val.point_attack) {
-                        enemySlots[j].point_health
-                        -= (val.point_attack - enemySlots[j].point_armor);
-                      }
-                      if (yourSlots[i].point_armor < enemySlots[j].point_attack) {
-                        yourSlots[i].point_health
-                        -= (enemySlots[j].point_attack - yourSlots[i].point_armor);
-                      }
-                      counter = false;
-                      break;
-                    }
-                  }
-                }
-                if (counter && val.point_health > 0) {
-                  hp -= val.point_attack;
-                }
-              }
-            } else if (val) {
-              yourSlots[i].turn = 0;
-            }
-            return null;
-          });
-        }
         socket.emit('HP', user.id_enemy, hp, null);
         setEnemyHP(hp);
         hp = HP;
@@ -202,6 +170,7 @@ const GameEnv = ({
         setTimeout(() => {
           setEnemySlots([...enemySlots]);
           setYourSlots([...yourSlots]);
+          socket.emit('placed', user.id_enemy, [...yourSlots], [...enemySlots]);
         }, 3000);
         setHandleEnd(false);
       }
@@ -218,6 +187,7 @@ const GameEnv = ({
             HP={HP}
             enemyHP={enemyHP}
             done={done}
+            spellSlot={spellSlot}
           />
           {!done ? (
             <TwoDEnv
@@ -238,7 +208,17 @@ const GameEnv = ({
               HP={HP}
               setHP={setHP}
             />
-          ) : <a href="/home"><button type="submit">Return To Menu</button></a>}
+          ) : (
+            <a href="/home">
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+              >
+                Return To Menu
+              </Button>
+            </a>
+          )}
         </div>
       ) : <div className={classes.loader}><img src={gif} alt="" /></div>}
     </div>

@@ -125,7 +125,9 @@ const Profile = ({ user, setUser }) => {
                   : (
                     <div>
                       <input type="text" value={newDescription} onChange={(e) => setNewDescription(e.target.value)} />
-                      <button
+                      <Button
+                        variant="contained"
+                        color="primary"
                         type="submit"
                         onClick={async () => {
                           try {
@@ -138,7 +140,7 @@ const Profile = ({ user, setUser }) => {
                         }}
                       >
                         Save
-                      </button>
+                      </Button>
                     </div>
                   )}
               </h4>
