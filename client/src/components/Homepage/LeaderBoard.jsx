@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     top: '5%',
     height: '450px',
     display: 'inline',
-    width: '67%',
+    width: '60%',
     float: 'right',
     marginRight: '10px',
     border: '2px solid gray',
