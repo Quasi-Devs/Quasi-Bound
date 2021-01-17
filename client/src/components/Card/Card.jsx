@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropType from 'prop-types';
 import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
 import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
 import '../GameEnv/2DEnv/2denv.css';
 
 const Card = ({
@@ -47,7 +49,7 @@ const Card = ({
         {hover && (<div className="hover_lore"><i>{lore || null}</i></div>)}
       </div>
       {hover ? (
-        <button
+        <Button
           variant="contained"
           color="primary"
           onClick={() => {
@@ -61,7 +63,7 @@ const Card = ({
           className="playcard"
         >
           {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
-        </button>
+        </Button>
       ) : null}
     </div>
   );

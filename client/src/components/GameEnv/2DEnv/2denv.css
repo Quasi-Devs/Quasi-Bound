@@ -215,7 +215,7 @@
 
 .playcard {
   position: absolute;
-  right: 10%;
+  right: 15%;
   top: -10%;
 }
 
@@ -227,8 +227,8 @@
 
 .buttonPos {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    right: 12%;
+    bottom: 5%;
 }
 
 .todo {

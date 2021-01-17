@@ -110,14 +110,14 @@ const GameEnv = ({
       }
     }).catch((err) => console.warn(err)), []);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (user) {
       if (handleEnd && turn) {
         let hp = enemyHP;
         socket.emit('HP', user.id_enemy, hp, null);
         setEnemyHP(hp);
         hp = HP;
-        await enemySlots.map(async (val, i) => {
+        enemySlots.map(async (val, i) => {
           if (val && val.turn === 0) {
             if (yourSlots[i]) {
               if (val.point_attack && yourSlots[i].point_armor < val.point_attack
