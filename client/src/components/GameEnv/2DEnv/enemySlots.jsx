@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const EnemySlots = ({ val }) => (
   <div
     aria-hidden="true"
-    className={val ? 'enemyPlaced' : 'enemySlots'}
+    className={val ? 'enemyPlaced' : 'enemySlot'}
   >
     {}
   </div>
