@@ -4,8 +4,6 @@ import React, {
 import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { Canvas as CanvasCSS3D, useThree as useThreeCSS3D, useFrame as CSSFrame } from 'react-three-fiber/css3d';
 import { Canvas, useLoader, useFrame } from 'react-three-fiber';
-import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
 import { makeStyles } from '@material-ui/core/styles';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { io } from 'socket.io-client';
@@ -227,13 +225,13 @@ const ThreeDEnv = ({
           </CanvasCSS3D>
           {
               slots.map((slot, i) => {
-                const attributes = slot ? slot.description.split('(')[0] : slot.description;
-                const lore = slot && slot.description.split('(')[1];
+                const attributes = slot ? slot.description.split('/')[0] : slot.description;
+                const lore = slot && slot.description.split('/')[1];
                 return (
                   <div styles={{ width: '1px', height: '1px' }} key={String(i)}>
                     <div
                       aria-hidden="true"
-                      className={`hover card_background ${cardClasses[`opacity${i}`]}`}
+                      className={`${clicks[i] ? 'hover-station' : 'hover'} card_background ${cardClasses[`opacity${i}`]}`}
                       ref={refs[i]}
                       onClick={() => {
                         const replacement = clicks;
@@ -245,29 +243,31 @@ const ThreeDEnv = ({
                       <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
                       <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
                       <div className="top_stats">
-                        <div className="stats">
-                          <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
-                          {
-                      ` ${slot.point_attack || 0}`
-                      }
+                        <div className="stat">
+                          <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="25" height="25" />
+                          <span className="downwards">
+                            {
+                        ` ${slot.point_attack || 0}`
+              }
+                          </span>
                         </div>
                         <div className="stat">
-                          <FavoriteTwoToneIcon />
+                          <img src="https://lh3.googleusercontent.com/proxy/259qTa90VW-glNM3IqRK0xKFqO7Ig7LemPKUFmDHJ_HWJeJLmkhX4SezqenIpRWmpkJGiutMdRiKrZJLVHeZbNw" alt="attack thumb" width="22" height="22" />
                           {
-                        ` ${slot.point_health || 0}`
-                      }
+                          ` ${slot.point_health || 0}`
+              }
                         </div>
                         <div className="stat">
-                          <SecurityTwoToneIcon />
+                          <img src="https://static.thenounproject.com/png/1162-200.png" alt="attack thumb" width="22" height="22" />
                           {
-                        ` ${slot.point_armor || 0}`
-                      }
+                          ` ${slot.point_armor || 0}`
+                        }
                         </div>
                       </div>
-                      <div className="is_character">{slot.is_character ? `Character - ${slot.size}` : 'Spell' }</div>
+                      <div className="is_character">{slot.is_character ? `Character - ${slot.size || 'default'}` : 'Spell' }</div>
                       <div className="hover_stats">{attributes}</div>
                       <hr />
-                      <div className="hover_stats"><i>{lore || null}</i></div>
+                      <div className="hover_lore"><i>{lore || null}</i></div>
                     </div>
                   </div>
                 );

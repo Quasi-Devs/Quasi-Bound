@@ -89,6 +89,15 @@
     bottom: 75%;
 }
 
+.hover-station {
+    border: 4px solid black;
+    position: relative;
+    height: 480px;
+    width: 240px;
+    background-color: white;
+    bottom: 75%;
+}
+
 .hover:hover {
     border: solid 4px blue;
     animation: hidden ease-in-out 1s;
@@ -151,7 +160,8 @@
 }
 
 .hover_lore {
-  font-size: 9px;
+  font-weight: bold;
+  font-size: 11px;
 }
 
 .placements {
@@ -230,9 +240,10 @@
 }
 
 .discard {
-    position: relative;
-    width: 8%;
-    bottom: 10%;
+    position: absolute;
+    width: 100%;
+    bottom: 100%;
+    margin-left: 150%;
 }
 
 .buttonPos {
