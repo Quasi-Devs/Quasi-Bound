@@ -33,7 +33,9 @@ const MyDecks = ({
   const createDeck = () => {
     if (inputShow) {
       axios.post('/data/deck', { title, userId: user.id })
-        .then(() => {
+        .then(({ data }) => {
+          setDecks([...decks, data]);
+          setDisplayDecks([...displayDecks, data]);
           setInputShow(false);
           setTrigger(!trigger);
           setTitle('');
