@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   deckIcon: {
     width: '24px',
     height: '24px',
-    filter: 'invert(12%) sepia(100%) saturate(5603%) hue-rotate(245deg) brightness(79%) contrast(147%)',
+    filter: 'invert(44%) sepia(21%) saturate(6628%) hue-rotate(193deg) brightness(103%) contrast(101%)',
   },
 });
 
