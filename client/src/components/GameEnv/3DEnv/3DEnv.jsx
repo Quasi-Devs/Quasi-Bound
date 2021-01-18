@@ -71,12 +71,7 @@ function DOMObject({
 
   prop.position[2] = -10;
 
-  let posit;
-
-  if (!slot) {
-    posit = [0, 0, 100];
-  }
-  posit = posit || position;
+  const posit = position;
   const newPos = new THREE.Vector3(posit[0] * 75, posit[1] * 10, posit[2] * 140);
   const newRot = new THREE.Euler(rot[0], rot[1], rot[2]);
   useEffect(() => {
@@ -228,70 +223,82 @@ const ThreeDEnv = ({
                 const attributes = slot ? slot.description.split('/')[0] : slot.description;
                 const lore = slot && slot.description.split('/')[1];
                 return (
-                  <div styles={{ width: '1px', height: '1px' }} key={String(i)}>
-                    <div
-                      aria-hidden="true"
-                      className={`${clicks[i] ? 'hover-station' : 'hover'} card_background ${cardClasses[`opacity${i}`]}`}
-                      ref={refs[i]}
-                      onClick={() => {
-                        const replacement = clicks;
-                        replacement[i] = !replacement[i];
-                        setClick({ ...replacement });
-                      }}
-                    >
-                      <div className="hover_title">{slot.title}</div>
-                      <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
-                      <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
-                      <div className="top_stats">
-                        <div className="stat">
-                          <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="25" height="25" />
-                          <span className="downwards">
-                            {
-                        ` ${slot.point_attack || 0}`
-              }
-                          </span>
+                  <div styles={{ width: '1px', height: '1px', border: 'solid 2px black' }} key={String(i)}>
+                    {
+                      !slot ? (
+                        // Add click event to place card
+                        <div ref={refs[i]} className="hover-station">{' '}</div>
+                      ) : (
+                        <div
+                          aria-hidden="true"
+                          className={`${clicks[i] ? 'hover-station' : 'hover'} card_background ${cardClasses[`opacity${i}`]}`}
+                          ref={refs[i]}
+                          onClick={() => {
+                            const replacement = clicks;
+                            replacement[i] = !replacement[i];
+                            setClick({ ...replacement });
+                          }}
+                        >
+                          <div className="hover_title">{slot.title}</div>
+                          <div className="hover_resource">{`cost: ${slot.point_resource}`}</div>
+                          <img className="hover_img" src={slot.thumbnail} alt="thumbnail" />
+                          <div className="top_stats">
+                            <div className="stat">
+                              <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="25" height="25" />
+                              <span className="downwards">
+                                {
+                          ` ${slot.point_attack || 0}`
+                }
+                              </span>
+                            </div>
+                            <div className="stat">
+                              <img src="https://lh3.googleusercontent.com/proxy/259qTa90VW-glNM3IqRK0xKFqO7Ig7LemPKUFmDHJ_HWJeJLmkhX4SezqenIpRWmpkJGiutMdRiKrZJLVHeZbNw" alt="attack thumb" width="22" height="22" />
+                              {
+                            ` ${slot.point_health || 0}`
+                }
+                            </div>
+                            <div className="stat">
+                              <img src="https://static.thenounproject.com/png/1162-200.png" alt="attack thumb" width="22" height="22" />
+                              {
+                            ` ${slot.point_armor || 0}`
+                          }
+                            </div>
+                          </div>
+                          <div className="is_character">{slot.is_character ? `Character - ${slot.size || 'default'}` : 'Spell' }</div>
+                          <div className="hover_stats">{attributes}</div>
+                          <hr />
+                          <div className="hover_lore"><i>{lore || null}</i></div>
                         </div>
-                        <div className="stat">
-                          <img src="https://lh3.googleusercontent.com/proxy/259qTa90VW-glNM3IqRK0xKFqO7Ig7LemPKUFmDHJ_HWJeJLmkhX4SezqenIpRWmpkJGiutMdRiKrZJLVHeZbNw" alt="attack thumb" width="22" height="22" />
-                          {
-                          ` ${slot.point_health || 0}`
-              }
-                        </div>
-                        <div className="stat">
-                          <img src="https://static.thenounproject.com/png/1162-200.png" alt="attack thumb" width="22" height="22" />
-                          {
-                          ` ${slot.point_armor || 0}`
-                        }
-                        </div>
-                      </div>
-                      <div className="is_character">{slot.is_character ? `Character - ${slot.size || 'default'}` : 'Spell' }</div>
-                      <div className="hover_stats">{attributes}</div>
-                      <hr />
-                      <div className="hover_lore"><i>{lore || null}</i></div>
-                    </div>
+                      )
+                    }
+
                   </div>
                 );
               })
             }
           <div styles={{ width: '1px', height: '1px' }}>
-            <div
-              aria-hidden="true"
-              className="hover card_background"
-              ref={spell}
-            >
-              <div className="hover_title">{spellSlot.title}</div>
-              <div className="hover_resource">{`cost: ${spellSlot.point_resource}`}</div>
-              <img className="hover_img" src={spellSlot.thumbnail} alt="thumbnail" />
-              <div className="top_stats">
-                <div className="stats">
-                  <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
+            {
+              !spell ? (
+                <div
+                  aria-hidden="true"
+                  className="hover card_background"
+                  ref={spell}
+                >
+                  <div className="hover_title">{spellSlot.title}</div>
+                  <div className="hover_resource">{`cost: ${spellSlot.point_resource}`}</div>
+                  <img className="hover_img" src={spellSlot.thumbnail} alt="thumbnail" />
+                  <div className="top_stats">
+                    <div className="stats">
+                      <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
+                    </div>
+                  </div>
+                  <div className="is_character">{spellSlot.is_character ? `Character - ${spellSlot.size}` : 'Spell' }</div>
+                  <div className="hover_stats">{spellSlot ? spellSlot.description.split('(')[0] : spellSlot.description}</div>
+                  <hr />
+                  <div className="hover_stats"><i>{spellSlot && spellSlot.description.split('(')[1] ? spellSlot.description.split('(')[1] : null}</i></div>
                 </div>
-              </div>
-              <div className="is_character">{spellSlot.is_character ? `Character - ${spellSlot.size}` : 'Spell' }</div>
-              <div className="hover_stats">{spellSlot ? spellSlot.description.split('(')[0] : spellSlot.description}</div>
-              <hr />
-              <div className="hover_stats"><i>{spellSlot && spellSlot.description.split('(')[1] ? spellSlot.description.split('(')[1] : null}</i></div>
-            </div>
+              ) : null
+            }
           </div>
           <span className="you">
             <p>

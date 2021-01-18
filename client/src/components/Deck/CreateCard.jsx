@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Upload from './Upload';
 import Card from '../Card/Card';
-import loadingGif from '../GameEnv/loadingGif.gif';
+import loadingGif from '../../models/ezgif-4-462b92d9253b.gif';
 
 const useStyles = makeStyles(() => ({
 

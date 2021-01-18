@@ -49,10 +49,11 @@ const Upload = ({
       const { data: url } = await axios.post('/upload', form, { 'Content-Type': 'multipart/form-data' });
       setCardImage(url.buffer);
       const stats = await statCollector(url.image, ml5, Prob, title);
+      stats.description = `${stats.description}/${lore}`;
       setUploadStats(stats);
       const card = {
         title: stats.title,
-        description: lore ? `${stats.description}/${lore}` : stats.description,
+        description: `${stats.description}/${lore}`,
         is_character: stats.isCharacter,
         point_armor: stats.armor,
         point_attack: stats.attack,
