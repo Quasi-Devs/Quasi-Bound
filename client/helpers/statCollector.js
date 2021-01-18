@@ -33,13 +33,12 @@ const resourcePoints = {
 // A variable to hold the image for classification
 
 // A function to run when we get any errors and the results
-async function gotResult(error, results) {
+async function gotResult(error) {
   // Display error in the console
   if (error) {
     console.error(error);
   }
   // The results are in an array ordered by confidence.
-  await console.info(results);
 }
 
 const preload = async (ml5) => {

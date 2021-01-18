@@ -28,13 +28,17 @@ const useStyles = makeStyles({
     position: 'absolute',
     top: '0',
   },
+  pvf: {
+    width: '30%',
+    height: '30%',
+    paddingBottom: '5%',
+  },
 });
 
 const socket = io();
 
 const PlayHub = ({ user }) => {
   const classes = useStyles();
-  const text = 'play hub';
   const [Invite, setInvite] = useState(false);
   const [Open, setOpen] = useState(false);
   const [Error, setError] = useState(false);
@@ -62,40 +66,46 @@ const PlayHub = ({ user }) => {
       </Snackbar>
       {GoOn ? <Redirect to="/game" /> : null}
       <div className="find">
-        <h1 className="header">{`left ${text}`}</h1>
-        <h1>Img slot</h1>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          className="button"
-          onClick={() => {
-            if (!user.id) {
-              setError(true);
-            } else {
-              handleModal();
-              socket.emit('Queue', user.id);
-            }
-          }}
-        >
-          Finding A Match Against Player
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          onClick={() => {
-            if (!user.id) {
-              setError(true);
-            } else {
-              axios.get('/data/addEnemy')
-                .then(() => setGoOn(true))
-                .catch((err) => console.warn(err));
-            }
-          }}
-        >
-          Start A Match Against Bot
-        </Button>
+        <h1 className="header">Find a Match</h1>
+        <div className={classes.userSearch}>
+          <img className={classes.pvf} src="https://image.flaticon.com/icons/png/128/3069/3069052.png" alt="playervfriend" />
+        </div>
+        <div className={classes.userSearch}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            // className="button"
+            onClick={() => {
+              if (!user.id) {
+                setError(true);
+              } else {
+                handleModal();
+                socket.emit('Queue', user.id);
+              }
+            }}
+          >
+            Find a Match
+          </Button>
+        </div>
+        <div className={classes.userSearchButton}>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            onClick={() => {
+              if (!user.id) {
+                setError(true);
+              } else {
+                axios.get('/data/addEnemy')
+                  .then(() => setGoOn(true))
+                  .catch((err) => console.warn(err));
+              }
+            }}
+          >
+            Start A Match Against Bot
+          </Button>
+        </div>
         <Modal open={Open}>
           <div className={classes.modalStyle}>
             <h1>Finding A Match</h1>
@@ -114,8 +124,10 @@ const PlayHub = ({ user }) => {
         </Modal>
       </div>
       <div className="create">
-        <h1 className="header">{`right ${text}`}</h1>
-        <h1>Img slot</h1>
+        <h1 className="header">Create a Match</h1>
+        <div className={classes.userSearch}>
+          <img src="https://image.flaticon.com/icons/png/128/2619/2619029.png" alt="playervfriend" />
+        </div>
         <div className={classes.userSearch}>
           <h3>Search for player (ID can be found in profile)</h3>
         </div>

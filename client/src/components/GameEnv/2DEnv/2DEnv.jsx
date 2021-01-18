@@ -73,6 +73,10 @@ const TwoDEnv = ({
         if (clicked.description.includes('damage')) {
           if (currentEnemySlots[i]) {
             currentEnemySlots[i].point_health -= Number(number);
+            if (currentEnemySlots[i].point_health <= 0) {
+              currentEnemySlots[i] = false;
+              setEnemySlots([...currentEnemySlots]);
+            }
           } else {
             socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
             setEnemyHP(enemyHP - Number(number));
@@ -107,6 +111,12 @@ const TwoDEnv = ({
             if (clicked.description.includes('damage')) {
               if (currentEnemySlots[i]) {
                 currentEnemySlots[i].point_health -= Number(number);
+                if (currentEnemySlots[i].point_health <= 0) {
+                  setTimeout(() => {
+                    currentEnemySlots[i] = false;
+                    setEnemySlots([...currentEnemySlots]);
+                  }, 1000);
+                }
               } else {
                 socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
                 setEnemyHP(enemyHP - Number(number));

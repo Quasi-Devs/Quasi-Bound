@@ -10,7 +10,7 @@
     margin-right: 5%;
     font-family: 'Roboto', sans-serif;
     flex: 0 0 43%;
-    border: 5px solid #ac4f22;
+    border: 2px solid black;
     flex-direction: column;
     background-color: #f5ebda;
     height: 550px;
@@ -19,7 +19,7 @@
 .friend {
     font-family: 'Roboto', sans-serif;
     flex: 0 0 30%;
-    border: 5px solid #ac4f22;
+    border: 2px solid black;
     flex-direction: column;
     background-color: #f5ebda;
     height: 550px;
@@ -29,24 +29,25 @@
     margin-left: 2%;
     font-family: 'Roboto', sans-serif;
     flex: 0 0 30%;
-    border: 5px solid #ac4f22;
+    border: 2px solid black;
     flex-direction: column;
     background-color: #f5ebda;
     height: 550px;
 }
 
 .header {
-    background-color: grey;
+    background-color: #3f51b5;
     margin-top: 0%;
     height: 60px;
     text-align: center;
+    color: white;
 }
 
 .create {
     margin-left: 5%;
     font-family: 'Roboto', sans-serif;
     flex: 1;
-    border: 5px solid #ac4f22;
+    border: 2px solid black;
     flex-direction: column;
     background-color: #f5ebda;
     height: 550px;

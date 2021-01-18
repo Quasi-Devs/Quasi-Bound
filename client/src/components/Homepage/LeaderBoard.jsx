@@ -1,19 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Card } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import {
+  List, Avatar,
+} from 'antd';
+import 'antd/dist/antd.css';
 import axios from 'axios';
 
 const useStyles = makeStyles({
   header: {
     borderBottom: '1px solid gray',
+    backgroundColor: '#2f3136',
+    color: 'white',
+    position: 'sticky',
+    top: '10px',
+  },
+  headercontainer: {
+    zIndex: 1,
+    position: 'sticky',
+    top: 0,
   },
   rightDiv: {
     position: 'relative',
     top: '5%',
     height: '450px',
     display: 'inline',
-    width: '67%',
+    width: '60%',
     float: 'right',
     marginRight: '10px',
     border: '2px solid gray',
@@ -22,11 +36,19 @@ const useStyles = makeStyles({
     overflow: 'scroll',
   },
   userDesc: {
-    positon: 'relative',
-    left: 0,
+    positon: 'absolute',
+    left: '10%',
   },
   selectedUser: {
     color: 'red',
+  },
+  userinfo: {
+    position: 'absolute',
+    left: '30%',
+  },
+  item: {
+    paddingLeft: '10%',
+    paddingRight: '10%',
   },
 });
 
@@ -51,8 +73,36 @@ const LeaderBoard = ({ user }) => {
   }, []);
   return (
     <div className={clsx(classes.rightDiv)}>
-      <h1 className={clsx(classes.header)}>LeaderBoard:</h1>
+      <div className={clsx(classes.headercontainer)}>
+        <h1 className={clsx(classes.header)}>LeaderBoard:</h1>
+      </div>
       <div className={classes.userDesc}>
+        <List
+          className={classes.main}
+          itemLayout="horizontal"
+          dataSource={users}
+          renderItem={(profile, i) => (
+            <Card className={classes.item}>
+              <List.Item
+                actions={[
+                  <div className={classes.btngroup}>
+                    <h2 key={String(i)} className={(user.name_user === profile.name_user) ? classes.selectedUser : 'none'}>
+                      {`
+                          ELO:
+                          ${profile.count_rating || 0}`}
+                    </h2>
+                  </div>]}
+              >
+                <List.Item.Meta
+                  avatar={
+                    <Avatar src={profile.thumbnail} />
+                        }
+                  title={<h2 className={classes.userinfo}>{`${i + 1}:  ${profile.name_user}  #${profile.id}`}</h2>}
+                />
+              </List.Item>
+            </Card>
+          )}
+        />
         {users.map((leader, i) => (
           <h1 key={String(i)} className={(user.name_user === leader.name_user) ? classes.selectedUser : 'none'}>
             {`

@@ -195,10 +195,10 @@ const MyDecks = ({
         {displayDecks.map((deck) => (
           <div key={deck.id} className="deckCover" data-deck={JSON.stringify(deck)} onClick={editDeck}>
             <Typography variant="h4">
-              {deck.title}
+              <h4 className="color">{deck.title}</h4>
             </Typography>
             <Typography variant="h4">
-              {deck.count_card}
+              <h4 className="color">{deck.count_card}</h4>
             </Typography>
           </div>
         ))}

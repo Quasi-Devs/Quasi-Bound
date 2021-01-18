@@ -7,12 +7,24 @@
   width: 150px;
   height: 300px;
   text-align: center;
+  background-image: url('../../models/quasiboundcardback.png');
+  background-size: 100% 100%;
+}
+
+.deckCover:hover {
+  border: solid 5px blue;
+}
+
+.color {
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .cardsList {
   border: solid 1px black;
   position: absolute;
   right: 0em;
+  background-color: white;
 }
 
 .deckCards {

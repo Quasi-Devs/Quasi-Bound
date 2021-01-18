@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropType from 'prop-types';
-import SecurityTwoToneIcon from '@material-ui/icons/SecurityTwoTone';
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
+import { Button } from 'antd';
+import 'antd/dist/antd.css';
 import '../GameEnv/2DEnv/2denv.css';
 
 const Card = ({
-  info, setClick, onClick, resourceCount, setTaken, i, setCardIndex,
+  info, setClick, resourceCount, setTaken, i, setCardIndex, onClick,
 }) => {
   const [hover, setHover] = useState(!setClick);
   const handleHover = () => setClick && setHover(!hover);
@@ -21,19 +21,21 @@ const Card = ({
           info.is_character && (
             <div className={hover ? 'top_stats' : 'card_stats'}>
               <div className="stat">
-                {hover && (<img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />)}
-                {
+                {hover && (<img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="25" height="25" />)}
+                <span className="downwards">
+                  {
                         ` ${info.point_attack || 0}`
               }
+                </span>
               </div>
               <div className="stat">
-                {hover && (<FavoriteTwoToneIcon />)}
+                {hover && (<img src="https://lh3.googleusercontent.com/proxy/259qTa90VW-glNM3IqRK0xKFqO7Ig7LemPKUFmDHJ_HWJeJLmkhX4SezqenIpRWmpkJGiutMdRiKrZJLVHeZbNw" alt="attack thumb" width="22" height="22" />)}
                 {
                           ` ${info.point_health || 0}`
               }
               </div>
               <div className="stat">
-                {hover && (<SecurityTwoToneIcon />)}
+                {hover && (<img src="https://static.thenounproject.com/png/1162-200.png" alt="attack thumb" width="22" height="22" />)}
                 {
                           ` ${info.point_armor || 0}`
                         }
@@ -47,7 +49,7 @@ const Card = ({
         {hover && (<div className="hover_lore"><i>{lore || null}</i></div>)}
       </div>
       {hover ? (
-        <button
+        <Button
           variant="contained"
           color="primary"
           onClick={() => {
@@ -60,8 +62,8 @@ const Card = ({
           type="submit"
           className="playcard"
         >
-          {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
-        </button>
+          {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK ' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
+        </Button>
       ) : null}
     </div>
   );

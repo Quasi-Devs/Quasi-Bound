@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Typography, Box, Button,
+  Typography, Box,
 } from '@material-ui/core';
 import query from 'query-string';
 import { makeStyles } from '@material-ui/core/styles';
 import './Homepage.css';
-import TranslateIcon from '@material-ui/icons/Translate';
 import clsx from 'clsx';
 import LeaderBoard from './LeaderBoard';
 
@@ -18,9 +17,8 @@ const useStyles = makeStyles({
     width: '80%',
     height: '500px',
     border: '1px solid gray',
-    borderRadius: '5px',
     textAlign: 'center',
-    boxShadow: '3px 3px 3px 6px lightgrey',
+    boxShadow: '0px 10px 0px 0px gray',
   },
   rightDiv: {
     position: 'relative',
@@ -63,15 +61,17 @@ const Homepage = ({ user, setNav }) => {
   useEffect(() => setNav(true), []);
   let greeting;
   if (user.id) {
-    greeting = `Welcome, ${user.name_user}`;
+    greeting = `Welcome back, ${user.name_user}!`;
+  }
+  if (newuser) {
+    greeting = `Welcome, ${user.name_user}!`;
   }
   return (
     <div className={clsx(classes.container)}>
-      <Typography variant="h2">
-        {greeting}
-        { newuser && (
-        <Button id="google_translate_element"><TranslateIcon /></Button>
-        )}
+      <Typography variant="h2" className="greetings">
+        <h4 className="greetingText">
+          {greeting}
+        </h4>
       </Typography>
       <div className={clsx(classes.mainDiv)}>
         <iframe

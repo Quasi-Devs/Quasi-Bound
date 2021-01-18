@@ -9,7 +9,7 @@ import ThreeDEnv from './3DEnv/3DEnv';
 import TwoDEnv from './2DEnv/2DEnv';
 import exampleData from '../../../example';
 import botData from '../../../bot';
-import loadingGif from './loadingGif.gif';
+import gif from '../../models/ezgif-4-462b92d9253b.gif';
 
 const socket = io();
 
@@ -110,55 +110,14 @@ const GameEnv = ({
       }
     }).catch((err) => console.warn(err)), []);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (user) {
       if (handleEnd && turn) {
         let hp = enemyHP;
-        if (user.id_enemy === null) {
-          yourSlots.map((val, i) => {
-            if (val && val.turn === 0) {
-              if (enemySlots[i]) {
-                if (val.point_attack && enemySlots[i].point_armor < val.point_attack
-                  && val.point_health > 0) {
-                  enemySlots[i].point_health -= (val.point_attack - enemySlots[i].point_armor);
-                }
-                if (val.point_attack && yourSlots[i].point_armor < enemySlots[i].point_attack
-                  && enemySlots[i].point_health > 0) {
-                  yourSlots[i].point_health
-                  -= (enemySlots[i].point_attack - yourSlots[i].point_armor);
-                }
-              } else if (val.point_attack) {
-                let counter = true;
-                for (let j = 0; j <= 3; j += 1) {
-                  if (enemySlots[j]) {
-                    if (enemySlots[j].description.includes('Provoke') && enemySlots[j].point_health > 0) {
-                      if (enemySlots[j].point_armor < val.point_attack) {
-                        enemySlots[j].point_health
-                        -= (val.point_attack - enemySlots[j].point_armor);
-                      }
-                      if (yourSlots[i].point_armor < enemySlots[j].point_attack) {
-                        yourSlots[i].point_health
-                        -= (enemySlots[j].point_attack - yourSlots[i].point_armor);
-                      }
-                      counter = false;
-                      break;
-                    }
-                  }
-                }
-                if (counter && val.point_health > 0) {
-                  hp -= val.point_attack;
-                }
-              }
-            } else if (val) {
-              yourSlots[i].turn = 0;
-            }
-            return null;
-          });
-        }
         socket.emit('HP', user.id_enemy, hp, null);
         setEnemyHP(hp);
         hp = HP;
-        await enemySlots.map(async (val, i) => {
+        enemySlots.map(async (val, i) => {
           if (val && val.turn === 0) {
             if (yourSlots[i]) {
               if (val.point_attack && yourSlots[i].point_armor < val.point_attack
@@ -261,7 +220,7 @@ const GameEnv = ({
             </a>
           )}
         </div>
-      ) : <div className={classes.loader}><img className={classes.loadImage} src={loadingGif} alt="" /></div>}
+      ) : <div className={classes.loader}><img src={gif} alt="" /></div>}
     </div>
   );
 };

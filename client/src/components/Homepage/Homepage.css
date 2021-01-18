@@ -1,0 +1,27 @@
+.greetings {
+  /* animation: fade ease 2s; */
+  animation: fade2 ease 2s;
+  /* position: relative; */
+  background-color: #2f3136;
+  height: 80px;
+}
+
+.greetingText {
+  /* animation: fade ease 2s; */
+  animation: fade ease 5s;
+  position: relative;
+  color: white;
+}
+
+@keyframes fade {
+  from { }
+  to { color: white }
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+@keyframes fade2 {
+  from { margin-right: 100%; margin-left: 100%;}
+  to { margin-right: 0%; margin-left: 0%;}
+  /* 0% {opacity:0;}
+  100% {opacity:1;} */
+}

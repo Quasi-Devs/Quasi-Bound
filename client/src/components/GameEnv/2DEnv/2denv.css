@@ -89,6 +89,25 @@
     bottom: 75%;
 }
 
+.hover-station {
+    border: 4px solid black;
+    position: relative;
+    height: 480px;
+    width: 240px;
+    background-color: white;
+    bottom: 75%;
+}
+
+.hover:hover {
+    border: solid 4px blue;
+    animation: hidden ease-in-out 1s;
+}
+
+@keyframes hidden {
+    from { height: 470px; }
+    to { height: 480px; }
+}
+
 .hover_img {
     height: 200px;
     width: 233px;
@@ -136,19 +155,18 @@
 
 .hover_stats {
     font-size: 15px;
+    font-weight: bold;
     vertical-align: text-bottom;
 }
 
 .hover_lore {
-  font-size: 12px;
+  font-weight: bold;
+  font-size: 11px;
 }
 
 .placements {
-  /* display: flex;
-  flex-wrap: wrap; */
   position: absolute;
   right: 15%;
-  /* width: 8%; */
 }
 
 .twodenv {
@@ -199,13 +217,16 @@
   display: flex;
   flex-wrap: wrap;
   position: absolute;
-  border: 3px solid black;
+  background-image: url('../../../models/quasiboundcardback.png');
+  background-size: 100% 100%;
   height: 120px;
   left: 2.6%;
   width: 60px;
   font-weight: bolder;
   font-size: 12px;
+  color: white;
 }
+
 
 .cardpos {
   display: flex;
@@ -214,20 +235,21 @@
 
 .playcard {
   position: absolute;
-  right: 10%;
+  right: 15%;
   top: -10%;
 }
 
 .discard {
-    position: relative;
-    width: 8%;
-    bottom: 10%;
+    position: absolute;
+    width: 100%;
+    bottom: 100%;
+    margin-left: 150%;
 }
 
 .buttonPos {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    right: 12%;
+    bottom: 5%;
 }
 
 .todo {
@@ -242,5 +264,4 @@
     margin-top: 1%;
     width: 100%;
     left: 10%;
-    /* border: 5px solid #ac4f22; */
 }
