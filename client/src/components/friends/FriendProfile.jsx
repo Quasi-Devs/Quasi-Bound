@@ -56,6 +56,7 @@ const useStyles = makeStyles(() => ({
     margin: '5%',
     display: 'flex',
     justifyContent: 'center',
+    fontSize: '150%',
   },
   underHead: {
     margin: '3%',
@@ -77,7 +78,7 @@ const friendProfile = ({ friend }) => {
         <div className={classes.profileContainer}>
           <Card className={classes.statsContainer}>
             <Card className={classes.cardHeader}>
-              <h1>{`${friend.name_user} #${friend.id}`}</h1>
+              <h1 className={classes.cardHeader}>{`${friend.name_user} #${friend.id}`}</h1>
             </Card>
             <h1 className={classes.underHead}>My Stats:</h1>
             <h4 className={classes.description}>{`Games Won: ${friend.total_win || 0}`}</h4>

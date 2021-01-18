@@ -65,6 +65,12 @@ const useStyles = makeStyles(() => ({
   description: {
     margin: '5%',
     display: 'flex',
+    fontSize: '150%',
+    overflow: 'scroll',
+  },
+  stat: {
+    margin: '5%',
+    display: 'flex',
     justifyContent: 'center',
     fontSize: '150%',
   },
@@ -101,10 +107,10 @@ const Profile = ({ user, setUser }) => {
               <h1 className={classes.cardText}>{`${user.name_user} #${user.id}`}</h1>
             </Card>
             <h1 className={classes.underHead}>My Stats:</h1>
-            <h4 className={classes.description}>{`Games Won: ${user.total_win || 0}`}</h4>
-            <h4 className={classes.description}>{`Games Lost: ${user.total_games - user.total_win}`}</h4>
-            <h4 className={classes.description}>{`Total Games: ${user.total_games || 0}`}</h4>
-            <h4 className={classes.description}>{`Score (ELO): ${user.count_rating || 0} LP`}</h4>
+            <h4 className={classes.stat}>{`Games Won: ${user.total_win || 0}`}</h4>
+            <h4 className={classes.stat}>{`Games Lost: ${user.total_games - user.total_win}`}</h4>
+            <h4 className={classes.stat}>{`Total Games: ${user.total_games || 0}`}</h4>
+            <h4 className={classes.stat}>{`Score (ELO): ${user.count_rating || 0} LP`}</h4>
           </Card>
           <div className={classes.imgContainer}>
             <img
