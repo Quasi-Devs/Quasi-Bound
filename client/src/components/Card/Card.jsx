@@ -24,9 +24,11 @@ const Card = ({
             <div className={hover ? 'top_stats' : 'card_stats'}>
               <div className="stat">
                 {hover && (<img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />)}
-                {
+                <div className="attack">
+                  {
                         ` ${info.point_attack || 0}`
               }
+                </div>
               </div>
               <div className="stat">
                 {hover && (<FavoriteTwoToneIcon />)}
@@ -62,7 +64,7 @@ const Card = ({
           type="submit"
           className="playcard"
         >
-          {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
+          {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK ' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
         </Button>
       ) : null}
     </div>

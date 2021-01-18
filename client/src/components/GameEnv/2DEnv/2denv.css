@@ -200,7 +200,9 @@
   display: flex;
   flex-wrap: wrap;
   position: absolute;
-  border: 3px solid black;
+  /* border: 3px solid black; */
+  background-image: url('../../../models/quasiboundcardback.png');
+  background-size: 100% 100%;
   height: 120px;
   left: 2.6%;
   width: 60px;
@@ -211,6 +213,10 @@
 .cardpos {
   display: flex;
   flex-wrap: wrap;
+}
+
+.attack {
+  /* vertical-align: text-bottom; */
 }
 
 .playcard {
