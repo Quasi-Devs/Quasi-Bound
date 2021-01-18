@@ -57,8 +57,8 @@ dbRouter.get('/logout', (req, res) => {
 });
 
 dbRouter.post('/deck', async (req, res) => {
-  await Deck.createDeck(req.body).catch((err) => console.warn(err));
-  res.sendStatus(201);
+  const deck = await Deck.createDeck(req.body).catch((err) => console.warn(err));
+  res.status(201).send(deck);
 });
 
 dbRouter.get('/decks/:userId', async (req, res) => {
