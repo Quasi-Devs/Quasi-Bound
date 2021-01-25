@@ -24,7 +24,7 @@ function DOMObject({
   const opacity = opaque;
   const currentpos = position[1] * 10;
   CSSFrame(({ mouse }) => {
-    if (slot.point_health !== undefined) {
+    if (slot.point_health && slot.point_health !== undefined) {
       if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
         opacity[index] -= 2;
         setOpaque({ ...opacity });
@@ -32,20 +32,26 @@ function DOMObject({
         opacity[index] = 100;
         setOpaque({ ...opacity });
       }
-      if (slot && slot.description.includes('Fly') && !clicked) {
-        ref.current.castShadow = true;
-        if (ref.current.position.y >= currentpos + 200) {
-          elevated = true;
-        }
-        if (ref.current.position.y >= currentpos) {
-          if (elevated) {
-            ref.current.position.y -= 1;
-            if (ref.current.position.y === currentpos + 100) {
-              elevated = false;
-            }
+    }
+    if ((slot && slot.description.includes('Fly') && !clicked) || (slot && !slot.is_character)) {
+      ref.current.castShadow = true;
+      if (ref.current.position.y >= currentpos + 200) {
+        elevated = true;
+      }
+      if (ref.current.position.y >= currentpos) {
+        if (elevated) {
+          if (!slot.is_character) {
+            ref.current.position.y -= 0;
           } else {
-            ref.current.position.y += 1;
+            ref.current.position.y -= 1;
           }
+          if (ref.current.position.y === currentpos + 100) {
+            elevated = false;
+          }
+        } else if (!slot.is_character) {
+          ref.current.position.y += 4;
+        } else {
+          ref.current.position.y += 1;
         }
       }
     }
@@ -167,6 +173,8 @@ const ThreeDEnv = ({
   const cardStyles = makeStyles(opa);
   const classes = useStyles();
   const cardClasses = cardStyles();
+  const spellAttributes = spellSlot ? spellSlot.description.split('/')[0] : spellSlot.description;
+  const spellLore = spellSlot && spellSlot.description.split('/')[1];
   return (
     <>
       <div>
@@ -278,7 +286,7 @@ const ThreeDEnv = ({
             }
           <div styles={{ width: '1px', height: '1px' }}>
             {
-              !spell ? (
+              !spellSlot.title ? (<div ref={spell} className="card_background">{' '}</div>) : (
                 <div
                   aria-hidden="true"
                   className="hover card_background"
@@ -289,15 +297,15 @@ const ThreeDEnv = ({
                   <img className="hover_img" src={spellSlot.thumbnail} alt="thumbnail" />
                   <div className="top_stats">
                     <div className="stats">
-                      <img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="30" height="30" />
+                      {' '}
                     </div>
                   </div>
                   <div className="is_character">{spellSlot.is_character ? `Character - ${spellSlot.size}` : 'Spell' }</div>
-                  <div className="hover_stats">{spellSlot ? spellSlot.description.split('(')[0] : spellSlot.description}</div>
+                  <div className="hover_stats">{spellAttributes}</div>
                   <hr />
-                  <div className="hover_stats"><i>{spellSlot && spellSlot.description.split('(')[1] ? spellSlot.description.split('(')[1] : null}</i></div>
+                  <div className="hover_lore"><i>{spellLore || null}</i></div>
                 </div>
-              ) : null
+              )
             }
           </div>
           <span className="you">
@@ -307,7 +315,7 @@ const ThreeDEnv = ({
               <p className="bad">{(HP > 83) ? null : HP}</p>
             </p>
           </span>
-          <span className="spell">{spellSlot ? `${enemyName} use spell` : null}</span>
+          <span className="spell">{spellSlot ? `${enemyName} used spell` : null}</span>
           {(HP <= 0 && done) ? (
             <>
               {(HP <= 0 && enemyHP <= 0 && done) ? (
