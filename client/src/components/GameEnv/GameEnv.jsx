@@ -37,6 +37,17 @@ const GameEnv = ({
   const [enemyHP, setEnemyHP] = useState(250);
   const [done, setDone] = useState(false);
   const [spellSlot, setSpellSlot] = useState(false);
+  const [clicked, setClick] = useState(false);
+  const [resource, setResource] = useState([
+    true, false, false, false, false, false, false, false, false, false, false, false]);
+  const [count, setCount] = useState(0);
+  const [cardInHand, setCardInHand] = useState([]);
+  const [botHand, setBotHand] = useState([botDeck[0],
+    botDeck[1], botDeck[2], botDeck[3], botDeck[4]]);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [resourceCount, setResourceCount] = useState(resource.join('').split('true').length - 1);
+  const [taken, setTaken] = useState(0);
+  const [botGo, setBotGo] = useState(false);
   const classes = useStyles();
 
   socket.on(`${user.id}Spell`, (spell) => {
@@ -91,9 +102,13 @@ const GameEnv = ({
       axios.get(`/data/deckCards/${user.default_deck}`)
         .then(({ data }) => {
           if (data.length !== 0) {
-            setDeck(_.shuffle(data));
+            const newDeck = _.shuffle(data);
+            setCardInHand([newDeck[0], newDeck[1], newDeck[2], newDeck[3], newDeck[4]]);
+            setDeck(newDeck);
           } else {
-            setDeck(_.shuffle(exampleData));
+            const newDeck = _.shuffle(exampleData);
+            setCardInHand([newDeck[0], newDeck[1], newDeck[2], newDeck[3], newDeck[4]]);
+            setDeck(newDeck);
           }
         }).catch((err) => console.warn(err));
     }
@@ -183,11 +198,31 @@ const GameEnv = ({
         <div>
           <ThreeDEnv
             slots={[...yourSlots, ...enemySlots]}
+            yourSlots={yourSlots}
             user={user}
             HP={HP}
             enemyHP={enemyHP}
             done={done}
             spellSlot={spellSlot}
+            deck={deck}
+            setTurn={setTurn}
+            setCount={setCount}
+            cardInHand={cardInHand}
+            setBotGo={setBotGo}
+            botGo={botGo}
+            resource={resource}
+            setResource={setResource}
+            setResourceCount={setResourceCount}
+            clicked={clicked}
+            enemySlots={enemySlots}
+            setEnemySlots={setEnemySlots}
+            setEnemyHP={setEnemyHP}
+            setSlots={setYourSlots}
+            setCardInHand={setCardInHand}
+            cardIndex={cardIndex}
+            resourceCount={resourceCount}
+            taken={taken}
+            setClicked={setClick}
           />
           {!done ? (
             <TwoDEnv
@@ -206,7 +241,25 @@ const GameEnv = ({
               enemyHP={enemyHP}
               setEnemyHP={setEnemyHP}
               HP={HP}
+              clicked={clicked}
+              resource={resource}
+              setResource={setResource}
+              setClick={setClick}
+              count={count}
               setHP={setHP}
+              setCount={setCount}
+              cardInHand={cardInHand}
+              setCardInHand={setCardInHand}
+              botHand={botHand}
+              setBotHand={setBotHand}
+              cardIndex={cardIndex}
+              setCardIndex={setCardIndex}
+              resourceCount={resourceCount}
+              setResourceCount={setResourceCount}
+              taken={taken}
+              botGo={botGo}
+              setBotGo={setBotGo}
+              setTaken={setTaken}
             />
           ) : (
             <a href="/home">
