@@ -78,7 +78,7 @@ function DOMObject({
   prop.position[2] = -10;
 
   const posit = position || [-9, 2, -13];
-  const newPos = new THREE.Vector3(posit[0] * 75, posit[1] * 10, posit[2] * 140);
+  const newPos = new THREE.Vector3(posit[0] * 90, posit[1] * 10, posit[2] * 140);
   const newRot = new THREE.Euler(rot[0], rot[1], rot[2]);
   useEffect(() => {
     ref.current = new CSS3DObject(dom.current);
@@ -309,7 +309,9 @@ const ThreeDEnv = ({
             </Suspense>
           </Canvas>
           <CanvasCSS3D
-            style={{ position: 'absolute', top: '0', height: window.innerHeight * 0.73 }}
+            style={{
+              position: 'absolute', top: '0', height: window.innerHeight * 0.73, width: '98%', right: 0,
+            }}
             camera={{ position: [0, cameraY, 150] }}
           >
             {
@@ -412,7 +414,7 @@ const ThreeDEnv = ({
             }
           <div styles={{ width: '1px', height: '1px' }}>
             {
-              !spellSlot.title ? (<div ref={spell} className="card_background">{' '}</div>) : (
+              !spellSlot.title ? (<div ref={spell} className="slot_background">{' '}</div>) : (
                 <div
                   aria-hidden="true"
                   className="hover card_background"

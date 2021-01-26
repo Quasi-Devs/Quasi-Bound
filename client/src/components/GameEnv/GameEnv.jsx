@@ -273,7 +273,7 @@ const GameEnv = ({
             </a>
           )}
         </div>
-      ) : <div className={classes.loader}><img src={gif} alt="" /></div>}
+      ) : <div className={classes.loader}><img src={gif} alt="" width={window.innerWidth / 1.5} height={window.innerHeight} /></div>}
     </div>
   );
 };
