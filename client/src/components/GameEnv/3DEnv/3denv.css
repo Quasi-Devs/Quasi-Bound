@@ -46,10 +46,10 @@ span.spell {
     width: 200px;
     max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 3em;
+    font-size: 2em;
     line-height: 0.9em;
     pointer-events: none;
-    top: 15%;
+    top: 10%;
     left: 44%;
 }
 
