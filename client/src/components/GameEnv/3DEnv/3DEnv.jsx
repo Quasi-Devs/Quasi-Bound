@@ -26,9 +26,9 @@ function DOMObject({
   CSSFrame(({ mouse }) => {
     if (slot.point_health && slot.point_health !== undefined) {
       if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
-        opacity[index] -= 2;
+        opacity[index] -= 4;
         setOpaque({ ...opacity });
-      } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
+      } else if (slot && slot.point_health > 0 && opacity[index] !== 100) {
         opacity[index] = 100;
         setOpaque({ ...opacity });
       }
@@ -129,10 +129,6 @@ function Table() {
 
 const opa = {
 };
-
-// const opaque = {
-//   0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
-// };
 
 const ThreeDEnv = ({
   slots, user, enemyHP, HP, done, spellSlot, deck, setTurn, setCount, cardInHand, setBotGo, botGo,
