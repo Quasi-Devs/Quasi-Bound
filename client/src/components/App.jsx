@@ -18,6 +18,7 @@ import GameEnv from './GameEnv/GameEnv';
 import Login from './Login';
 import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
+import rotate from '../models/phone-rotate.png';
 
 const socket = io();
 const key = 'f64c20cfef0d9aca4db81064e3e01800';
@@ -35,6 +36,15 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     color: 'white',
+  },
+  mobilealert: {
+    position: 'absolute',
+    border: '2px solid black',
+    zIndex: 1,
+    backgroundColor: 'white',
+    opacity: '80%',
+    margin: '10%',
+    marginTop: '30%',
   },
 });
 
@@ -76,6 +86,11 @@ const App = () => {
 
   return (
     <div className={classes.root}>
+      { window.innerWidth < window.innerHeight && (
+      <div className={classes.mobilealert}>
+        <img src={rotate} alt="phone-rotate-indicator" width={window.innerWidth * 0.8} height={window.innerHeight / 2} />
+      </div>
+      ) }
       <Snackbar
         open={open}
         className={classes.alertFormat}

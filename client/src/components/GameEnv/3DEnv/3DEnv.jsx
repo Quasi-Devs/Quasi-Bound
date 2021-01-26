@@ -297,9 +297,11 @@ const ThreeDEnv = ({
         {
          background && <div className={classes.doneIcon} />
         }
-        <div style={{ height: window.innerHeight * 0.73 }}>
+        <div style={{
+          height: window.innerHeight * 0.73, backgroundImage: 'url(https://media1.giphy.com/media/XeH46jGNhcnaySNyd1/giphy-downsized-large.gif)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover',
+        }}
+        >
           <Canvas>
-            <color attach="background" args={['gray']} />
             <directionalLight intensity={0.5} />
             <ambientLight intensity={0.5} />
             <spotLight position={[20, 20, 10]} angle={0.9} />

@@ -10,6 +10,7 @@ span.you {
     pointer-events: none;
     top: 180px;
     left: 50px;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 span.enemy {
@@ -24,6 +25,7 @@ span.enemy {
     pointer-events: none;
     top: 180px;
     left: 77%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 
@@ -68,6 +70,7 @@ span.spell {
     pointer-events: none;
     top: 100%;
     margin: 10%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .okay {
@@ -83,6 +86,7 @@ span.spell {
     pointer-events: none;
     top: 100%;
     margin: 10%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .bad {
@@ -98,4 +102,5 @@ span.spell {
     pointer-events: none;
     top: 100%;
     margin: 10%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
