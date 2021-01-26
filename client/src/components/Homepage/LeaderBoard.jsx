@@ -103,17 +103,6 @@ const LeaderBoard = ({ user }) => {
             </Card>
           )}
         />
-        {users.map((leader, i) => (
-          <h1 key={String(i)} className={(user.name_user === leader.name_user) ? classes.selectedUser : 'none'}>
-            {`
-          ${i + 1}:
-          
-          ${leader.name_user}
-
-          ELO:
-          ${leader.count_rating || 0}`}
-          </h1>
-        ))}
       </div>
     </div>
   );
