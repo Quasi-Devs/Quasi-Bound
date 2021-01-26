@@ -386,7 +386,7 @@ const ThreeDEnv = ({
                               </span>
                             </div>
                             <div className="stat">
-                              <img src="https://lh3.googleusercontent.com/proxy/259qTa90VW-glNM3IqRK0xKFqO7Ig7LemPKUFmDHJ_HWJeJLmkhX4SezqenIpRWmpkJGiutMdRiKrZJLVHeZbNw" alt="attack thumb" width="22" height="22" />
+                              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-y46uQBifR87p1-kh4s0Lgp4jSFqA2ZM9ZQ&usqp=CAU" alt="attack thumb" width="22" height="22" />
                               {
                             ` ${slot.point_health || 0}`
                 }
