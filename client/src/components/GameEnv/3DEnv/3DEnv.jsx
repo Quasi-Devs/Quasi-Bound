@@ -231,7 +231,7 @@ const ThreeDEnv = ({
         if (!clicked.is_character) {
           if (yourSlots[i]) {
             const number = clicked.description.match(/\d+/g);
-            const arr = slots;
+            const arr = yourSlots;
             if (clicked.description.includes('Health')) {
               arr[i].point_health += Number(number);
             }
@@ -256,6 +256,7 @@ const ThreeDEnv = ({
               }
             }
             socket.emit('Spell', clicked, user.id_enemy);
+            // fix below to stop it from breaking
             socket.emit('placed', user.id_enemy, [...arr], enemySlots);
             setSlots([...arr]);
             cardInHand.splice(cardIndex, 1);
@@ -368,9 +369,13 @@ const ThreeDEnv = ({
                           className={`${clicks[i] ? 'hover-station' : 'hover'} card_background ${cardClasses[`opacity${i}`]}`}
                           ref={refs[i]}
                           onClick={() => {
-                            const replacement = clicks;
-                            replacement[i] = !replacement[i];
-                            setClick({ ...replacement });
+                            if (!clicked) {
+                              const replacement = clicks;
+                              replacement[i] = !replacement[i];
+                              setClick({ ...replacement });
+                            } else if (i <= 3) {
+                              placeCard(slot, i);
+                            }
                           }}
                         >
                           <div className="hover_title">{slot.title}</div>
