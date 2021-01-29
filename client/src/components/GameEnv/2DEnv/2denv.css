@@ -26,7 +26,6 @@
 .card_title {
     height: 10%;
     width: 70%;
-    /* border: 3px solid blue; */
     overflow: hidden;
     font-size: 9px;
     font-weight: bolder;
@@ -41,7 +40,6 @@
 
 .card_img {
     border-radius: 30px;
-    /* border: 3px solid black; */
     position: relative;
     height: 50px;
     width: 30px;
@@ -65,7 +63,6 @@
 .cardDesc {
     height: 25px;
     width: 55px;
-    /* border: 3px solid blue; */
     position: absolute;
     overflow: hidden;
     bottom: 5%;

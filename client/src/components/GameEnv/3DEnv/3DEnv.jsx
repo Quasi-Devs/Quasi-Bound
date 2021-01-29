@@ -26,7 +26,7 @@ function DOMObject({
   CSSFrame(({ mouse }) => {
     if (slot.point_health && slot.point_health !== undefined) {
       if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
-        opacity[index] -= 4;
+        opacity[index] -= 5;
         setOpaque({ ...opacity });
       } else if (slot && slot.point_health > 0 && opacity[index] !== 100) {
         opacity[index] = 100;
