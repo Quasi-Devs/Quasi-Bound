@@ -3,6 +3,9 @@ import PropType from 'prop-types';
 import { Button } from 'antd';
 import 'antd/dist/antd.css';
 import '../GameEnv/2DEnv/2denv.css';
+import attackIcon from '../../models/attack-icon.png';
+import heartIcon from '../../models/heart-icon.png';
+import shieldIcon from '../../models/shield-icon.png';
 
 const Card = ({
   info, setClick, resourceCount, setTaken, i, setCardIndex, onClick,
@@ -21,7 +24,7 @@ const Card = ({
           info.is_character && (
             <div className={hover ? 'top_stats' : 'card_stats'}>
               <div className="stat">
-                {hover && (<img src="https://cdn4.iconfinder.com/data/icons/ancient-greece/48/Greek_Mythology-15-512.png" alt="attack thumb" width="25" height="25" />)}
+                {hover && (<img src={attackIcon} alt="attack thumb" width="25" height="25" />)}
                 <span className="downwards">
                   {
                         ` ${info.point_attack || 0}`
@@ -29,16 +32,20 @@ const Card = ({
                 </span>
               </div>
               <div className="stat">
-                {hover && (<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-y46uQBifR87p1-kh4s0Lgp4jSFqA2ZM9ZQ&usqp=CAU" alt="attack thumb" width="22" height="22" />)}
-                {
-                          ` ${info.point_health || 0}`
+                {hover && (<img src={heartIcon} alt="heart" width="22" height="22" />)}
+                <span>
+                  {
+                        ` ${info.point_health || 0}`
               }
+                </span>
               </div>
               <div className="stat">
-                {hover && (<img src="https://static.thenounproject.com/png/1162-200.png" alt="attack thumb" width="22" height="22" />)}
-                {
-                          ` ${info.point_armor || 0}`
-                        }
+                {hover && (<img src={shieldIcon} alt="shield" width="22" height="22" />)}
+                <span>
+                  {
+                        ` ${info.point_armor || 0}`
+              }
+                </span>
               </div>
             </div>
           )
