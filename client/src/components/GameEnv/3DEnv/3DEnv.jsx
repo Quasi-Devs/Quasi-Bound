@@ -93,22 +93,6 @@ function DOMObject({
 
 const socket = io();
 
-function Loading() {
-  return (
-    <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
-      <sphereGeometry attach="geometry" args={[1, 16, 16]} />
-      <meshStandardMaterial
-        attach="material"
-        color="white"
-        transparent
-        opacity={0.6}
-        roughness={1}
-        metalness={0}
-      />
-    </mesh>
-  );
-}
-
 function Table() {
   const group = useRef();
   const { nodes } = useLoader(GLTFLoader, table);
@@ -127,6 +111,22 @@ function Table() {
   );
 }
 
+function Loading() {
+  return (
+    <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
+      <sphereGeometry attach="geometry" args={[1, 16, 16]} />
+      <meshStandardMaterial
+        attach="material"
+        color="white"
+        transparent
+        opacity={0.6}
+        roughness={1}
+        metalness={0}
+      />
+    </mesh>
+  );
+}
+
 const opa = {
 };
 
@@ -138,6 +138,7 @@ const ThreeDEnv = ({
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
   const [background, setBackground] = useState(false);
+  const [enemyImage, setEnemyImage] = useState('https://png.pngtree.com/element_our/20190601/ourlarge/pngtree-robot-free-button-png-picture-image_1338309.jpg');
   const [opaque, setOpaque] = useState({
     0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
   });
@@ -148,8 +149,11 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
-  socket.on(`${user.id_enemy}Name`, (name) => {
+  socket.on(`${user.id_enemy}Name`, async (name) => {
     setEnemyName(name);
+  });
+  socket.on(`${user.id_enemy}Image`, async (image) => {
+    setEnemyImage(image);
   });
 
   const handleResource = (num, check) => {
@@ -181,6 +185,22 @@ const ThreeDEnv = ({
       setResourceCount(newreasource.join('').split('true').length - 1);
     }
   };
+
+  function User() {
+    const texture = useLoader(THREE.TextureLoader, enemyImage);
+    return (
+      <mesh rotation={[0, 29.9, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
+        <sphereGeometry attach="geometry" args={[1, 16, 16]} />
+        <meshLambertMaterial
+          attach="material"
+          color="white"
+          roughness={1}
+          metalness={0}
+          map={texture}
+        />
+      </mesh>
+    );
+  }
 
   const placeCard = (val, i) => {
     if (user) {
@@ -267,6 +287,7 @@ const ThreeDEnv = ({
 
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
+    socket.emit('Image', user.thumbnail, user.id);
   }, [slots, user, enemyHP, HP]);
   const useStyles = makeStyles({
     doneIcon: {
@@ -303,7 +324,7 @@ const ThreeDEnv = ({
             <spotLight position={[20, 20, 10]} angle={0.9} />
             <Suspense fallback={<Loading />}>
               <Table />
-              <Loading />
+              <User />
             </Suspense>
           </Canvas>
           <CanvasCSS3D
