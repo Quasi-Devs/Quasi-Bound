@@ -22,6 +22,10 @@ const Search = ({
       position: 'relative',
       top: buttonPosition,
     },
+    searchBar: {
+      marginLeft: '5%',
+      marginBottom: '3%',
+    },
   });
   const classes = useStyles();
 
@@ -67,8 +71,9 @@ const Search = ({
   return (
     <div>
       <input
+        className={classes.searchBar}
         // value={query}
-        placeholder=""
+        placeholder="Search For a Card:"
         onChange={(e) => searchCards(e.target.value)}
         onKeyPress={(e) => {
           if (e.key === 'Enter') {

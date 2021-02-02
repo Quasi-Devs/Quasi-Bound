@@ -8,7 +8,7 @@ span.you {
     font-size: 5vw;
     line-height: 0.9em;
     pointer-events: none;
-    top: 180px;
+    top: 140px;
     left: 50px;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
@@ -23,7 +23,7 @@ span.enemy {
     font-size: 5vw;
     line-height: 0.9em;
     pointer-events: none;
-    top: 180px;
+    top: 140px;
     left: 77%;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
@@ -68,7 +68,7 @@ span.spell {
     line-height: 0.9em;
     color: green;
     pointer-events: none;
-    top: 100%;
+    top: 80%;
     margin: 10%;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
@@ -84,7 +84,7 @@ span.spell {
     line-height: 0.9em;
     color: yellow;
     pointer-events: none;
-    top: 100%;
+    top: 80%;
     margin: 10%;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
@@ -100,7 +100,7 @@ span.spell {
     line-height: 0.9em;
     color: red;
     pointer-events: none;
-    top: 100%;
+    top: 80%;
     margin: 10%;
     text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }

@@ -58,7 +58,7 @@ const Card = ({
       {hover ? (
         <Button
           variant="contained"
-          color="primary"
+          type="primary"
           onClick={() => {
             if (resourceCount >= info.point_resource) {
               setTaken(info.point_resource);
@@ -66,10 +66,9 @@ const Card = ({
               setClick(info);
             }
           }}
-          type="submit"
           className="playcard"
         >
-          {(resourceCount >= info.point_resource) ? <div>{info.is_character ? 'ATTACK ' : 'USE SPELL'}</div> : 'NOT ENOUGH RESOURCE'}
+          {(resourceCount >= info.point_resource) ? <div><p className="playcardtext">{info.is_character ? 'ATTACK ad adw ad ' : 'USE SPELL'}</p></div> : <div><p className="playcardtext">NOT ENOUGH RESOURCE</p></div>}
         </Button>
       ) : null}
     </div>

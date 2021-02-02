@@ -9,9 +9,16 @@
 .Resourceholder {
     display: flex;
     flex-wrap: wrap;
-    width: 10%;
+    width: 7vw;
     height: 10%;
     /* border: 3px solid blue; */
+}
+
+.Resourceholdermobile {
+    display: flex;
+    flex-wrap: wrap;
+    width: 10vw;
+    height: 10%;
 }
 
 .card {
@@ -244,8 +251,20 @@
 
 .playcard {
   position: absolute;
-  right: 15%;
-  top: -10%;
+  margin-left: 240px;
+  top: -12vw;
+  padding: 5vw 1vw 5vw 1vw;
+  width: auto;
+  /* margin-bottom: 100px; */
+}
+
+.playcardtext {
+  max-width: 100px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  font-size: 1vw;
+  font-weight: bold;
 }
 
 .discard {
@@ -257,8 +276,8 @@
 
 .buttonPos {
     position: fixed;
-    right: 12%;
-    bottom: 5%;
+    right: 9%;
+    bottom: 7%;
 }
 
 .todo {

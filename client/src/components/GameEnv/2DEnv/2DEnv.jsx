@@ -93,7 +93,7 @@ const TwoDEnv = ({
       {(turn) ? (
         <div className="main">
           <div className="deck">{`DECK:  ${deck.length}CARDS`}</div>
-          <div className="Resourceholder">
+          <div className={window.innerWidth > 850 ? 'Resourceholder' : 'Resourceholdermobile'}>
             <h2>Resource</h2>
             {resource.map((val, i) => <div key={`${String(i)}`} style={{ backgroundColor: val ? 'blue' : null }} className="ResourcePoints">{}</div>)}
           </div>
