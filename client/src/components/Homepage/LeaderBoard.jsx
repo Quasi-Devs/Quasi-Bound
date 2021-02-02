@@ -42,18 +42,15 @@ const useStyles = makeStyles({
   selectedUser: {
     color: 'red',
     fontSize: '1.6vw',
-    position: 'absolute',
-    left: '30%',
+    textAlign: 'left',
   },
   userinfo: {
-    position: 'absolute',
-    left: '30%',
     fontSize: '1.6vw',
+    textAlign: 'left',
   },
   userElo: {
     fontSize: '1.6vw',
-    position: 'absolute',
-    left: '30%',
+    textAlign: 'left',
   },
   item: {
     paddingLeft: '10%',

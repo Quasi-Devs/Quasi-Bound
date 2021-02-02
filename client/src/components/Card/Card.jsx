@@ -55,10 +55,28 @@ const Card = ({
         {hover && (<hr />)}
         {hover && (<div className="hover_lore"><i>{lore || null}</i></div>)}
       </div>
-      {hover ? (
+      {hover && resourceCount >= info.point_resource ? (
         <Button
           variant="contained"
           type="primary"
+          danger
+          onClick={() => {
+            if (resourceCount >= info.point_resource) {
+              setTaken(info.point_resource);
+              setCardIndex(i);
+              setClick(info);
+              setHover(!hover);
+            }
+          }}
+          className="playcard"
+        >
+          {(resourceCount >= info.point_resource) ? <div><p className="playcardtext">{info.is_character ? 'ATTACK' : 'USE SPELL'}</p></div> : <div><p className="playcardtext">NOT ENOUGH RESOURCE</p></div>}
+        </Button>
+      ) : (hover && (
+        <Button
+          variant="contained"
+          type="primary"
+          disabled
           onClick={() => {
             if (resourceCount >= info.point_resource) {
               setTaken(info.point_resource);
@@ -68,9 +86,9 @@ const Card = ({
           }}
           className="playcard"
         >
-          {(resourceCount >= info.point_resource) ? <div><p className="playcardtext">{info.is_character ? 'ATTACK ad adw ad ' : 'USE SPELL'}</p></div> : <div><p className="playcardtext">NOT ENOUGH RESOURCE</p></div>}
+          {(resourceCount >= info.point_resource) ? <div><p className="playcardtext">{info.is_character ? 'ATTACK' : 'USE SPELL'}</p></div> : <div><p className="playcardtext">NOT ENOUGH RESOURCE</p></div>}
         </Button>
-      ) : null}
+      ))}
     </div>
   );
 };

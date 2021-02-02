@@ -255,7 +255,24 @@
   top: -12vw;
   padding: 5vw 1vw 5vw 1vw;
   width: auto;
-  /* margin-bottom: 100px; */
+}
+
+.playcard:hover {
+  position: absolute;
+  margin-left: 240px;
+  top: -12vw;
+  width: auto;
+  animation: select ease-out 1s forwards;
+}
+
+@keyframes select {
+  from { padding: 5vw 1vw 5vw 1vw; }
+  to { padding: 5vw 3vw 5vw 3vw; }
+}
+
+@keyframes unselect {
+  from { padding: 5vw 3vw 5vw 3vw; }
+  to { padding: 5vw 1vw 5vw 1vw; }
 }
 
 .playcardtext {
