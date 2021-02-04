@@ -131,9 +131,7 @@ const opa = {
 };
 
 const ThreeDEnv = ({
-  slots, user, enemyHP, HP, done, spellSlot, deck, setTurn, setCount, cardInHand, setBotGo, botGo,
-  resource, setResource, setResourceCount, clicked, enemySlots, setEnemySlots, setEnemyHP, setSlots,
-  setCardInHand, cardIndex, resourceCount, taken, setClicked, yourSlots,
+  slots, user, enemyHP, HP, done, spellSlot, clicked, placeCard,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
@@ -156,36 +154,6 @@ const ThreeDEnv = ({
     setEnemyImage(image);
   });
 
-  const handleResource = (num, check) => {
-    if (user) {
-      if (check) {
-        socket.emit('end', user.id_enemy);
-        setTurn(false);
-        setCount(num);
-        if (!user.id_enemy) {
-          setBotGo(!botGo);
-        }
-        deck.map(() => {
-          if (cardInHand.length < 5) {
-            cardInHand.push(deck.shift());
-          }
-          return false;
-        });
-      }
-      const newreasource = resource;
-      resource.map((val, i) => {
-        if (i <= num) {
-          newreasource[i] = true;
-        } else {
-          newreasource[i] = false;
-        }
-        return false;
-      });
-      setResource([...newreasource]);
-      setResourceCount(newreasource.join('').split('true').length - 1);
-    }
-  };
-
   function User() {
     const texture = useLoader(THREE.TextureLoader, enemyImage);
     return (
@@ -201,89 +169,6 @@ const ThreeDEnv = ({
       </mesh>
     );
   }
-
-  const placeCard = (val, i) => {
-    if (user) {
-      if (clicked && !val) {
-        const arr = yourSlots;
-        arr[i] = clicked;
-        if (arr[i].description.includes('Charge')) {
-          arr[i].turn = 0;
-        } else {
-          arr[i].turn = 1;
-        }
-        const number = clicked.description.match(/\d+/g);
-        const currentEnemySlots = enemySlots;
-        if (!clicked.is_character) {
-          socket.emit('Spell', clicked, user.id_enemy);
-          arr[i] = false;
-        }
-        if (clicked.description.includes('damage')) {
-          if (currentEnemySlots[i]) {
-            currentEnemySlots[i].point_health -= Number(number);
-            if (currentEnemySlots[i].point_health <= 0) {
-              currentEnemySlots[i] = false;
-              setEnemySlots([...currentEnemySlots]);
-            }
-          } else {
-            socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
-            setEnemyHP(enemyHP - Number(number));
-          }
-        }
-        socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-        setEnemySlots([...currentEnemySlots]);
-        // this is causing a error when updating state
-        setSlots([...arr]);
-        setClicked(false);
-        cardInHand.splice(cardIndex, 1);
-        setCardInHand(cardInHand);
-        handleResource(resourceCount - taken - 1);
-        if (clicked.description.includes('resource')) {
-          handleResource(number - 1);
-        }
-      } else if (clicked) {
-        // change to handle spell cards
-        const currentEnemySlots = enemySlots;
-        if (!clicked.is_character) {
-          if (yourSlots[i]) {
-            const number = clicked.description.match(/\d+/g);
-            const arr = slots;
-            if (clicked.description.includes('Health')) {
-              arr[i].point_health += Number(number);
-            }
-            if (clicked.description.includes('attack')) {
-              arr[i].point_attack += Number(number);
-            }
-            if (clicked.description.includes('armor')) {
-              arr[i].point_armor += Number(number);
-            }
-            if (clicked.description.includes('damage')) {
-              if (currentEnemySlots[i]) {
-                currentEnemySlots[i].point_health -= Number(number);
-                if (currentEnemySlots[i].point_health <= 0) {
-                  setTimeout(() => {
-                    currentEnemySlots[i] = false;
-                    setEnemySlots([...currentEnemySlots]);
-                  }, 1000);
-                }
-              } else {
-                socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
-                setEnemyHP(enemyHP - Number(number));
-              }
-            }
-            socket.emit('Spell', clicked, user.id_enemy);
-            socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-            setSlots([...arr]);
-            cardInHand.splice(cardIndex, 1);
-            setCardInHand(cardInHand);
-            setResourceCount(resourceCount - taken);
-            handleResource(resourceCount - taken - 1);
-            setClicked(false);
-          }
-        }
-      }
-    }
-  };
 
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
@@ -338,6 +223,7 @@ const ThreeDEnv = ({
                 if (!clicks[i]) {
                   clicks[i] = false;
                 }
+                // console.log(positions[i]);
                 return (
                   <DOMObject
                     dom={refs[i]}
@@ -389,6 +275,9 @@ const ThreeDEnv = ({
                           className={`${clicks[i] ? 'hover-station' : 'hover'} card_background ${cardClasses[`opacity${i}`]}`}
                           ref={refs[i]}
                           onClick={() => {
+                            if (!clicked.is_character && clicked.title) {
+                              placeCard(slot, i);
+                            }
                             const replacement = clicks;
                             replacement[i] = !replacement[i];
                             setClick({ ...replacement });
@@ -520,26 +409,8 @@ ThreeDEnv.propTypes = {
   HP: PropTypes.number.isRequired,
   done: PropTypes.bool.isRequired,
   spellSlot: PropTypes.bool.isRequired,
-  deck: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setTurn: PropTypes.func.isRequired,
-  setCount: PropTypes.func.isRequired,
-  setBotGo: PropTypes.func.isRequired,
-  cardInHand: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  botGo: PropTypes.bool.isRequired,
-  resource: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  setResource: PropTypes.func.isRequired,
-  setResourceCount: PropTypes.func.isRequired,
   clicked: PropTypes.bool.isRequired,
-  enemySlots: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  setEnemyHP: PropTypes.func.isRequired,
-  setEnemySlots: PropTypes.func.isRequired,
-  setSlots: PropTypes.func.isRequired,
-  setCardInHand: PropTypes.func.isRequired,
-  cardIndex: PropTypes.number.isRequired,
-  resourceCount: PropTypes.number.isRequired,
-  taken: PropTypes.number.isRequired,
-  setClicked: PropTypes.func.isRequired,
-  yourSlots: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  placeCard: PropTypes.func.isRequired,
 };
 
 export default ThreeDEnv;
