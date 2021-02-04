@@ -10,6 +10,7 @@ import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import table from './models/scene.gltf';
+import backgroundImg from '../../../models/gameplay-background.gif';
 import './3denv.css';
 import '../2DEnv/2denv.css';
 
@@ -200,7 +201,7 @@ const ThreeDEnv = ({
          background && <div className={classes.doneIcon} />
         }
         <div style={{
-          height: window.innerHeight * 0.73, backgroundImage: 'url(https://media1.giphy.com/media/XeH46jGNhcnaySNyd1/giphy-downsized-large.gif)', backgroundRepeat: 'no-repeat', backgroundSize: 'cover',
+          height: window.innerHeight * 0.73, backgroundImage: `url(${backgroundImg})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover',
         }}
         >
           <Canvas>
