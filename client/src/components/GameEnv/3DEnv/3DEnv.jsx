@@ -137,7 +137,7 @@ const ThreeDEnv = ({
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
   const [background, setBackground] = useState(false);
-  const [enemyImage, setEnemyImage] = useState('https://png.pngtree.com/element_our/20190601/ourlarge/pngtree-robot-free-button-png-picture-image_1338309.jpg');
+  const [enemyImage, setEnemyImage] = useState('https://media1.giphy.com/media/gZfJz3u1OS1I4/giphy.gif');
   const [opaque, setOpaque] = useState({
     0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
   });
@@ -152,7 +152,9 @@ const ThreeDEnv = ({
     setEnemyName(name);
   });
   socket.on(`${user.id_enemy}Image`, async (image) => {
-    setEnemyImage(image);
+    if (!image.includes('null')) {
+      setEnemyImage(image);
+    }
   });
 
   function User() {
