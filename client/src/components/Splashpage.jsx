@@ -45,11 +45,12 @@ const SplashPage = () => {
       <div className={classes.jumbotron}>
         <div>
           <h3 className={classes.descriptionContainer}>
-            Quasi-Bound is a 3d card game experience that will allow someone to
-            create their own cards based on a
-            self-taught image recognition AI which will determine the stats based on that image.
-            they will have the ability to upload an image of their preference and
-            our algorithim will do the rest.
+            {'Quasi-Bound is a 3D table-top card game that allows anyone to'
+            + ' create their own cards based on a'
+            + ' self-taught image recognition AI which will determine the best stats of that image.'
+            + ' Upload any image and our algorithim will do the rest.'
+            + ' '
+            + 'It all starts with a picture.'}
           </h3>
         </div>
       </div>
