@@ -19,6 +19,7 @@ import Login from './Login';
 import Friends from './friends/Friends';
 import FriendProfile from './friends/FriendProfile';
 import rotate from '../models/phone-rotate.png';
+import './app.css';
 
 const socket = io();
 const key = 'f64c20cfef0d9aca4db81064e3e01800';
