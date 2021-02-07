@@ -53,8 +53,9 @@ span.spell {
     font-size: 2em;
     line-height: 0.9em;
     pointer-events: none;
-    top: 10%;
+    top: 9%;
     left: 44%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .good {
