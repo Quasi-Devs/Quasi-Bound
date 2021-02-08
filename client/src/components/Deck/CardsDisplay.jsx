@@ -8,7 +8,8 @@ import axios from 'axios';
 import Card from '../Card/Card';
 
 const CardsDisplay = ({
-  user, displayMode, myCards, myDecks, setMyDecks, allDeckCards, setAllDeckCards, sortCards,
+  user, displayMode, myCards, setMyCards,
+  myDecks, setMyDecks, allDeckCards, setAllDeckCards, sortCards,
 }) => {
   // const [userId, setUserId] = useState(user ? user.id : null);
   // const [myCards, setMyCards] = useState([]);
@@ -18,6 +19,7 @@ const CardsDisplay = ({
   const [buttonVisible, setButtonVisible] = useState(false);
   const [buttonPosition, setButtonPosition] = useState();
   const [addedMessage, setAddedMessage] = useState(false);
+  const [deletedMessage, setDeletedMessage] = useState(false);
   const [failureMessage, setFailureMessage] = useState(false);
   const [trigger, setTrigger] = useState(false);
   const history = useHistory();
@@ -80,6 +82,34 @@ const CardsDisplay = ({
     }
   };
 
+  const deleteCard = () => {
+    const [editingDeck] = myDecks.filter((deck) => `${deck.id}` === displayMode);
+    if (editingDeck.count_card < 30) {
+      axios.delete('/data/saveCard',
+        {
+          data: {
+            card: cardToAdd,
+            userId: user.id,
+          },
+        }).then(() => {
+        setDeletedMessage(true);
+        setTrigger(!trigger);
+        const currentDeck = [...myCards];
+
+        currentDeck.forEach((card, i) => {
+          if (card.id === cardToAdd.id) {
+            currentDeck.splice(i, 1);
+          }
+        });
+        setMyCards(currentDeck);
+        // getCardsList(cardToAdd.id);
+      }).catch((err) => console.warn(err));
+    } else {
+      setFailureMessage(true);
+      setTrigger(!trigger);
+    }
+  };
+
   const clickCard = (e) => {
     if (displayMode !== 'browse') {
       setButtonVisible(true);
@@ -108,8 +138,19 @@ const CardsDisplay = ({
           >
             {`Add ${cardToAdd.title}`}
           </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={deleteCard}
+            type="button"
+          >
+            {`Remove ${cardToAdd.title}`}
+          </Button>
           {addedMessage
             ? <span>{`Added ${cardToAdd.title}`}</span>
+            : null}
+          {deletedMessage
+            ? <span>{`Removed ${cardToAdd.title}`}</span>
             : null}
           {failureMessage
             ? <span>Deck is Full</span>
@@ -122,6 +163,7 @@ const CardsDisplay = ({
 
   useEffect(() => {
     setTimeout(() => setAddedMessage(false), 1500);
+    setTimeout(() => setDeletedMessage(false), 1500);
     setTimeout(() => setFailureMessage(false), 1500);
   }, [trigger]);
 
@@ -145,7 +187,13 @@ const CardsDisplay = ({
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-        {myCards.map((card, i) => <Card key={String(i)} info={card} onClick={clickCard} />)}
+        {myCards.map((card, i) => (
+          <Card
+            key={String(i)}
+            info={card}
+            onClick={(e) => { clickCard(e); }}
+          />
+        ))}
       </Grid>
       {displayMode !== 'browse' ? renderButton() : null}
       {displayMode !== 'browse'
@@ -175,6 +223,7 @@ CardsDisplay.propTypes = {
   setMyDecks: PropTypes.func.isRequired,
   allDeckCards: PropTypes.PropTypes.shape().isRequired,
   setAllDeckCards: PropTypes.func.isRequired,
+  setMyCards: PropTypes.func.isRequired,
   sortCards: PropTypes.func.isRequired,
 };
 

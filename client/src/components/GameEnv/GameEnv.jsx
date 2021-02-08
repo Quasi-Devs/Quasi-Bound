@@ -54,7 +54,7 @@ const GameEnv = ({
     setSpellSlot(spell);
     setTimeout(() => {
       setSpellSlot(false);
-    }, 3000);
+    }, 2000);
   });
 
   socket.on(`${user.id}Turn`, () => {

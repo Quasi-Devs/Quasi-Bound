@@ -16,7 +16,10 @@ dbRouter.get('/cards', async (req, res) => {
 
 dbRouter.post('/cards', async (req, res) => {
   const card = await Card.createCard(req.body).catch((err) => console.warn(err));
-  res.status(201).send(card.rows[0]);
+  if (card.rows) {
+    res.status(201).send(card.rows[0]);
+  }
+  res.sendStatus(404);
 });
 
 dbRouter.get('/user', async (req, res) => {
@@ -78,6 +81,11 @@ dbRouter.get('/deckCards/:deckId', async (req, res) => {
 
 dbRouter.post('/saveCard', async (req, res) => {
   await Card.saveCard(req.body).catch((err) => console.warn(err));
+  res.sendStatus(201);
+});
+
+dbRouter.delete('/saveCard', async (req, res) => {
+  await Card.removeSavedCard(req.body).catch((err) => console.warn(err));
   res.sendStatus(201);
 });
 

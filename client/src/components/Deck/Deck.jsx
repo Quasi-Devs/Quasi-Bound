@@ -120,6 +120,7 @@ const Deck = ({ user, setUser }) => {
           user={user}
           displayMode={displayMode}
           myCards={userCards}
+          setMyCards={setUserCards}
           myDecks={userDecks}
           setMyDecks={setUserDecks}
           allDeckCards={allDeckCards}
