@@ -99,6 +99,10 @@ io.on('connection', (socket) => {
     io.emit(`${id}Name`, name);
   });
 
+  socket.on('Image', (image, id) => {
+    io.emit(`${id}Image`, image);
+  });
+
   socket.on('end', (id) => {
     io.emit(`${id}Turn`);
   });

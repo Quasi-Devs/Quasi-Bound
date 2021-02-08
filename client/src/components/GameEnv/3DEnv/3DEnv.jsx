@@ -10,6 +10,7 @@ import { io } from 'socket.io-client';
 import * as THREE from 'three';
 import PropTypes from 'prop-types';
 import table from './models/scene.gltf';
+import backgroundImg from '../../../models/gameplay-background.gif';
 import './3denv.css';
 import '../2DEnv/2denv.css';
 
@@ -26,9 +27,9 @@ function DOMObject({
   CSSFrame(({ mouse }) => {
     if (slot.point_health && slot.point_health !== undefined) {
       if (slot && slot.point_health <= 0 && opacity[index] !== 0) {
-        opacity[index] -= 2;
+        opacity[index] -= 5;
         setOpaque({ ...opacity });
-      } else if (slot && slot.point_health > 0 && opacity[index] === 0) {
+      } else if (slot && slot.point_health > 0 && opacity[index] !== 100) {
         opacity[index] = 100;
         setOpaque({ ...opacity });
       }
@@ -78,7 +79,7 @@ function DOMObject({
   prop.position[2] = -10;
 
   const posit = position || [-9, 2, -13];
-  const newPos = new THREE.Vector3(posit[0] * 75, posit[1] * 10, posit[2] * 140);
+  const newPos = new THREE.Vector3(posit[0] * 90, posit[1] * 10, posit[2] * 140);
   const newRot = new THREE.Euler(rot[0], rot[1], rot[2]);
   useEffect(() => {
     ref.current = new CSS3DObject(dom.current);
@@ -92,22 +93,6 @@ function DOMObject({
 }
 
 const socket = io();
-
-function Loading() {
-  return (
-    <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
-      <sphereGeometry attach="geometry" args={[1, 16, 16]} />
-      <meshStandardMaterial
-        attach="material"
-        color="white"
-        transparent
-        opacity={0.6}
-        roughness={1}
-        metalness={0}
-      />
-    </mesh>
-  );
-}
 
 function Table() {
   const group = useRef();
@@ -127,21 +112,32 @@ function Table() {
   );
 }
 
+function Loading() {
+  return (
+    <mesh rotation={[0, 0, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
+      <sphereGeometry attach="geometry" args={[1, 16, 16]} />
+      <meshStandardMaterial
+        attach="material"
+        color="white"
+        transparent
+        opacity={0.6}
+        roughness={1}
+        metalness={0}
+      />
+    </mesh>
+  );
+}
+
 const opa = {
 };
 
-// const opaque = {
-//   0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
-// };
-
 const ThreeDEnv = ({
-  slots, user, enemyHP, HP, done, spellSlot, deck, setTurn, setCount, cardInHand, setBotGo, botGo,
-  resource, setResource, setResourceCount, clicked, enemySlots, setEnemySlots, setEnemyHP, setSlots,
-  setCardInHand, cardIndex, resourceCount, taken, setClicked, yourSlots,
+  slots, user, enemyHP, HP, done, spellSlot, clicked, placeCard,
 }) => {
   const [clicks, setClick] = useState({});
   const [enemyName, setEnemyName] = useState('enemy');
   const [background, setBackground] = useState(false);
+  const [enemyImage, setEnemyImage] = useState('https://media1.giphy.com/media/gZfJz3u1OS1I4/giphy.gif');
   const [opaque, setOpaque] = useState({
     0: 100, 1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 100,
   });
@@ -152,126 +148,34 @@ const ThreeDEnv = ({
   const [cameraY] = useState(30);
   const positions = [[-9, 2, -13], [-4, 2, -13], [1, 2, -13], [6, 2, -13],
     [-9, 75, -21], [-4, 75, -21], [1, 75, -21], [6, 75, -21]];
-  socket.on(`${user.id_enemy}Name`, (name) => {
+  socket.on(`${user.id_enemy}Name`, async (name) => {
     setEnemyName(name);
   });
-
-  const handleResource = (num, check) => {
-    if (user) {
-      if (check) {
-        socket.emit('end', user.id_enemy);
-        setTurn(false);
-        setCount(num);
-        if (!user.id_enemy) {
-          setBotGo(!botGo);
-        }
-        deck.map(() => {
-          if (cardInHand.length < 5) {
-            cardInHand.push(deck.shift());
-          }
-          return false;
-        });
-      }
-      const newreasource = resource;
-      resource.map((val, i) => {
-        if (i <= num) {
-          newreasource[i] = true;
-        } else {
-          newreasource[i] = false;
-        }
-        return false;
-      });
-      setResource([...newreasource]);
-      setResourceCount(newreasource.join('').split('true').length - 1);
+  socket.on(`${user.id_enemy}Image`, async (image) => {
+    if (!image.includes('null')) {
+      setEnemyImage(image);
     }
-  };
+  });
 
-  const placeCard = (val, i) => {
-    if (user) {
-      if (clicked && !val) {
-        const arr = yourSlots;
-        arr[i] = clicked;
-        if (arr[i].description.includes('Charge')) {
-          arr[i].turn = 0;
-        } else {
-          arr[i].turn = 1;
-        }
-        const number = clicked.description.match(/\d+/g);
-        const currentEnemySlots = enemySlots;
-        if (!clicked.is_character) {
-          socket.emit('Spell', clicked, user.id_enemy);
-          arr[i] = false;
-        }
-        if (clicked.description.includes('damage')) {
-          if (currentEnemySlots[i]) {
-            currentEnemySlots[i].point_health -= Number(number);
-            if (currentEnemySlots[i].point_health <= 0) {
-              currentEnemySlots[i] = false;
-              setEnemySlots([...currentEnemySlots]);
-            }
-          } else {
-            socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
-            setEnemyHP(enemyHP - Number(number));
-          }
-        }
-        socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-        setEnemySlots([...currentEnemySlots]);
-        // this is causing a error when updating state
-        setSlots([...arr]);
-        setClicked(false);
-        cardInHand.splice(cardIndex, 1);
-        setCardInHand(cardInHand);
-        handleResource(resourceCount - taken - 1);
-        if (clicked.description.includes('resource')) {
-          handleResource(number - 1);
-        }
-      } else if (clicked) {
-        // change to handle spell cards
-        const currentEnemySlots = enemySlots;
-        if (!clicked.is_character) {
-          if (yourSlots[i]) {
-            const number = clicked.description.match(/\d+/g);
-            const arr = yourSlots;
-            if (clicked.description.includes('Health')) {
-              arr[i].point_health += Number(number);
-            }
-            if (clicked.description.includes('attack')) {
-              arr[i].point_attack += Number(number);
-            }
-            if (clicked.description.includes('armor')) {
-              arr[i].point_armor += Number(number);
-            }
-            if (clicked.description.includes('damage')) {
-              if (currentEnemySlots[i]) {
-                currentEnemySlots[i].point_health -= Number(number);
-                if (currentEnemySlots[i].point_health <= 0) {
-                  setTimeout(() => {
-                    currentEnemySlots[i] = false;
-                    setEnemySlots([...currentEnemySlots]);
-                  }, 1000);
-                }
-              } else {
-                socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
-                setEnemyHP(enemyHP - Number(number));
-              }
-            }
-            socket.emit('Spell', clicked, user.id_enemy);
-            // fix below to stop it from breaking
-            socket.emit('placed', user.id_enemy, [...arr], enemySlots);
-            setSlots([...arr]);
-            cardInHand.splice(cardIndex, 1);
-            setCardInHand(cardInHand);
-            setResourceCount(resourceCount - taken);
-            handleResource(resourceCount - taken - 1);
-            setClicked(false);
-          }
-        }
-      }
-    }
-  };
+  function User() {
+    const texture = useLoader(THREE.TextureLoader, enemyImage);
+    return (
+      <mesh rotation={[0, 29.9, 0]} position={[0, 19, -29]} scale={new THREE.Vector3(5, 5, 5)}>
+        <sphereGeometry attach="geometry" args={[1, 16, 16]} />
+        <meshLambertMaterial
+          attach="material"
+          color="white"
+          roughness={1}
+          metalness={0}
+          map={texture}
+        />
+      </mesh>
+    );
+  }
 
   useEffect(() => {
     socket.emit('Name', user.name_user, user.id);
+    socket.emit('Image', user.thumbnail, user.id);
   }, [slots, user, enemyHP, HP]);
   const useStyles = makeStyles({
     doneIcon: {
@@ -298,19 +202,23 @@ const ThreeDEnv = ({
         {
          background && <div className={classes.doneIcon} />
         }
-        <div style={{ height: window.innerHeight * 0.73 }}>
+        <div style={{
+          height: window.innerHeight * 0.73, backgroundImage: `url(${backgroundImg})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover',
+        }}
+        >
           <Canvas>
-            <color attach="background" args={['gray']} />
             <directionalLight intensity={0.5} />
             <ambientLight intensity={0.5} />
             <spotLight position={[20, 20, 10]} angle={0.9} />
             <Suspense fallback={<Loading />}>
               <Table />
-              <Loading />
+              <User />
             </Suspense>
           </Canvas>
           <CanvasCSS3D
-            style={{ position: 'absolute', top: '0', height: window.innerHeight * 0.73 }}
+            style={{
+              position: 'absolute', top: '0', height: window.innerHeight * 0.73, width: '98%', right: 0,
+            }}
             camera={{ position: [0, cameraY, 150] }}
           >
             {
@@ -318,6 +226,7 @@ const ThreeDEnv = ({
                 if (!clicks[i]) {
                   clicks[i] = false;
                 }
+                // console.log(positions[i]);
                 return (
                   <DOMObject
                     dom={refs[i]}
@@ -369,13 +278,12 @@ const ThreeDEnv = ({
                           className={`${clicks[i] ? 'hover-station' : 'hover'} card_background ${cardClasses[`opacity${i}`]}`}
                           ref={refs[i]}
                           onClick={() => {
-                            if (!clicked) {
-                              const replacement = clicks;
-                              replacement[i] = !replacement[i];
-                              setClick({ ...replacement });
-                            } else if (i <= 3) {
+                            if (!clicked.is_character && clicked.title) {
                               placeCard(slot, i);
                             }
+                            const replacement = clicks;
+                            replacement[i] = !replacement[i];
+                            setClick({ ...replacement });
                           }}
                         >
                           <div className="hover_title">{slot.title}</div>
@@ -391,7 +299,7 @@ const ThreeDEnv = ({
                               </span>
                             </div>
                             <div className="stat">
-                              <img src="https://lh3.googleusercontent.com/proxy/259qTa90VW-glNM3IqRK0xKFqO7Ig7LemPKUFmDHJ_HWJeJLmkhX4SezqenIpRWmpkJGiutMdRiKrZJLVHeZbNw" alt="attack thumb" width="22" height="22" />
+                              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-y46uQBifR87p1-kh4s0Lgp4jSFqA2ZM9ZQ&usqp=CAU" alt="attack thumb" width="22" height="22" />
                               {
                             ` ${slot.point_health || 0}`
                 }
@@ -417,7 +325,7 @@ const ThreeDEnv = ({
             }
           <div styles={{ width: '1px', height: '1px' }}>
             {
-              !spellSlot.title ? (<div ref={spell} className="card_background">{' '}</div>) : (
+              !spellSlot.title ? (<div ref={spell} className="slot_background">{' '}</div>) : (
                 <div
                   aria-hidden="true"
                   className="hover card_background"
@@ -504,26 +412,8 @@ ThreeDEnv.propTypes = {
   HP: PropTypes.number.isRequired,
   done: PropTypes.bool.isRequired,
   spellSlot: PropTypes.bool.isRequired,
-  deck: PropTypes.arrayOf(PropTypes.object).isRequired,
-  setTurn: PropTypes.func.isRequired,
-  setCount: PropTypes.func.isRequired,
-  setBotGo: PropTypes.func.isRequired,
-  cardInHand: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  botGo: PropTypes.bool.isRequired,
-  resource: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  setResource: PropTypes.func.isRequired,
-  setResourceCount: PropTypes.func.isRequired,
   clicked: PropTypes.bool.isRequired,
-  enemySlots: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  setEnemyHP: PropTypes.func.isRequired,
-  setEnemySlots: PropTypes.func.isRequired,
-  setSlots: PropTypes.func.isRequired,
-  setCardInHand: PropTypes.func.isRequired,
-  cardIndex: PropTypes.number.isRequired,
-  resourceCount: PropTypes.number.isRequired,
-  taken: PropTypes.number.isRequired,
-  setClicked: PropTypes.func.isRequired,
-  yourSlots: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  placeCard: PropTypes.func.isRequired,
 };
 
 export default ThreeDEnv;

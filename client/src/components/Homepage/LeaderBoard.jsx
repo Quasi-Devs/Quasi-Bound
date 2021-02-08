@@ -41,10 +41,16 @@ const useStyles = makeStyles({
   },
   selectedUser: {
     color: 'red',
+    fontSize: '1.6vw',
+    textAlign: 'left',
   },
   userinfo: {
-    position: 'absolute',
-    left: '30%',
+    fontSize: '1.6vw',
+    textAlign: 'left',
+  },
+  userElo: {
+    fontSize: '1.6vw',
+    textAlign: 'left',
   },
   item: {
     paddingLeft: '10%',
@@ -86,10 +92,12 @@ const LeaderBoard = ({ user }) => {
               <List.Item
                 actions={[
                   <div className={classes.btngroup}>
-                    <h2 key={String(i)} className={(user.name_user === profile.name_user) ? classes.selectedUser : 'none'}>
-                      {`
-                          ELO:
-                          ${profile.count_rating || 0}`}
+                    <h2
+                      key={String(i)}
+                      className={(user.name_user === profile.name_user)
+                        ? classes.selectedUser : classes.userElo}
+                    >
+                      {`ELO: ${profile.count_rating || 0}`}
                     </h2>
                   </div>]}
               >
@@ -97,7 +105,13 @@ const LeaderBoard = ({ user }) => {
                   avatar={
                     <Avatar src={profile.thumbnail} />
                         }
-                  title={<h2 className={classes.userinfo}>{`${i + 1}:  ${profile.name_user}  #${profile.id}`}</h2>}
+                  title={(
+                    <h2 className={(user.name_user === profile.name_user)
+                      ? classes.selectedUser : classes.userElo}
+                    >
+                      {`${i + 1}:  ${profile.name_user}  #${profile.id}`}
+                    </h2>
+)}
                 />
               </List.Item>
             </Card>

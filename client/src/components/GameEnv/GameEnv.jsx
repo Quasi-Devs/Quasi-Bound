@@ -192,6 +192,119 @@ const GameEnv = ({
     }
   }, [turn]);
 
+  const handleResource = (num, check) => {
+    if (user) {
+      if (check) {
+        socket.emit('end', user.id_enemy);
+        setTurn(false);
+        setCount(num);
+        if (!user.id_enemy) {
+          setBotGo(!botGo);
+        }
+        deck.map(() => {
+          if (cardInHand.length < 5) {
+            cardInHand.push(deck.shift());
+          }
+          return false;
+        });
+      }
+      const newreasource = resource;
+      resource.map((val, i) => {
+        if (i <= num) {
+          newreasource[i] = true;
+        } else {
+          newreasource[i] = false;
+        }
+        return false;
+      });
+      setResource([...newreasource]);
+      setResourceCount(newreasource.join('').split('true').length - 1);
+    }
+  };
+
+  const placeCard = (val, i) => {
+    if (user) {
+      if (clicked && !val) {
+        const arr = yourSlots;
+        arr[i] = clicked;
+        if (arr[i].description.includes('Charge')) {
+          arr[i].turn = 0;
+        } else {
+          arr[i].turn = 1;
+        }
+        const number = clicked.description.match(/\d+/g);
+        const currentEnemySlots = enemySlots;
+        if (!clicked.is_character) {
+          socket.emit('Spell', clicked, user.id_enemy);
+          arr[i] = false;
+        }
+        if (clicked.description.includes('damage')) {
+          if (currentEnemySlots[i]) {
+            currentEnemySlots[i].point_health -= Number(number);
+            if (currentEnemySlots[i].point_health <= 0) {
+              currentEnemySlots[i] = false;
+              setEnemySlots([...currentEnemySlots]);
+            }
+          } else {
+            socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+            setEnemyHP(enemyHP - Number(number));
+          }
+        }
+        socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+        setEnemySlots([...currentEnemySlots]);
+        // this is causing a error when updating state
+        setYourSlots([...arr]);
+        setClick(false);
+        cardInHand.splice(cardIndex, 1);
+        setCardInHand(cardInHand);
+        handleResource(resourceCount - taken - 1);
+        if (clicked.description.includes('resource')) {
+          handleResource(number - 1);
+        }
+      } else if (clicked) {
+        // change to handle spell cards
+        const currentEnemySlots = enemySlots;
+        if (!clicked.is_character) {
+          if (yourSlots[i]) {
+            const number = clicked.description.match(/\d+/g);
+            const arr = yourSlots;
+            if (clicked.description.includes('Health')) {
+              arr[i].point_health += Number(number);
+            }
+            if (clicked.description.includes('attack')) {
+              arr[i].point_attack += Number(number);
+            }
+            if (clicked.description.includes('armor')) {
+              arr[i].point_armor += Number(number);
+            }
+            if (clicked.description.includes('damage')) {
+              if (currentEnemySlots[i]) {
+                currentEnemySlots[i].point_health -= Number(number);
+                if (currentEnemySlots[i].point_health <= 0) {
+                  setTimeout(() => {
+                    currentEnemySlots[i] = false;
+                    setEnemySlots([...currentEnemySlots]);
+                  }, 1000);
+                }
+              } else {
+                socket.emit('HP', user.id_enemy, enemyHP - Number(number), null);
+                setEnemyHP(enemyHP - Number(number));
+              }
+            }
+            socket.emit('Spell', clicked, user.id_enemy);
+            socket.emit('placed', user.id_enemy, [...arr], enemySlots);
+            setYourSlots([...arr]);
+            cardInHand.splice(cardIndex, 1);
+            setCardInHand(cardInHand);
+            setResourceCount(resourceCount - taken);
+            handleResource(resourceCount - taken - 1);
+            setClick(false);
+          }
+        }
+      }
+    }
+  };
+
   return (
     <div>
       {(deck) ? (
@@ -223,6 +336,7 @@ const GameEnv = ({
             resourceCount={resourceCount}
             taken={taken}
             setClicked={setClick}
+            placeCard={placeCard}
           />
           {!done ? (
             <TwoDEnv
@@ -273,7 +387,7 @@ const GameEnv = ({
             </a>
           )}
         </div>
-      ) : <div className={classes.loader}><img src={gif} alt="" /></div>}
+      ) : <div className={classes.loader}><img src={gif} alt="" width={window.innerWidth / 1.5} height={window.innerHeight} /></div>}
     </div>
   );
 };

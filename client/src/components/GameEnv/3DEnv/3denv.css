@@ -5,11 +5,12 @@ span.you {
     width: 200px;
     max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 3em;
+    font-size: 5vw;
     line-height: 0.9em;
     pointer-events: none;
-    top: 180px;
+    top: 140px;
     left: 50px;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 span.enemy {
@@ -19,12 +20,15 @@ span.enemy {
     width: 200px;
     max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 3em;
+    font-size: 5vw;
     line-height: 0.9em;
     pointer-events: none;
-    top: 180px;
+    top: 140px;
     left: 77%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
+
+
 
 span.Done {
     font-family: 'Josefin Sans', sans-serif;
@@ -49,8 +53,9 @@ span.spell {
     font-size: 2em;
     line-height: 0.9em;
     pointer-events: none;
-    top: 10%;
+    top: 9%;
     left: 44%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .good {
@@ -60,12 +65,13 @@ span.spell {
     width: 200px;
     max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 3em;
+    font-size: 10vw;
     line-height: 0.9em;
     color: green;
     pointer-events: none;
-    top: 180px;
-    left: 50px;
+    top: 80%;
+    margin: 10%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .okay {
@@ -75,12 +81,13 @@ span.spell {
     width: 200px;
     max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 3em;
+    font-size: 10vw;
     line-height: 0.9em;
     color: yellow;
     pointer-events: none;
-    top: 180px;
-    left: 50px;
+    top: 80%;
+    margin: 10%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .bad {
@@ -90,10 +97,11 @@ span.spell {
     width: 200px;
     max-width: 200px;
     transform: translate3d(0, -50%, 0);
-    font-size: 3em;
+    font-size: 10vw;
     line-height: 0.9em;
     color: red;
     pointer-events: none;
-    top: 180px;
-    left: 50px;
+    top: 80%;
+    margin: 10%;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
