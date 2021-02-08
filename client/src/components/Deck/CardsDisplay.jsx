@@ -26,6 +26,8 @@ const CardsDisplay = ({
   const useStyles = makeStyles({
     addButton: {
       position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
       top: buttonPosition,
     },
     savedCards: {
