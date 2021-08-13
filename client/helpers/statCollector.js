@@ -287,18 +287,18 @@ const setup = async (thumbnail, ml5, Prob, title) => {
       abilityType = await Prob.probabilityRP(abilityType);
     }
     if (abilityType === 'attack') {
-      abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+      abilityPower = await Prob.probabilityMedium(abilityPower);
       abilityType = await Prob.probabilityAbAttack(abilityType);
     }
     if (abilityType === 'armor') {
-      abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+      abilityPower = await Prob.probabilityMedium(abilityPower);
       abilityType = await Prob.probabilityAbArmor(abilityType);
     }
     if (abilityType === 'health') {
-      abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+      abilityPower = await Prob.probabilityMedium(abilityPower);
       abilityType = await Prob.probabilityAbHealth(abilityType);
     }
-    abilityPower = await Prob.probabilityMedium(abilityPower) / 2;
+    abilityPower = await Prob.probabilityMedium(abilityPower);
     typeParadise = await Prob.probabilityParadise(typeParadise);
   } else {
     abilityPower = await Prob.probabilityLarge(abilityPower);
@@ -481,7 +481,7 @@ const setup = async (thumbnail, ml5, Prob, title) => {
   card.size = tySmMLgGiTi ? tySmMLgGiTi.label : null;
   card.rp = Object.keys(resourcePoints)[Object.values(
     resourcePoints,
-  ).indexOf(totalPoints)];
+  ).indexOf(totalPoints)] || 0;
   card.isCharacter = cA.label === 'character';
   card.description = description;
   return card;
