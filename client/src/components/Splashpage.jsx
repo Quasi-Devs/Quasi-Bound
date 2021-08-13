@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardMedia } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import background from '../models/cards.png';
 
 const useStyles = makeStyles(() => ({
   cardContainer: {
@@ -13,7 +14,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   jumbotron: {
-    backgroundImage: 'url(https://c8.alamy.com/comp/T9BXN2/cards-of-game-magic-the-gathering-magic-can-be-played-by-two-or-more-players-in-various-rule-formats-T9BXN2.jpg)',
+    backgroundImage: `url(${background})`,
+    backgroundColor: 'black',
+    backgroundSize: '100%',
     opacity: '70%',
     width: '100%',
     height: window.innerHeight * 0.7,
