@@ -9,6 +9,7 @@ import axios from 'axios';
 import 'regenerator-runtime/runtime';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Helper from '../../../helpers/helpers';
 import './upload.css';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
@@ -49,7 +50,8 @@ const Upload = ({
       const { data: url } = await axios.post('/upload', form, { 'Content-Type': 'multipart/form-data' });
       setCardImage(url.buffer);
       const stats = await statCollector(url.image, ml5, Prob, title);
-      stats.description = `${stats.description}/${lore}`;
+      stats.description = `${stats.description}/${lore.length ? await Helper.censorText(lore) : lore}`;
+      stats.title = await Helper.censorText(stats.title);
       setUploadStats(stats);
       const card = {
         title: stats.title,
