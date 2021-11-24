@@ -141,7 +141,7 @@ module.exports = [
   },
   {
     title: 'Goblin-Shielder',
-    thumbnail: 'https://cdnb.artstation.com/p/assets/images/images/006/899/969/large/klaher-baklaher-goblin.jpg?1503569562',
+    thumbnail: 'https://i.pinimg.com/originals/ba/0d/32/ba0d326eedd3d5475c9653b76f25057c.jpg',
     point_attack: 15,
     point_health: 49,
     point_armor: 8,
