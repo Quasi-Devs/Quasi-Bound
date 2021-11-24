@@ -1,8 +1,9 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
+const test = 0;
 passport.serializeUser((user, done) => {
-  done(null, user);
+  done(test, user);
 });
 
 passport.deserializeUser((user, done) => {
