@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 // import cards from '../../../../cardSampleData.json';
+import loading from '../../models/ezgif-4-462b92d9253b.gif';
 import Card from '../Card/Card';
 import './search.css';
 
@@ -83,7 +84,7 @@ const Search = ({
       />
       <div className="allCards">
         <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-          {subset.map((card) => <Card key={card.id} info={card} onClick={showButton} />)}
+          {subset.length ? subset.map((card) => <Card key={card.id} info={card} onClick={showButton} />) : <img src={loading} alt="loading animation" />}
         </Grid>
         {buttonVisible
           ? (

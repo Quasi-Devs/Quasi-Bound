@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import loading from '../../models/ezgif-4-462b92d9253b.gif';
 
 import Card from '../Card/Card';
 
@@ -189,13 +190,13 @@ const CardsDisplay = ({
           </div>
         ) : null}
       <Grid container direction="row" justify="space-around" alignItems="center" md={8}>
-        {myCards.map((card, i) => (
+        {myCards.length ? myCards.map((card, i) => (
           <Card
             key={String(i)}
             info={card}
             onClick={(e) => { clickCard(e); }}
           />
-        ))}
+        )) : <img src={loading} alt="loading animation" />}
       </Grid>
       {displayMode !== 'browse' ? renderButton() : null}
       {displayMode !== 'browse'
